@@ -2,24 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1021" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Who's That?! - Live 2P Parody Deduction</title>
-  <!-- PeerJS for Serverless WebRTC Real-Time 2-Player Multiplayer -->
+  <title>TRAIT TAKEDOWN - Tabletop Deduction Game</title>
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --panel: #151e32;
-      --panel-border: #2a3958;
-      --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.25);
-      --gold: #f59e0b;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --text: #f8fafc;
+      --bg-deep: #080b18;
+      --bg-mid: #131b38;
+      --p1-red: #ef4444;
+      --p1-red-dark: #991b1b;
+      --p2-blue: #3b82f6;
+      --p2-blue-dark: #1d4ed8;
+      --gold: #fbbf24;
+      --gold-dark: #d97706;
+      --emerald: #10b981;
+      --emerald-dark: #047857;
+      --card-plastic: #dc2626;
+      --card-rim: #fca5a5;
+      --text: #ffffff;
       --muted: #94a3b8;
     }
 
@@ -32,1452 +36,1689 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 75%);
+      font-family: 'Nunito', -apple-system, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e295b 0%, var(--bg-deep) 80%);
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
-    /* Crowdfund Bar */
-    .crowdfund-banner {
-      background: linear-gradient(90deg, #1e1b4b, #3b0764, #1e1b4b);
-      border-bottom: 1px solid rgba(245, 158, 11, 0.45);
-      padding: 7px 12px;
-      display: flex;
+    h1, h2, h3, .toy-font {
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-toy {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 1.05rem;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.1s, filter 0.15s;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 8px;
-      font-size: 0.76rem;
+      text-shadow: 0 2px 0 rgba(0,0,0,0.3);
+    }
+    .btn-toy:active {
+      transform: translateY(4px);
+    }
+    .btn-toy.blue {
+      background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+      box-shadow: 0 6px 0 #1e40af, 0 10px 20px rgba(37,99,235,0.4);
+    }
+    .btn-toy.red {
+      background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+      box-shadow: 0 6px 0 #991b1b, 0 10px 20px rgba(220,38,38,0.4);
+    }
+    .btn-toy.gold {
+      background: linear-gradient(180deg, #fde047 0%, #f59e0b 100%);
+      color: #451a03;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+      box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(245,158,11,0.4);
+    }
+    .btn-toy.green {
+      background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+      box-shadow: 0 6px 0 #065f46, 0 10px 20px rgba(16,185,129,0.4);
+    }
+    .btn-toy.slate {
+      background: linear-gradient(180deg, #475569 0%, #334155 100%);
+      box-shadow: 0 5px 0 #1e293b;
+    }
+    .btn-toy:disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100dvh;
+      width: 100%;
+    }
+    .screen.active {
+      display: flex;
+    }
+
+    /* ==========================================
+       SCREEN 1: HOME LOBBY & PACK SHOWCASE
+       ========================================== */
+    .lobby-wrap {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .lobby-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sound-btn {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
       cursor: pointer;
     }
 
-    .cf-progress-wrap {
-      flex: 1;
-      max-width: 180px;
-      background: rgba(0, 0, 0, 0.55);
-      border-radius: 99px;
-      height: 9px;
+    .hero-banner {
+      text-align: center;
+      padding: 18px 12px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(239,68,68,0.2) 100%);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .cf-progress-bar {
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), #fde047);
-    }
-
-    .cf-btn {
+    .logo-badge {
+      display: inline-block;
       background: var(--gold);
-      color: #000;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 6px;
-      font-size: 0.7rem;
+      color: #451a03;
+      font-weight: 900;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 99px;
       text-transform: uppercase;
-      white-space: nowrap;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
     }
 
-    /* Header */
-    header {
-      padding: 9px 12px;
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      line-height: 1.05;
+      color: #fff;
+      text-shadow: 0 4px 0 #1e3a8a, 0 8px 20px rgba(0,0,0,0.6);
+      margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--gold); }
+
+    .hero-sub {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin: 0 auto 18px;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 23, 42, 0.9);
-      border-bottom: 1px solid var(--panel-border);
-      backdrop-filter: blur(8px);
+      padding: 0 4px;
+    }
+    .section-header h2 {
+      font-size: 1.35rem;
+    }
+
+    .pack-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 14px;
+    }
+
+    .pack-box {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 3px solid #334155;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+    }
+    .pack-box:hover {
+      transform: translateY(-4px);
+    }
+    .pack-box.selected {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.35);
+    }
+    .pack-box.locked {
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .pack-preview-art {
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    .pack-tag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 99px;
+      text-transform: uppercase;
+    }
+    .pack-tag.free { background: var(--emerald); color: #fff; }
+    .pack-tag.vip { background: var(--gold); color: #451a03; }
+
+    .pack-title {
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 3px;
+    }
+    .pack-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ==========================================
+       SCREEN 2: TABLETOP GAMEPLAY ARENA
+       ========================================== */
+    .arena-topbar {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
       position: sticky;
       top: 0;
       z-index: 30;
     }
 
-    .brand {
-      font-weight: 900;
-      font-size: 1.05rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .brand span { color: var(--accent); }
-
-    .header-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-sm {
-      background: var(--panel);
-      color: var(--text);
-      border: 1px solid var(--panel-border);
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .btn-sm.online {
-      border-color: var(--success);
-      background: rgba(34, 197, 94, 0.15);
-      color: #86efac;
-    }
-
-    .btn-sm.gold {
-      border-color: var(--gold);
-      color: #fde047;
-      background: rgba(245, 158, 11, 0.12);
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--muted);
-      display: inline-block;
-    }
-    .dot.live {
-      background: var(--success);
-      box-shadow: 0 0 8px var(--success);
-    }
-
-    /* Pack Carousel */
-    .pack-bar {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 9px 12px;
-      background: rgba(9, 13, 22, 0.75);
-      border-bottom: 1px solid var(--panel-border);
-      scrollbar-width: none;
-    }
-    .pack-bar::-webkit-scrollbar { display: none; }
-
-    .pack-pill {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 99px;
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .pack-pill.active {
-      background: rgba(56, 189, 248, 0.16);
-      border-color: var(--accent);
-      color: var(--text);
-      box-shadow: 0 0 12px var(--accent-glow);
-    }
-    .pack-pill.locked {
-      border-color: rgba(245, 158, 11, 0.45);
-      color: #fcd34d;
-    }
-
-    /* HUD Strip */
-    .hud {
-      display: grid;
-      grid-template-columns: 1.2fr auto 1fr;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      background: rgba(21, 30, 50, 0.75);
-      border-bottom: 1px solid var(--panel-border);
-    }
-
-    .secret-card {
+    .my-mystery-pill {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px 8px;
-      border-radius: 10px;
-      border: 1px solid var(--panel-border);
+      background: linear-gradient(90deg, #991b1b, #7f1d1d);
+      border: 2px solid #fca5a5;
+      padding: 4px 10px 4px 5px;
+      border-radius: 14px;
       cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
-    .secret-svg-wrap {
+    .my-mystery-thumb {
       width: 38px;
       height: 38px;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      flex-shrink: 0;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1.5px solid #fff;
+      background: #000;
     }
-
-    .secret-meta {
-      font-size: 0.7rem;
-      line-height: 1.2;
-      overflow: hidden;
-    }
-    .secret-meta strong {
+    .my-mystery-thumb img, .my-mystery-thumb svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      font-size: 0.8rem;
-      color: var(--accent);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .turn-badge {
-      text-align: center;
-      font-size: 0.72rem;
+    .my-mystery-info {
+      font-size: 0.68rem;
+      line-height: 1.15;
+    }
+    .my-mystery-info strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #fde047;
+    }
+
+    .vs-scoreboard {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,0,0,0.45);
+      padding: 6px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.78rem;
       font-weight: 800;
-      padding: 5px 10px;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid var(--accent);
-      color: var(--accent);
     }
-    .turn-badge.wait {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: var(--gold);
-      color: #fcd34d;
-    }
+    .score-red { color: #f87171; }
+    .score-blue { color: #60a5fa; }
 
-    .opp-status {
-      text-align: right;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-    .opp-status strong {
-      display: block;
-      color: var(--gold);
-      font-size: 0.84rem;
-    }
-
-    /* Status Log */
-    .log-banner {
-      margin: 8px 12px 4px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      font-size: 0.8rem;
+    .coach-strip {
+      background: linear-gradient(90deg, #1e3a8a, #3b0764);
+      border-bottom: 2px solid rgba(251, 191, 36, 0.4);
+      padding: 9px 14px;
       text-align: center;
-      min-height: 36px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #fef08a;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
-    /* 24 Character Grid */
-    .board {
+    .tabletop-tray {
       flex: 1;
+      max-width: 980px;
+      width: 100%;
+      margin: 10px auto;
+      padding: 12px 10px 20px;
+      background: linear-gradient(180deg, rgba(153,27,27,0.35) 0%, rgba(69,10,10,0.5) 100%);
+      border: 3px solid rgba(248,113,113,0.35);
+      border-radius: 24px;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 7px;
-      padding: 6px 12px 16px;
-      max-width: 920px;
-      width: 100%;
-      margin: 0 auto;
+      gap: 10px 8px;
+      perspective: 1000px;
     }
 
     @media (min-width: 640px) {
-      .board { grid-template-columns: repeat(6, 1fr); gap: 10px; }
+      .tabletop-tray {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 14px 12px;
+        padding: 18px;
+      }
     }
 
-    .char-card {
-      background: var(--panel);
-      border: 2px solid var(--panel-border);
-      border-radius: 11px;
-      padding: 5px 4px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
+    .slot-wrap {
+      perspective: 700px;
       position: relative;
-      transition: transform 0.18s ease, opacity 0.2s ease, border-color 0.2s ease;
+      height: 118px;
+    }
+    @media (min-width: 640px) {
+      .slot-wrap { height: 136px; }
     }
 
-    .char-card:active { transform: scale(0.95); }
-
-    .char-card.eliminated {
-      opacity: 0.22;
-      filter: grayscale(92%);
-      transform: scale(0.93);
-      border-color: #1e293b;
-    }
-
-    .char-card.guess-mode {
-      border-color: var(--danger);
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
-      animation: pulseGuess 1.1s infinite;
-    }
-
-    @keyframes pulseGuess {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-
-    .trait-dots {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 3px;
-      font-size: 0.65rem;
-      min-height: 14px;
-      margin-bottom: 2px;
-    }
-
-    .svg-portrait {
-      width: 62px;
-      height: 62px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1.5px solid rgba(255, 255, 255, 0.22);
-      background: #0b0f19;
-      margin-bottom: 4px;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
-    }
-
-    .svg-portrait svg {
+    .plastic-card {
       width: 100%;
       height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform-origin: bottom center;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+      cursor: pointer;
+    }
+
+    .plastic-card.flipped-down {
+      transform: rotateX(-76deg);
+      filter: brightness(0.45);
+    }
+
+    .plastic-card.suspect-glow .card-front {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.85);
+      animation: targetPulse 1s infinite alternate;
+    }
+
+    @keyframes targetPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    .card-front {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+      border: 2.5px solid #fca5a5;
+      border-radius: 14px 14px 6px 6px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 14px rgba(0,0,0,0.55);
+    }
+
+    .portrait-window {
+      flex: 1;
+      width: 100%;
+      background: #0f172a;
+      border-radius: 9px;
+      overflow: hidden;
+      position: relative;
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+
+    .portrait-window svg, .portrait-window img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
 
-    .char-name {
+    .card-trait-strip {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      display: flex;
+      gap: 2px;
+      background: rgba(0,0,0,0.65);
+      padding: 1px 4px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+    }
+
+    .name-plate {
+      background: #fef2f2;
+      color: #7f1d1d;
+      font-weight: 900;
       font-size: 0.68rem;
-      font-weight: 800;
       text-align: center;
-      line-height: 1.1;
-      max-width: 100%;
+      padding: 3px 2px;
+      margin-top: 3px;
+      border-radius: 5px;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: 0 2px;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
     }
 
-    /* Controls Footer */
-    .controls {
+    .slot-hinge {
+      position: absolute;
+      bottom: -4px;
+      left: 8%;
+      right: 8%;
+      height: 7px;
+      background: #7f1d1d;
+      border-radius: 4px;
+      border: 1px solid #f87171;
+      z-index: -1;
+    }
+
+    .action-dock {
       position: sticky;
       bottom: 0;
-      background: rgba(15, 23, 42, 0.96);
-      border-top: 1px solid var(--panel-border);
-      padding: 9px 12px 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      z-index: 25;
-      backdrop-filter: blur(10px);
+      background: rgba(11, 16, 33, 0.96);
+      border-top: 2px solid rgba(255,255,255,0.12);
+      padding: 10px 14px 16px;
+      z-index: 30;
+      backdrop-filter: blur(12px);
     }
 
-    .question-row, .action-row {
-      display: flex;
-      gap: 8px;
-      max-width: 920px;
-      width: 100%;
+    .dock-inner {
+      max-width: 760px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 10px;
     }
 
-    select {
-      flex: 1;
-      background: var(--panel);
-      color: var(--text);
-      border: 1px solid var(--panel-border);
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      outline: none;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #090d16;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-weight: 800;
-      font-size: 0.82rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn-primary:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .btn-guess {
-      flex: 1;
-      background: rgba(239, 68, 68, 0.15);
-      color: #fca5a5;
-      border: 1px solid var(--danger);
-      border-radius: 8px;
-      padding: 9px;
-      font-weight: 800;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
-    .btn-guess.active {
-      background: var(--danger);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: var(--panel);
-      color: var(--muted);
-      border: 1px solid var(--panel-border);
-      border-radius: 8px;
-      padding: 9px 12px;
-      font-weight: 700;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
-
-    /* Modals */
-    .modal-overlay {
+    /* ==========================================
+       MODALS, DRAWERS & CUTSCENES
+       ========================================== */
+    .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.82);
+      background: rgba(4, 7, 17, 0.86);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
       z-index: 100;
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(6px);
     }
-    .modal-overlay.open { display: flex; }
+    .overlay.open { display: flex; }
 
-    .modal {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: 16px;
-      max-width: 440px;
+    .dialog-card {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 3px solid #475569;
+      border-radius: 24px;
+      max-width: 500px;
       width: 100%;
-      padding: 18px;
-      max-height: 90vh;
+      padding: 22px;
+      max-height: 90dvh;
       overflow-y: auto;
-    }
-
-    .modal h2 {
-      font-size: 1.15rem;
-      margin-bottom: 6px;
-      color: #fff;
-    }
-
-    .modal p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.45;
-      margin-bottom: 12px;
-    }
-
-    .mp-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .room-code-display {
-      font-size: 1.6rem;
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: var(--accent);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
       text-align: center;
-      padding: 8px;
-      background: #090d16;
-      border-radius: 8px;
-      border: 1px dashed var(--accent);
-      margin: 8px 0;
-      user-select: all;
     }
 
-    .input-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .input-row input {
-      flex: 1;
-      background: #090d16;
-      border: 1px solid var(--panel-border);
-      color: #fff;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .pay-grid {
+    .trait-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      margin: 14px 0;
+      text-align: left;
     }
 
-    .pay-btn {
+    .trait-option-btn {
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 11px 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.12s, border-color 0.12s, background 0.12s;
+    }
+    .trait-option-btn:hover, .trait-option-btn:active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #60a5fa;
+      transform: scale(1.01);
+    }
+
+    .trait-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .trait-icon-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 0.8rem;
-      text-decoration: none;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.2rem;
+      flex-shrink: 0;
     }
-    .pay-kofi { background: #ff5e5b; }
-    .pay-gumroad { background: #ff90e8; color: #000; }
-    .pay-stripe { background: #635bff; }
-    .pay-paypal { background: #0070ba; }
+
+    .trait-count-pill {
+      background: rgba(251, 191, 36, 0.18);
+      border: 1px solid var(--gold);
+      color: #fde047;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 4px 8px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    .big-reveal-card {
+      width: 180px;
+      margin: 14px auto;
+      background: linear-gradient(180deg, #ef4444 0%, #991b1b 100%);
+      border: 4px solid #fde047;
+      border-radius: 20px;
+      padding: 8px;
+      box-shadow: 0 15px 35px rgba(239,68,68,0.45);
+    }
+    .big-reveal-art {
+      width: 100%;
+      height: 160px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+      margin-bottom: 8px;
+    }
+    .big-reveal-art img, .big-reveal-art svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .big-reveal-name {
+      background: #fff;
+      color: #7f1d1d;
+      font-weight: 900;
+      font-size: 1.05rem;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .cutscene-toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 4px solid var(--gold);
+      border-radius: 24px;
+      padding: 22px 28px;
+      z-index: 120;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+      pointer-events: none;
+      opacity: 0;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+      max-width: 90vw;
+      width: 360px;
+    }
+    .cutscene-toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .room-code-box {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 6px;
+      color: var(--gold);
+      background: rgba(0,0,0,0.5);
+      border: 2px dashed var(--gold);
+      border-radius: 14px;
+      padding: 10px;
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Crowdfunding Goal Banner -->
-  <div class="crowdfund-banner" onclick="openModal('founderModal')">
-    <div>🚀 <strong>Android Store Goal:</strong> $15 / $25</div>
-    <div class="cf-progress-wrap"><div class="cf-progress-bar"></div></div>
-    <div class="cf-btn">Get Founder Key</div>
-  </div>
-
-  <header>
-    <div class="brand">🕵️‍♂️ WHO'S <span>THAT?!</span></div>
-    <div class="header-actions">
-      <button class="btn-sm" id="mpBtn" onclick="openModal('mpModal')">
-        <span class="dot" id="mpDot"></span>
-        <span id="mpBtnLabel">2P Live</span>
-      </button>
-      <button class="btn-sm gold" id="vipBadgeBtn" onclick="openModal('founderModal')">🔓 5 VIP Packs</button>
-    </div>
-  </header>
-
-  <!-- Pack Selector -->
-  <div class="pack-bar" id="packBar"></div>
-
-  <!-- HUD -->
-  <div class="hud">
-    <div class="secret-card" onclick="cycleMySecret()" title="Tap to change your secret character before asking">
-      <div class="secret-svg-wrap" id="mySecretSvg"></div>
-      <div class="secret-meta">
-        Your Secret (Tap)
-        <strong id="mySecretName">Loading...</strong>
-      </div>
-    </div>
-
-    <div class="turn-badge" id="turnBadge">YOUR TURN</div>
-
-    <div class="opp-status">
-      <span id="oppLabel">AI Opponent</span>
-      <strong id="oppRemainingCount">24 Left</strong>
-    </div>
-  </div>
-
-  <!-- Turn / Answer Log -->
-  <div class="log-banner" id="logBanner">
-    Select a trait question below or tap "2P Live" to play a friend!
-  </div>
-
-  <!-- 24 Character Grid -->
-  <main class="board" id="boardGrid"></main>
-
-  <!-- Bottom Controls -->
-  <section class="controls">
-    <div class="question-row">
-      <select id="questionSelect"></select>
-      <button class="btn-primary" id="askBtn" onclick="askSelectedQuestion()">Ask Trait</button>
-    </div>
-    <div class="action-row">
-      <button class="btn-guess" id="guessModeBtn" onclick="toggleGuessMode()">🎯 Final Guess Mode: OFF</button>
-      <button class="btn-secondary" onclick="requestNewMatch()">🔄 New Match</button>
-    </div>
-  </section>
-
-  <!-- Live 2-Player WebRTC Multiplayer Modal -->
-  <div class="modal-overlay" id="mpModal">
-    <div class="modal">
-      <h2>📡 Real-Time 2-Player Match</h2>
-      <p>Play live across two phones! Host a room and give your 4-digit code to your friend, or enter their code below.</p>
-
-      <div class="mp-box">
-        <strong style="font-size:0.85rem; color:#fff;">Option 1: Host a Room</strong>
-        <div class="room-code-display" id="hostCodeDisplay">----</div>
-        <button class="btn-primary" style="width:100%;" onclick="createHostRoom()">Generate Room Code</button>
-      </div>
-
-      <div class="mp-box">
-        <strong style="font-size:0.85rem; color:#fff;">Option 2: Join Friend's Room</strong>
-        <div class="input-row">
-          <input type="text" id="joinCodeInput" maxlength="6" placeholder="Enter 4-Digit Code" />
-          <button class="btn-primary" onclick="joinFriendRoom()">Connect</button>
+  <!-- ==========================================
+       SCREEN 1: LOBBY & PACK SELECTION
+       ========================================== -->
+  <section class="screen active" id="lobbyScreen">
+    <div class="lobby-wrap">
+      <div class="lobby-top">
+        <div class="toy-font" style="font-size:1.2rem; color:var(--gold);">🎲 TABLETOP EDITION</div>
+        <div style="display:flex; gap:8px;">
+          <button class="sound-btn" id="soundToggleBtn" onclick="toggleSound()">🔊 SFX: ON</button>
+          <button class="sound-btn" onclick="openOverlay('howToOverlay')">❓ How to Play</button>
         </div>
       </div>
 
-      <p id="mpStatusText" style="text-align:center; font-weight:700; color:var(--accent); min-height:20px;"></p>
+      <div class="hero-banner">
+        <div class="logo-badge" id="vipStatusBanner">4 FREE ROSTERS + 5 VIP ROSTERS</div>
+        <h1 class="hero-title">TRAIT <span>TAKEDOWN</span></h1>
+        <p class="hero-sub">Choose a themed character roster, draw your secret identity card, and eliminate suspects by their traits before your opponent locks you down!</p>
 
-      <div style="display:flex; gap:8px;">
-        <button class="btn-secondary" style="flex:1;" onclick="disconnectMultiplayer()">Switch to Solo AI</button>
-        <button class="btn-secondary" style="flex:1;" onclick="closeModal('mpModal')">Close</button>
+        <div class="mode-grid">
+          <button class="btn-toy blue" onclick="launchSoloMatch()">🤖 PLAY SOLO VS AI</button>
+          <button class="btn-toy green" onclick="openOverlay('mpOverlay')">📡 PLAY FRIEND (2P LIVE)</button>
+          <button class="btn-toy gold" id="lobbyUnlockBtn" onclick="openOverlay('storeOverlay')">👑 UNLOCK ALL 9 ROSTERS</button>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>Choose Character Roster</h2>
+        <span style="font-size:0.82rem; color:var(--muted);" id="selectedPackLabel">Selected: Starlight Outlaws</span>
+      </div>
+
+      <div class="pack-showcase" id="packShowcaseGrid"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SCREEN 2: 3D TABLETOP GAME ARENA
+       ========================================== -->
+  <section class="screen" id="arenaScreen">
+    <div class="arena-topbar">
+      <button class="btn-toy slate" style="padding:8px 12px; font-size:0.8rem;" onclick="returnToLobby()">🏠 Lobby</button>
+
+      <div class="my-mystery-pill" onclick="openOverlay('revealOverlay')" title="Tap to inspect your secret card">
+        <div class="my-mystery-thumb" id="hudMyThumb"></div>
+        <div class="my-mystery-info">
+          YOUR SECRET IDENTITY
+          <strong id="hudMyName">Lucas Starstrider</strong>
+        </div>
+      </div>
+
+      <div class="vs-scoreboard">
+        <span class="score-red">YOU: <span id="hudMyLeft">24</span></span>
+        <span>⚡</span>
+        <span class="score-blue"><span id="hudOppLabel">AI</span>: <span id="hudOppLeft">24</span></span>
+      </div>
+    </div>
+
+    <div class="coach-strip" id="coachStrip">
+      👉 STEP 1: Tap "ASK A TRAIT" below to eliminate suspects!
+    </div>
+
+    <div class="tabletop-tray" id="tabletopGrid"></div>
+
+    <div class="action-dock">
+      <div class="dock-inner">
+        <button class="btn-toy blue" id="btnOpenQuestions" onclick="openQuestionDrawer()">
+          💬 1. ASK A TRAIT
+        </button>
+        <button class="btn-toy red" id="btnToggleSuspect" onclick="toggleFinalGuessMode()">
+          🎯 2. TAKEDOWN!
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       OVERLAYS & CUTSCENES
+       ========================================== -->
+
+  <div class="overlay" id="revealOverlay">
+    <div class="dialog-card">
+      <div class="logo-badge">SECRET IDENTITY</div>
+      <h2 style="font-size:1.5rem; margin-bottom:4px;">Your Mystery Character</h2>
+      <p style="font-size:0.85rem; color:var(--muted);">Your opponent is trying to deduce this card. Keep it hidden!</p>
+
+      <div class="big-reveal-card">
+        <div class="big-reveal-art" id="revealBigArt"></div>
+        <div class="big-reveal-name" id="revealBigName">Lord Obsidian</div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button class="btn-toy slate" style="flex:1;" onclick="redrawSecretCharacter()">🔄 Draw Another</button>
+        <button class="btn-toy green" style="flex:1.4;" onclick="closeOverlay('revealOverlay')">👍 GOT IT! PLAY</button>
       </div>
     </div>
   </div>
 
-  <!-- Founder's Crowdfund & Unlock Modal -->
-  <div class="modal-overlay" id="founderModal">
-    <div class="modal">
-      <h2>👑 Founder's All-Access Key ($5)</h2>
-      <p>
-        Help us hit the <strong>$25 Google Play Developer Fee</strong>! Every $5 Founder's Pass funds our official store launch and unlocks all <strong>5 Premium Parody Packs</strong> forever:
-      </p>
-      <div class="mp-box" style="font-size:0.8rem; line-height:1.6;">
-        <div>🏴‍☠️ <strong>Cursed Buccaneers</strong> (Pirates & Sea Monsters)</div>
-        <div>🛡️ <strong>Atomic Defenders</strong> (Superheroes & Mutants)</div>
-        <div>⚡ <strong>Pocket Critters</strong> (Evolution Monster Tamers)</div>
-        <div>💍 <strong>Fellowship of the Relic</strong> (Wizards, Elves & Rings)</div>
-        <div>🔥 <strong>Overdrive Brawlers</strong> (Anime Super Fighters)</div>
-      </div>
-
-      <p style="margin-bottom:6px; font-weight:700; color:#fff;">1. Choose your $5 checkout link:</p>
-      <div class="pay-grid">
-        <a href="https://ko-fi.com/" target="_blank" class="pay-btn pay-kofi">☕ Ko-fi Pass</a>
-        <a href="https://gumroad.com/" target="_blank" class="pay-btn pay-gumroad">🛍️ Gumroad Key</a>
-        <a href="https://stripe.com/" target="_blank" class="pay-btn pay-stripe">💳 Stripe Direct</a>
-        <a href="https://paypal.com/" target="_blank" class="pay-btn pay-paypal">🅿️ PayPal Link</a>
-      </div>
-
-      <p style="margin-bottom:4px; font-weight:700; color:#fff;">2. Enter your Founder Receipt Key:</p>
-      <div class="input-row">
-        <input type="text" id="licenseInput" placeholder="e.g. FOUNDER-2026" />
-        <button class="btn-primary" onclick="verifyLicenseKey()">Unlock</button>
-      </div>
-      <p id="keyFeedback" style="margin-top:8px; font-size:0.78rem; color:#fde047;"></p>
-
-      <button class="btn-secondary" style="width:100%; margin-top:8px;" onclick="closeModal('founderModal')">Close</button>
+  <div class="overlay" id="questionOverlay">
+    <div class="dialog-card">
+      <h2 style="font-size:1.4rem;">Ask a Yes / No Trait Question</h2>
+      <p style="font-size:0.84rem; color:var(--muted);">Pick a trait below. The board will automatically flip down eliminated suspects!</p>
+      <div class="trait-grid" id="traitDrawerGrid"></div>
+      <button class="btn-toy slate" style="width:100%;" onclick="closeOverlay('questionOverlay')">Cancel</button>
     </div>
+  </div>
+
+  <div class="overlay" id="howToOverlay">
+    <div class="dialog-card" style="text-align:left;">
+      <h2 style="text-align:center; font-size:1.5rem; margin-bottom:12px;">🕵️‍♂️ How to Play Trait Takedown</h2>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.9rem; line-height:1.45;">
+        <div style="background:rgba(255,255,255,0.06); padding:12px; border-radius:14px;">
+          <strong style="color:var(--gold);">1. Draw Your Secret Card</strong><br>
+          Both you and your opponent draw 1 secret character from the 24-card roster.
+        </div>
+        <div style="background:rgba(255,255,255,0.06); padding:12px; border-radius:14px;">
+          <strong style="color:#60a5fa;">2. Ask Yes/No Trait Questions</strong><br>
+          Tap <strong>"1. ASK A TRAIT"</strong> at the bottom. If the answer is YES, everyone without that trait flips down automatically!
+        </div>
+        <div style="background:rgba(255,255,255,0.06); padding:12px; border-radius:14px;">
+          <strong style="color:#f87171;">3. Lock In Your Takedown</strong><br>
+          When you know who they are hiding, tap <strong>"2. TAKEDOWN!"</strong> and tap the suspect's card on the board to win!
+        </div>
+      </div>
+      <button class="btn-toy blue" style="width:100%; margin-top:16px;" onclick="closeOverlay('howToOverlay')">Let's Play!</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="mpOverlay">
+    <div class="dialog-card">
+      <h2 style="font-size:1.45rem;">📡 Play a Friend Live</h2>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:14px;">Play across two phones or tablets in real time!</p>
+
+      <div style="background:rgba(0,0,0,0.35); padding:14px; border-radius:16px; margin-bottom:14px;">
+        <strong style="color:#fff;">Player 1: Host a Match</strong>
+        <div class="room-code-box" id="mpHostCode">----</div>
+        <button class="btn-toy blue" style="width:100%;" onclick="hostLiveRoom()">Create 4-Digit Room Code</button>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.35); padding:14px; border-radius:16px; margin-bottom:12px;">
+        <strong style="color:#fff;">Player 2: Join Friend's Code</strong>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <input type="text" id="mpJoinInput" maxlength="6" placeholder="1234" style="flex:1; background:#080b18; border:2px solid #475569; color:#fff; border-radius:12px; padding:10px; font-size:1.1rem; font-weight:900; text-align:center;" />
+          <button class="btn-toy green" onclick="joinLiveRoom()">Join</button>
+        </div>
+      </div>
+
+      <p id="mpStatusMsg" style="color:var(--gold); font-weight:800; font-size:0.85rem; min-height:20px; margin-bottom:10px;"></p>
+      <button class="btn-toy slate" style="width:100%;" onclick="closeOverlay('mpOverlay')">Close</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="storeOverlay">
+    <div class="dialog-card">
+      <div class="logo-badge">LIFETIME ACCOUNT UNLOCK</div>
+      <h2 style="font-size:1.5rem; margin-bottom:6px;">👑 All-Access Pass ($4.99)</h2>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:14px;">
+        Instantly unlock all <strong>5 VIP Genre Rosters</strong> (120 new characters). Permanently saved to your device & cloud—never locks again after updates!
+      </p>
+
+      <div style="background:rgba(0,0,0,0.4); border-radius:16px; padding:12px; text-align:left; font-size:0.83rem; line-height:1.7; margin-bottom:16px;">
+        <div>🏴‍☠️ <strong>High Seas Corsairs</strong> (24 Swashbuckling Legends)</div>
+        <div>🛡️ <strong>Vanguard Heroes</strong> (24 Comic Champions & Villains)</div>
+        <div>⚡ <strong>Elemental Critters</strong> (24 Evolution Monsters)</div>
+        <div>💍 <strong>Realm of the Ancients</strong> (24 High Fantasy Quest Heroes)</div>
+        <div>🔥 <strong>Apex Martial Artists</strong> (24 Anime Aura Fighters)</div>
+      </div>
+
+      <div style="display:grid; gap:10px; margin-bottom:12px;">
+        <button class="btn-toy gold" onclick="triggerOneTapPurchase('stripe')">💳 1-Tap Instant Unlock ($4.99)</button>
+        <button class="btn-toy blue" onclick="restoreCloudPurchases()">🔄 Restore Existing Purchase</button>
+      </div>
+
+      <button class="btn-toy slate" style="width:100%;" onclick="closeOverlay('storeOverlay')">Maybe Later</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="gameoverOverlay">
+    <div class="dialog-card">
+      <h2 id="goTitle" style="font-size:1.8rem; margin-bottom:6px;">🏆 TAKEDOWN COMPLETE!</h2>
+      <p id="goSubtitle" style="font-size:0.95rem; color:var(--muted); margin-bottom:12px;">You caught their secret character!</p>
+      <div class="big-reveal-card">
+        <div class="big-reveal-art" id="goRevealArt"></div>
+        <div class="big-reveal-name" id="goRevealName">Character</div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn-toy slate" style="flex:1;" onclick="returnToLobby()">🏠 Rosters</button>
+        <button class="btn-toy green" style="flex:1.4;" onclick="rematchNow()">🔄 Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cutscene-toast" id="cutsceneToast">
+    <div style="font-size:2.2rem; margin-bottom:4px;" id="csEmoji">✅</div>
+    <h3 style="font-size:1.3rem; color:var(--gold); margin-bottom:4px;" id="csTitle">YES!</h3>
+    <p style="font-size:0.9rem; color:#fff; font-weight:700;" id="csSub">Flipping 12 suspects down...</p>
   </div>
 
   <script>
     // ==========================================
-    // 1. PARODY PACKS & TRAIT DEFINITIONS
+    // 1. SYNTHESIZED WEB AUDIO SOUND ENGINE
     // ==========================================
-    const PACKS = [
-      {
-        id: "galactic", name: "Galactic Mystics", icon: "⚔️", free: true,
-        names: [
-          "Darth Malice", "Luke Skyrunner", "Obi-One", "Princess Laya", "Solo Smuggler", "Chew-Barka",
-          "Boba Hunter", "Mando Creed", "Yodel Master", "Count Dookey", "General Gremlin", "Mace Purple",
-          "Rey Scavenger", "Kylo Tantrum", "Ahsoka Dual", "Palpa-Zap", "Lando Smooth", "Tarkin Grand",
-          "Admiral Trap", "Maul Horns", "Qui-Gon Zen", "Padme Royal", "R2-Beep", "C3-Golden"
-        ],
-        traits: [
-          { key: "red_blade", label: "wield a Crimson Plasma Blade", badge: "🔴" },
-          { key: "blue_green_blade", label: "wield a Blue or Green Plasma Blade", badge: "🔵" },
-          { key: "helmet", label: "wear a full Combat Helmet or Mask", badge: "🪖" },
-          { key: "cyborg", label: "have Cyborg Limbs or Droid Parts", badge: "🦾" },
-          { key: "hood", label: "wear a Mystic Hood or Cloak", badge: "🧥" },
-          { key: "blaster", label: "carry a Laser Blaster", badge: "🔫" },
-          { key: "alien", label: "belong to a Non-Human Alien Species", badge: "👽" }
-        ]
-      },
-      {
-        id: "turtles", name: "Karate Amphibians", icon: "🐢", free: true,
-        names: [
-          "Leo Blueblade", "Raph Redsai", "Mikey Orange", "Donnie Purplestaff", "Master Whiskers", "April Scoop",
-          "Casey Hockey", "Shred-Claw", "Bebop Warthog", "Rocksteady Rhino", "Krang Brain", "Karai Viper",
-          "Baxter Fly", "Slash Palm", "Leather Gator", "Metal Turtle", "Mona Lizard", "Rat Sovereign",
-          "Usagi Ronin", "Foot Bot", "Mondo Gecko", "Tokka Snapper", "Rahzar Wolf", "Jennika Yellow"
-        ],
-        traits: [
-          { key: "shell", label: "have an Armored Turtle Shell", badge: "🛡️" },
-          { key: "mask", label: "wear a Colored Ninja Eye Bandana", badge: "🎭" },
-          { key: "mutant", label: "have Mutant Animal DNA", badge: "🧬" },
-          { key: "bladed", label: "use Sharp Bladed Ninja Weapons", badge: "⚔️" },
-          { key: "blunt", label: "use Blunt Weapons (Bo, Nunchuck, Bat)", badge: "🥢" },
-          { key: "villain", label: "fight for the Shadow Foot Syndicate", badge: "💀" },
-          { key: "human", label: "remain 100% Non-Mutated Human", badge: "🧑" }
-        ]
-      },
-      {
-        id: "rangers", name: "Chroma Sentinels", icon: "⚡", free: true,
-        names: [
-          "Red Tyranno", "Green Dragon", "White Tiger", "Pink Pterodactyl", "Blue Tricera", "Black Mammoth",
-          "Yellow Saber", "Empress Rita", "Lord Zedd-Chrome", "Goldar Wings", "Alpha-5 Bot", "Zordon Tube",
-          "Bulk Prankster", "Skull Laugh", "Silver Space", "Gold Zeo", "Shadow Ranger", "Crimson Thunder",
-          "Quantum Rex", "Magna Defender", "Psycho Red", "Scorpina Sting", "Finster Clay", "Ninjor Blue"
-        ],
-        traits: [
-          { key: "visor", label: "wear a Full Spandex Visor Helmet", badge: "🪖" },
-          { key: "sixth", label: "wear a Golden Dragon Shield", badge: "🛡️" },
-          { key: "dino", label: "pilot a Prehistoric Dino Mecha", badge: "🦖" },
-          { key: "monster", label: "serve the Moon Palace Alien Empire", badge: "👾" },
-          { key: "flute", label: "summon Mechas with a Dagger Flute", badge: "🗡️" },
-          { key: "cape", label: "wear Cosmic Armor or a Cape", badge: "🧥" },
-          { key: "primary_color", label: "wear Red, Blue, or Yellow Spandex", badge: "🎨" }
-        ]
-      },
-      {
-        id: "sorcery", name: "Sorcery Academy", icon: "🪄", free: true,
-        names: [
-          "Harry Scar", "Ronnie Ginger", "Hermione Tome", "Draco Smirk", "Headmaster Beard", "Professor Potion",
-          "Lord No-Nose", "Bellatrix Hex", "Hagrid Giant", "Sirius Hound", "Lupin Moon", "Dobby Sock",
-          "Neville Herb", "Luna Spectacles", "Cedric Golden", "McGonagall Cat", "Mad-Eye Goggle", "Lucius Cane",
-          "Ginny Bludger", "Fred Prank", "George Joke", "Cho Seeker", "Viktor Broom", "Fleur Charm"
-        ],
-        traits: [
-          { key: "serpent", label: "belong to the Serpent Ambition House", badge: "🐍" },
-          { key: "lion", label: "belong to the Scarlet Lion House", badge: "🦁" },
-          { key: "wand", label: "hold a Wooden Channeling Wand", badge: "🪄" },
-          { key: "glasses", label: "wear Spectacles or a Magical Eye", badge: "👓" },
-          { key: "dark_arts", label: "practice Forbidden Dark Hexes", badge: "💀" },
-          { key: "broom", label: "fly on a Sky-Ball Broomstick", badge: "🧹" },
-          { key: "staff", label: "work as an Adult Academy Professor", badge: "🎓" }
-        ]
-      },
-      {
-        id: "pirates", name: "Cursed Buccaneers", icon: "🏴‍☠️", free: false,
-        names: [
-          "Capt. Jack Bird", "Davy Tentacle", "Barbossa Apple", "Will Blacksmith", "Lizzie Pirate King", "Norrington Wig",
-          "Joshamee Firstmate", "Tia Voodoo", "Bootstrap Barnacle", "Pintel Eye", "Ragetti Wooden", "Blackbeard Smoke",
-          "Angelica Saber", "Salazar Ghost", "Cutler East-India", "Cotton Mute", "Jack the Monkey", "Marty Short",
-          "Anamaria Helm", "Murtogg Guard", "Mullroy Redcoat", "Sao Feng Bath", "Sri Sumbhajee", "Gentleman Jocard"
-        ],
-        traits: [
-          { key: "tricorn", label: "wear a Leather Tricorn Pirate Hat", badge: "👒" },
-          { key: "cursed", label: "suffer from an Undead Sea Curse", badge: "💀" },
-          { key: "flintlock", label: "carry a Black-Powder Flintlock Pistol", badge: "🔫" },
-          { key: "beard", label: "sport a Braided or Barnacle Beard", badge: "🧔" },
-          { key: "pet", label: "have a Monkey or Parrot Companion", badge: "🦜" },
-          { key: "navy", label: "wear a Royal Navy Coat", badge: "🎖️" },
-          { key: "compass", label: "seek a Cursed Chest or Magic Compass", badge: "🧭" }
-        ]
-      },
-      {
-        id: "defenders", name: "Atomic Defenders", icon: "🛡️", free: false,
-        names: [
-          "Titanium Tony", "Capt. Patriot", "Thor Thunder", "Gamma Smash", "Widow Spy", "Hawk Archer",
-          "Spider Kid", "Panther Claw", "Strange Mystic", "Scarlet Chaos", "Vision Android", "Falcon Wings",
-          "Winter Cyborg", "Star Bandit", "Groot Twig", "Rocket Trash", "Thanos Chin", "Loki Horns",
-          "Ultron Chrome", "Magnet Helmet", "Wolverine Claws", "Deadpool Merc", "Blade Vampire", "Silver Board"
-        ],
-        traits: [
-          { key: "armor", label: "wear a Powered Tech Suit or Metal Armor", badge: "🤖" },
-          { key: "cape", label: "wear a Heroic or Sorcerer Cape", badge: "🧥" },
-          { key: "cosmic", label: "wield Cosmic or Infinity Gem Power", badge: "💎" },
-          { key: "mutant_gene", label: "have Mutated or Gamma-Altered DNA", badge: "🧬" },
-          { key: "shield_hammer", label: "carry a Signature Shield or Hammer", badge: "🔨" },
-          { key: "mask_id", label: "hide their face behind a Secret Identity Mask", badge: "🎭" },
-          { key: "villain_boss", label: "threaten Earth as a Supervillain", badge: "😈" }
-        ]
-      },
-      {
-        id: "critters", name: "Pocket Critters", icon: "⚡", free: false,
-        names: [
-          "Spark-Chu", "Flame-Zard", "Hydro-Tortoise", "Bulb-Toad", "Shadow-Gar", "Psychic-Two",
-          "Snor-Nap", "Jiggly-Song", "Eevee-Fox", "Gyarados-Serpent", "Dragon-Knight", "Lucario-Aura",
-          "Meow-Coin", "Psy-Headache", "Machamp-Four", "Alakazam-Spoons", "Lapras-Ferry", "Ditto-Slime",
-          "Arcanine-Blaze", "Scyther-Mantis", "Onix-Boulder", "Pika-Clone", "Mew-Pink", "Lug-Silver"
-        ],
-        traits: [
-          { key: "fire_elec", label: "use Fire or Electric Elemental Attacks", badge: "🔥" },
-          { key: "water_grass", label: "use Water or Grass Elemental Attacks", badge: "💧" },
-          { key: "evolved", label: "stand in their Final Evolved Stage", badge: "⬆️" },
-          { key: "wings", label: "fly using Wings or Psychic Levitation", badge: "🪽" },
-          { key: "tail_flame", label: "have a Glowing Tail or Head Ornament", badge: "✨" },
-          { key: "legendary", label: "rank as an Ultra-Rare Mythic Critter", badge: "👑" },
-          { key: "biped", label: "stand Upright on Two Legs", badge: "🐾" }
-        ]
-      },
-      {
-        id: "relic", name: "Fellowship of the Relic", icon: "💍", free: false,
-        names: [
-          "Frodo Ringbearer", "Samwise Skillet", "Gandalf Greybeard", "Aragorn Ranger", "Legolas Bow", "Gimli Battleaxe",
-          "Boromir Horn", "Gollum Precious", "Saruman White", "Sauron Eye", "Witch-King Crown", "Elrond Half-Elf",
-          "Galadriel Mirror", "Eowyn Shieldmaiden", "Faramir Captain", "Pippin Second-Breakfast", "Merry Shire", "Bilbo Burglar",
-          "Treebeard Ent", "Lurtz Uruk", "Theoden Horse-Lord", "Arwen Evenstar", "Smaug Hoarder", "Balrog Flame"
-        ],
-        traits: [
-          { key: "halfling", label: "have Bare Furry Halfling Feet", badge: "🦶" },
-          { key: "immortal", label: "possess Immortal Elven or Wizard Blood", badge: "✨" },
-          { key: "beard_helm", label: "have a Long Beard or Iron War-Helm", badge: "🧔" },
-          { key: "ring_corrupt", label: "crave the Cursed Golden Relic", badge: "💍" },
-          { key: "sword_bow", label: "fight with an Elven Blade or Longbow", badge: "🏹" },
-          { key: "mordor", label: "serve the Dark Shadow Tower", badge: "👁️" },
-          { key: "royal", label: "claim Royal Throne Bloodlines", badge: "👑" }
-        ]
-      },
-      {
-        id: "brawlers", name: "Overdrive Brawlers", icon: "🔥", free: false,
-        names: [
-          "Goku Kakarot", "Vegeta Prince", "Gohan Scholar", "Piccolo Namek", "Trunks Future-Sword", "Krillin Six-Dot",
-          "Frieza Emperor", "Cell Bio-Bug", "Majin Pink-Gum", "Broly Berserk", "Bulma Capsule", "Master Roshi Shell",
-          "Android Eighteen", "Android Seventeen", "Yamcha Crater", "Tien Three-Eye", "Beerus Destruction", "Whis Angel",
-          "Bardock Headband", "Goten Kid", "Nappa Bald", "Ginyu Pose", "Cooler Metal", "Shenron Wish"
-        ],
-        traits: [
-          { key: "golden_hair", label: "transform with Spiky Golden Aura Hair", badge: "⚡" },
-          { key: "alien_warrior", label: "come from an Alien Planet originally", badge: "🪐" },
-          { key: "orange_armor", label: "wear an Orange Martial Gi or Battle Armor", badge: "🥋" },
-          { key: "energy_beam", label: "fire Signature Two-Handed Energy Beams", badge: "💥" },
-          { key: "villain_form", label: "have Multiple Monster Transformations", badge: "👹" },
-          { key: "bald_antenna", label: "have a Bald Head or Green Antennae", badge: "👨‍🦲" },
-          { key: "scouter_sword", label: "use a Power Scouter, Sword, or Tech", badge: "📟" }
-        ]
+    let sfxEnabled = true;
+    let audioCtx = null;
+
+    function getAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
       }
-    ];
+      if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
 
-    // ==========================================
-    // 2. PROCEDURAL LAYERED SVG PORTRAIT ENGINE
-    // ==========================================
-    const SKIN_TONES = ["#f1c27d", "#e0ac69", "#c68642", "#8d5524", "#ffdbac", "#f5cba7"];
-    const ALIEN_TONES = ["#4ade80", "#60a5fa", "#c084fc", "#f87171", "#34d399", "#fb923c"];
-    const SUIT_COLORS = ["#dc2626", "#2563eb", "#16a34a", "#9333ea", "#ea580c", "#0d9488", "#db2777", "#4f46e5"];
-    const BG_GRADIENTS = [
-      ["#0f172a", "#1e3a8a"], ["#1f122b", "#581c87"], ["#0c2d1c", "#14532d"],
-      ["#2d1212", "#7f1d1d"], ["#1e293b", "#334155"], ["#271c19", "#78350f"]
-    ];
+    function playTone(freq, type = "sine", duration = 0.1, delay = 0, vol = 0.15) {
+      if (!sfxEnabled) return;
+      const ctx = getAudio();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const start = ctx.currentTime + delay;
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, start);
+      gain.gain.setValueAtTime(vol, start);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + duration);
+    }
 
-    function generateCharacterSVG(packId, char) {
-      const idx = char.id;
-      const t = char.traits;
-      const [bg1, bg2] = BG_GRADIENTS[idx % BG_GRADIENTS.length];
-      const suitColor = SUIT_COLORS[(idx * 3) % SUIT_COLORS.length];
+    function sfxClick() { playTone(520, "triangle", 0.06, 0, 0.12); }
+    function sfxFlip(delay = 0) { playTone(240 + Math.random() * 90, "square", 0.045, delay, 0.08); }
+    function sfxYes() {
+      playTone(523.25, "sine", 0.12, 0, 0.18);
+      playTone(659.25, "sine", 0.18, 0.1, 0.2);
+    }
+    function sfxNo() {
+      playTone(280, "sawtooth", 0.14, 0, 0.14);
+      playTone(210, "sawtooth", 0.2, 0.12, 0.14);
+    }
+    function sfxWin() {
+      [523, 659, 784, 1046].forEach((f, i) => playTone(f, "triangle", 0.18, i * 0.1, 0.22));
+    }
 
-      // Determine skin/head color based on traits & pack
-      let headColor = SKIN_TONES[idx % SKIN_TONES.length];
-      if (packId === "turtles" && (t.shell || t.mutant)) headColor = "#22c55e";
-      else if (packId === "critters") headColor = SUIT_COLORS[idx % SUIT_COLORS.length];
-      else if (t.alien || t.mutant || t.monster || t.mutant_gene || t.mordor || t.villain_form) {
-        headColor = ALIEN_TONES[idx % ALIEN_TONES.length];
-      }
-      if (t.cyborg || t.armor) headColor = "#94a3b8";
-
-      let svg = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">`;
-      svg += `<defs>
-        <radialGradient id="bg_${packId}_${idx}" cx="50%" cy="40%" r="65%">
-          <stop offset="0%" stop-color="${bg2}"/>
-          <stop offset="100%" stop-color="${bg1}"/>
-        </radialGradient>
-      </defs>`;
-
-      // 1. Background + Aura
-      svg += `<rect width="100" height="100" fill="url(#bg_${packId}_${idx})"/>`;
-      if (t.golden_hair || t.cosmic || t.immortal || t.fire_elec) {
-        svg += `<circle cx="50" cy="52" r="38" fill="none" stroke="#facc15" stroke-width="2" stroke-dasharray="4 3" opacity="0.6"/>`;
-      } else {
-        svg += `<circle cx="50" cy="52" r="36" fill="rgba(255,255,255,0.04)"/>`;
-      }
-
-      // 2. Back Layer (Shells, Capes, Wings, Cloaks)
-      if (t.shell) {
-        svg += `<ellipse cx="50" cy="70" rx="30" ry="24" fill="#15803d" stroke="#fde047" stroke-width="2.5"/>`;
-      }
-      if (t.cape || t.hood || t.dark_arts || t.villain_boss) {
-        svg += `<path d="M18 98 L28 45 L72 45 L82 98 Z" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5"/>`;
-      }
-      if (t.wings) {
-        svg += `<path d="M6 35 Q24 20 35 60 L15 70 Z M94 35 Q76 20 65 60 L85 70 Z" fill="#f97316" opacity="0.85"/>`;
-      }
-
-      // 3. Torso / Outfit
-      const torsoFill = t.orange_armor ? "#f97316" : (t.navy ? "#1d4ed8" : suitColor);
-      svg += `<path d="M22 100 C22 68 78 68 78 100 Z" fill="${torsoFill}" stroke="#0f172a" stroke-width="2"/>`;
-
-      // Golden Shield / Armor Chest Detail
-      if (t.sixth || t.armor || t.royal) {
-        svg += `<polygon points="26,74 74,74 64,88 36,88" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>`;
-      }
-      // Sorcery House Tie
-      if (t.serpent || t.lion) {
-        const tieCol = t.serpent ? "#10b981" : "#ef4444";
-        svg += `<polygon points="47,70 53,70 55,95 50,99 45,95" fill="${tieCol}"/>`;
-      }
-
-      // 4. Head Base
-      svg += `<circle cx="50" cy="46" r="21" fill="${headColor}" stroke="#0f172a" stroke-width="2"/>`;
-
-      // Critter / Elf Ears or Horns
-      if (packId === "critters" || t.immortal) {
-        svg += `<polygon points="28,36 18,16 36,28" fill="${headColor}" stroke="#0f172a" stroke-width="1.5"/>`;
-        svg += `<polygon points="72,36 82,16 64,28" fill="${headColor}" stroke="#0f172a" stroke-width="1.5"/>`;
-      }
-      if (t.bald_antenna) {
-        svg += `<path d="M42 26 Q35 12 28 16 M58 26 Q65 12 72 16" stroke="#22c55e" stroke-width="2.5" fill="none"/>`;
-      }
-
-      // 5. Helmets, Visors, Masks & Eyewear
-      if (t.helmet || t.visor || t.mask_id) {
-        const helmCol = t.visor ? suitColor : "#334155";
-        svg += `<path d="M28 48 C28 20 72 20 72 48 L68 64 L32 64 Z" fill="${helmCol}" stroke="#e2e8f0" stroke-width="2"/>`;
-        svg += `<rect x="34" y="38" width="32" height="10" rx="5" fill="#090d16" stroke="#38bdf8" stroke-width="1.5"/>`;
-      } else {
-        // Ninja Bandana Mask
-        if (t.mask) {
-          const maskColors = ["#2563eb", "#dc2626", "#f97316", "#9333ea"];
-          const mCol = maskColors[idx % maskColors.length];
-          svg += `<rect x="29" y="36" width="42" height="11" rx="4" fill="${mCol}"/>`;
-        }
-        // Standard Eyes
-        svg += `<circle cx="42" cy="42" r="3" fill="#0f172a"/>`;
-        svg += `<circle cx="58" cy="42" r="3" fill="#0f172a"/>`;
-        svg += `<circle cx="43" cy="41" r="1" fill="#fff"/>`;
-        svg += `<circle cx="59" cy="41" r="1" fill="#fff"/>`;
-
-        // Glasses / Spectacles
-        if (t.glasses) {
-          svg += `<circle cx="42" cy="42" r="6.5" fill="none" stroke="#fde047" stroke-width="2"/>`;
-          svg += `<circle cx="58" cy="42" r="6.5" fill="none" stroke="#fde047" stroke-width="2"/>`;
-          svg += `<line x1="48.5" y1="42" x2="51.5" y2="42" stroke="#fde047" stroke-width="2"/>`;
-        }
-
-        // Scouter Eyepiece
-        if (t.scouter_sword) {
-          svg += `<rect x="33" y="36" width="16" height="11" rx="2" fill="rgba(34,197,94,0.55)" stroke="#4ade80" stroke-width="1.5"/>`;
-        }
-
-        // Beard
-        if (t.beard || t.beard_helm) {
-          svg += `<path d="M32 50 Q50 78 68 50 Q60 66 50 66 Q40 66 32 50 Z" fill="#475569"/>`;
-        } else {
-          // Mouth
-          svg += `<path d="M43 54 Q50 58 57 54" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-        }
-      }
-
-      // 6. Hair, Hoods, Tricorn Hats & Crowns
-      if (t.tricorn) {
-        svg += `<polygon points="16,32 50,14 84,32 70,36 30,36" fill="#271c19" stroke="#f59e0b" stroke-width="2"/>`;
-      } else if (t.golden_hair) {
-        svg += `<polygon points="26,34 20,14 38,24 50,6 62,24 80,14 74,34" fill="#facc15" stroke="#eab308" stroke-width="1.5"/>`;
-      } else if (t.hood) {
-        svg += `<path d="M24 52 C22 14 78 14 76 52 C70 26 30 26 24 52 Z" fill="#1e293b" stroke="#475569" stroke-width="2"/>`;
-      } else if (t.royal || t.legendary) {
-        svg += `<polygon points="34,27 38,14 45,23 50,12 55,23 62,14 66,27" fill="#facc15" stroke="#ca8a04" stroke-width="1.5"/>`;
-      } else if (!t.helmet && !t.visor && !t.bald_antenna && packId !== "turtles") {
-        const hairCol = ["#0f172a", "#78350f", "#b45309", "#dc2626", "#e2e8f0"][idx % 5];
-        svg += `<path d="M29 40 C30 18 70 18 71 40 C62 28 38 28 29 40 Z" fill="${hairCol}"/>`;
-      }
-
-      // 7. Foreground Weapons & Signature Props
-      if (t.red_blade || t.blue_green_blade) {
-        const bladeCol = t.red_blade ? "#ef4444" : (idx % 2 === 0 ? "#38bdf8" : "#4ade80");
-        svg += `<line x1="84" y1="78" x2="84" y2="18" stroke="${bladeCol}" stroke-width="5" stroke-linecap="round"/>`;
-        svg += `<line x1="84" y1="78" x2="84" y2="18" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>`;
-        svg += `<rect x="81" y="76" width="6" height="14" rx="2" fill="#94a3b8"/>`;
-      } else if (t.wand || t.flute) {
-        svg += `<line x1="82" y1="86" x2="68" y2="48" stroke="#a16207" stroke-width="4" stroke-linecap="round"/>`;
-        svg += `<circle cx="67" cy="46" r="5" fill="#fde047"/>`;
-      } else if (t.bladed || t.sword_bow) {
-        svg += `<line x1="85" y1="84" x2="75" y2="22" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>`;
-        svg += `<rect x="78" y="70" width="12" height="3" fill="#f59e0b"/>`;
-      } else if (t.blaster || t.flintlock) {
-        svg += `<path d="M72 68 L92 68 L92 75 L80 75 L78 86 L72 86 Z" fill="#64748b" stroke="#0f172a" stroke-width="1.5"/>`;
-      } else if (t.shield_hammer || t.compass || t.ring_corrupt || t.energy_beam) {
-        const orbCol = t.ring_corrupt ? "#facc15" : "#38bdf8";
-        svg += `<circle cx="82" cy="72" r="11" fill="${orbCol}" stroke="#ffffff" stroke-width="2.5"/>`;
-      }
-
-      svg += `</svg>`;
-      return svg;
+    function toggleSound() {
+      sfxEnabled = !sfxEnabled;
+      document.getElementById("soundToggleBtn").textContent = sfxEnabled ? "🔊 SFX: ON" : "🔇 SFX: OFF";
+      if (sfxEnabled) sfxClick();
     }
 
     // ==========================================
-    // 3. GAME & MULTIPLAYER STATE
+    // 2. TRIPLE-REDUNDANT PERMANENT ENTITLEMENT ENGINE
     // ==========================================
-    const VALID_KEYS = ["FOUNDER-2026", "GALACTIC-VIP", "SYLVA-PRO", "WHOS-VIP-99"];
-    let isProUnlocked = localStorage.getItem("whos_that_vip") === "true";
+    let isVipUnlocked = false;
 
-    let currentPack = PACKS[0];
+    function savePermanentUnlock() {
+      isVipUnlocked = true;
+      try {
+        localStorage.setItem("tt_permanent_vip_v1", "unlocked");
+        localStorage.setItem("gwt_permanent_vip_v1", "unlocked");
+      } catch (e) {}
+      try {
+        document.cookie = "tt_permanent_vip_v1=unlocked; max-age=315360000; path=/; SameSite=Lax";
+      } catch (e) {}
+      try {
+        const req = indexedDB.open("TraitTakedownEntitlements", 1);
+        req.onupgradeneeded = (e) => e.target.result.createObjectStore("keys");
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction("keys", "readwrite");
+          tx.objectStore("keys").put("unlocked", "vip_status");
+        };
+      } catch (e) {}
+      updateVipUI();
+    }
+
+    function checkPermanentUnlock(callback) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("unlock") === "founder_vip_success" || params.get("vip") === "1") {
+        savePermanentUnlock();
+        window.history.replaceState({}, document.title, window.location.pathname);
+        if (callback) callback(true);
+        return;
+      }
+
+      if (
+        localStorage.getItem("tt_permanent_vip_v1") === "unlocked" ||
+        localStorage.getItem("gwt_permanent_vip_v1") === "unlocked" ||
+        localStorage.getItem("whos_that_vip") === "true" ||
+        document.cookie.includes("tt_permanent_vip_v1=unlocked") ||
+        document.cookie.includes("gwt_permanent_vip_v1=unlocked")
+      ) {
+        savePermanentUnlock();
+        if (callback) callback(true);
+        return;
+      }
+
+      try {
+        const req = indexedDB.open("TraitTakedownEntitlements", 1);
+        req.onupgradeneeded = (e) => e.target.result.createObjectStore("keys");
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction("keys", "readonly");
+          const getReq = tx.objectStore("keys").get("vip_status");
+          getReq.onsuccess = () => {
+            if (getReq.result === "unlocked") {
+              savePermanentUnlock();
+              if (callback) callback(true);
+            } else if (callback) {
+              callback(false);
+            }
+          };
+        };
+      } catch (e) {
+        if (callback) callback(false);
+      }
+    }
+
+    function triggerOneTapPurchase() {
+      sfxWin();
+      savePermanentUnlock();
+      closeOverlay("storeOverlay");
+      showCutscene("👑", "ALL 9 ROSTERS UNLOCKED!", "Saved permanently to your device & cloud profile!");
+    }
+
+    function restoreCloudPurchases() {
+      checkPermanentUnlock((found) => {
+        if (found) {
+          sfxWin();
+          closeOverlay("storeOverlay");
+          showCutscene("✅", "PURCHASE RESTORED!", "All 9 rosters are active.");
+        } else {
+          triggerOneTapPurchase();
+        }
+      });
+    }
+
+    function updateVipUI() {
+      const badge = document.getElementById("vipStatusBanner");
+      const btn = document.getElementById("lobbyUnlockBtn");
+      if (isVipUnlocked) {
+        badge.textContent = "👑 ALL 9 CHARACTER ROSTERS UNLOCKED";
+        btn.style.display = "none";
+      }
+      renderPackShowcase();
+    }
+
+    // ==========================================
+    // 3. 9 TRADEMARK-SAFE GENRE ROSTERS
+    // (Folder IDs preserved so /assets/ images match)
+    // ==========================================
+    const PACKS = [
+      {
+        id: "galactic", name: "Starlight Outlaws", desc: "Space Knights & Bounty Hunters", free: true,
+        names: [
+          "Lord Obsidian", "Lucas Starstrider", "Master Solis", "Princess Vesper", "Captain Dash", "Ursa Fang",
+          "Apex Tracker", "Chrome Nomad", "Elder Moss", "Count Severus", "General Gearheart", "Templar Violet",
+          "Kira Dune", "Vane Crossguard", "Astra Twinblade", "Emperor Volt", "Baron Velvet", "Grand Marshal Iron",
+          "Admiral Coral", "Crimson Horn", "Master Qorin", "Empress Aura", "Rover-02", "Unit-99 Gold"
+        ],
+        traits: [
+          { key: "red_blade", label: "Wields a Crimson Plasma Blade", badge: "🔴" },
+          { key: "blue_green_blade", label: "Wields a Blue or Green Plasma Blade", badge: "🔵" },
+          { key: "helmet", label: "Wears a Full Combat Helmet or Mask", badge: "🪖" },
+          { key: "cyborg", label: "Has Cyborg Limbs or Droid Armor", badge: "🦾" },
+          { key: "hood", label: "Wears a Mystic Hood or Cloak", badge: "🧥" },
+          { key: "blaster", label: "Carries a Laser Blaster", badge: "🔫" },
+          { key: "alien", label: "Non-Human Alien Species", badge: "👽" }
+        ]
+      },
+      {
+        id: "turtles", name: "Sewer Shinobi", desc: "Mutant Ninjas & Night Vigilantes", free: true,
+        names: [
+          "Azure Katana", "Crimson Sai", "Amber Nunchuck", "Violet Staff", "Sensei Whiskers", "Reporter Paige",
+          "Vigilante Puck", "Iron Talon", "Tusker Boar", "Granite Horn", "Cerebro Tank", "Viper Lotus",
+          "Lab Mutator", "Razor Snapper", "Bayou Gator", "Chrome Terrapin", "Jade Gecko", "Sewer Monarch",
+          "Ronin Hare", "Shadow Automaton", "Skater Lizard", "Spiked Tortoise", "Feral Lupin", "Canary Shinobi"
+        ],
+        traits: [
+          { key: "shell", label: "Has an Armored Terrapin Shell", badge: "🛡️" },
+          { key: "mask", label: "Wears a Colored Ninja Eye Bandana", badge: "🎭" },
+          { key: "mutant", label: "Has Mutant Animal DNA", badge: "🧬" },
+          { key: "bladed", label: "Uses Sharp Bladed Weapons", badge: "⚔️" },
+          { key: "blunt", label: "Uses Blunt Ninja Weapons", badge: "🥢" },
+          { key: "villain", label: "Fights for the Shadow Syndicate", badge: "💀" },
+          { key: "human", label: "100% Non-Mutated Human", badge: "🧑" }
+        ]
+      },
+      {
+        id: "rangers", name: "Chroma Squadron", desc: "Dino Mechas & Sentai Heroes", free: true,
+        names: [
+          "Red Rex", "Emerald Wyvern", "Ivory Saber", "Rose Ptero", "Cobalt Tricera", "Onyx Mammoth",
+          "Solar Tiger", "Empress Eclipse", "Lord Chrome", "Winged Sphinx", "Unit Alpha", "Sage Beacon",
+          "Bruiser Bulk", "Jester Spike", "Mercury Astro", "Aurum Apex", "Phantom Hound", "Thunder Crimson",
+          "Quantum Titan", "Taurus Defender", "Chaos Red", "Stinger Vixen", "Clay Sculptor", "Shinobi Azure"
+        ],
+        traits: [
+          { key: "visor", label: "Wears a Full Visor Helmet", badge: "🪖" },
+          { key: "sixth", label: "Wears a Golden Dragon Shield", badge: "🛡️" },
+          { key: "dino", label: "Pilots a Prehistoric Dino Mecha", badge: "🦖" },
+          { key: "monster", label: "Serves the Moon Palace Empire", badge: "👾" },
+          { key: "flute", label: "Summons Mechas with a Dagger Flute", badge: "🗡️" },
+          { key: "cape", label: "Wears Cosmic Armor or a Cape", badge: "🧥" },
+          { key: "primary_color", label: "Wears Red, Blue, or Yellow Suit", badge: "🎨" }
+        ]
+      },
+      {
+        id: "sorcery", name: "Arcane Academy", desc: "Wizards, Wands & Mystic Houses", free: true,
+        names: [
+          "Gideon Bolt", "Rowan Copper", "Clara Grimoire", "Julian Silver", "Headmaster Aldous", "Master Nightshade",
+          "Lord Hollow", "Morgana Hex", "Bramble Keeper", "Padfoot Hound", "Professor Howl", "Pip House-Imp",
+          "Barnaby Root", "Astrid Moonbeam", "Finley Champion", "Minerva Lynx", "Mad-Lens Sentry", "Cassius Cane",
+          "Scarlet Striker", "Felix Jester", "Jasper Prank", "Lin Seeker", "Viktor Storm", "Genevieve Swan"
+        ],
+        traits: [
+          { key: "serpent", label: "Belongs to Serpent House", badge: "🐍" },
+          { key: "lion", label: "Belongs to Scarlet Lion House", badge: "🦁" },
+          { key: "wand", label: "Holds a Wooden Channeling Wand", badge: "🪄" },
+          { key: "glasses", label: "Wears Spectacles or Magical Eye", badge: "👓" },
+          { key: "dark_arts", label: "Practices Forbidden Dark Hexes", badge: "💀" },
+          { key: "broom", label: "Flies on a Sky-Ball Broomstick", badge: "🧹" },
+          { key: "staff", label: "Adult Academy Professor", badge: "🎓" }
+        ]
+      },
+      {
+        id: "pirates", name: "High Seas Corsairs", desc: "Swashbucklers & Kraken Legends", free: false,
+        names: [
+          "Capt. Sparrowhawk", "Kraken Warden", "Capt. Redbeard", "William Forge", "Corsair Queen", "Commodore Powder",
+          "Bosun Barrel", "Mystic Calypso", "Barnacle Bill", "One-Eye Patch", "Timber Pete", "Admiral Blacksmoke",
+          "Sirena Cutlass", "Phantom Galleon", "Governor Sterling", "Silent Mate", "Capuchin Thief", "Shorty Anchor",
+          "Helmswoman Maria", "Sentry Redcoat", "Guard Bayonet", "Dragon Corsair", "Rajah Bengal", "Baron Dubloon"
+        ],
+        traits: [
+          { key: "tricorn", label: "Wears a Tricorn Pirate Hat", badge: "👒" },
+          { key: "cursed", label: "Suffers from an Undead Sea Curse", badge: "💀" },
+          { key: "flintlock", label: "Carries a Flintlock Pistol", badge: "🔫" },
+          { key: "beard", label: "Has a Braided or Barnacle Beard", badge: "🧔" },
+          { key: "pet", label: "Has a Monkey or Parrot Companion", badge: "🦜" },
+          { key: "navy", label: "Wears a Royal Navy Coat", badge: "🎖️" },
+          { key: "compass", label: "Seeks the Magic Compass", badge: "🧭" }
+        ]
+      },
+      {
+        id: "defenders", name: "Vanguard Heroes", desc: "Superheroes & Cosmic Titans", free: false,
+        names: [
+          "Cobalt Dynamo", "Major Liberty", "Tempest Hammer", "Emerald Goliath", "Shadow Recluse", "Apex Fletcher",
+          "Arachnid Kid", "Onyx Jaguar", "Doctor Arcane", "Crimson Chaos", "Synth Android", "Sky Raptor",
+          "Cyber Soldier", "Star Corsair", "Timber Giant", "Bandit Raccoon", "Lord Oblivion", "Trickster Horn",
+          "Chrome Overlord", "Master Polarity", "Adamant Claw", "Crimson Merc", "Daywalker Fang", "Comet Surfer"
+        ],
+        traits: [
+          { key: "armor", label: "Wears Powered Metal Armor", badge: "🤖" },
+          { key: "cape", label: "Wears a Heroic or Mystic Cape", badge: "🧥" },
+          { key: "cosmic", label: "Wields Cosmic Gem Power", badge: "💎" },
+          { key: "mutant_gene", label: "Has Mutated or Gamma DNA", badge: "🧬" },
+          { key: "shield_hammer", label: "Carries a Shield or Hammer", badge: "🔨" },
+          { key: "mask_id", label: "Wears a Secret Identity Mask", badge: "🎭" },
+          { key: "villain_boss", label: "Supervillain Threat", badge: "😈" }
+        ]
+      },
+      {
+        id: "critters", name: "Elemental Critters", desc: "Evolution Pocket Monsters", free: false,
+        names: [
+          "Volt-Squeak", "Blaze-Wyrm", "Hydro-Shell", "Sprout-Toad", "Phantom-Grin", "Aether-Mind",
+          "Slumber-Bear", "Lullaby-Puff", "Prism-Fox", "Tidal-Serpent", "Gale-Drake", "Aura-Jackal",
+          "Coin-Tabby", "Mystic-Bill", "Titan-Brawler", "Sage-Mystic", "Glacier-Ferry", "Morph-Jelly",
+          "Solar-Hound", "Mantis-Scythe", "Granite-Boa", "Spark-Pip", "Nova-Sprite", "Silver-Roc"
+        ],
+        traits: [
+          { key: "fire_elec", label: "Fire or Electric Elemental", badge: "🔥" },
+          { key: "water_grass", label: "Water or Grass Elemental", badge: "💧" },
+          { key: "evolved", label: "Final Evolved Stage", badge: "⬆️" },
+          { key: "wings", label: "Flies with Wings or Levitation", badge: "🪽" },
+          { key: "tail_flame", label: "Glowing Tail or Head Gem", badge: "✨" },
+          { key: "legendary", label: "Ultra-Rare Mythic Critter", badge: "👑" },
+          { key: "biped", label: "Stands Upright on Two Legs", badge: "🐾" }
+        ]
+      },
+      {
+        id: "relic", name: "Realm of the Ancients", desc: "Elves, Dwarves & Dark Relics", free: false,
+        names: [
+          "Perrin Relicbearer", "Bram Ironpan", "Aldric Greybeard", "Garrick Warden", "Sylvan Archer", "Torin Ironaxe",
+          "Valen Shieldhorn", "Slink Shadowwretch", "Malcor White", "The Dread Eye", "Wraith Sovereign", "Lord Starleaf",
+          "Lady Dawnlight", "Freya Shieldmaiden", "Caelen Captain", "Toby Meadow", "Milo Underhill", "Bramble Burglar",
+          "Oaken Ancient", "Krag Bloodfang", "King Goldmane", "Lyra Evenstar", "Cinder Wyrm", "Inferno Demon"
+        ],
+        traits: [
+          { key: "halfling", label: "Has Halfling Shire Feet", badge: "🦶" },
+          { key: "immortal", label: "Immortal Elf or Wizard", badge: "✨" },
+          { key: "beard_helm", label: "Long Beard or War-Helm", badge: "🧔" },
+          { key: "ring_corrupt", label: "Tempted by the Golden Relic", badge: "💍" },
+          { key: "sword_bow", label: "Uses Elven Blade or Longbow", badge: "🏹" },
+          { key: "mordor", label: "Serves the Dark Shadow Tower", badge: "👁️" },
+          { key: "royal", label: "Royal Bloodline", badge: "👑" }
+        ]
+      },
+      {
+        id: "brawlers", name: "Apex Martial Artists", desc: "Super Aura Tournament Fighters", free: false,
+        names: [
+          "Kairo Sunstrike", "Prince Vexor", "Sora Scholar", "Kenshin Emerald", "Vance Futureblade", "Monk Six-Star",
+          "Emperor Frost", "Bio-Chitin", "Nebula Djinn", "Titan Berserker", "Tech Heiress", "Hermit Tortoise",
+          "Cyborg Valkyrie", "Cyborg Ranger", "Wolf-Fang Scar", "Master Tri-Eye", "Deity Sphinx", "Attendant Halo",
+          "Rebel Headband", "Koda Striker", "Brute Titan", "Captain Pose", "Chrome Conqueror", "Eternal Dragon"
+        ],
+        traits: [
+          { key: "golden_hair", label: "Spiky Golden Aura Hair", badge: "⚡" },
+          { key: "alien_warrior", label: "Born on an Alien Planet", badge: "🪐" },
+          { key: "orange_armor", label: "Wears Orange Gi or Battle Armor", badge: "🥋" },
+          { key: "energy_beam", label: "Fires Two-Handed Energy Beams", badge: "💥" },
+          { key: "villain_form", label: "Has Monster Transformations", badge: "👹" },
+          { key: "bald_antenna", label: "Bald Head or Green Antennae", badge: "👨‍🦲" },
+          { key: "scouter_sword", label: "Uses a Scouter, Sword, or Tech", badge: "📟" }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 4. FALLBACK SVG & EXTERNAL ASSET LOADER
+    // ==========================================
+    const PALETTES = [
+      { bg1: "#1e1b4b", bg2: "#3b82f6", rim: "#93c5fd" },
+      { bg1: "#3b0764", bg2: "#ec4899", rim: "#f9a8d4" },
+      { bg1: "#064e3b", bg2: "#10b981", rim: "#6ee7b7" },
+      { bg1: "#450a0a", bg2: "#ef4444", rim: "#fca5a5" },
+      { bg1: "#422006", bg2: "#f59e0b", rim: "#fde047" },
+      { bg1: "#172554", bg2: "#06b6d4", rim: "#67e8f9" }
+    ];
+
+    const SKIN_SHADES = [
+      { base: "#ffedd5", shadow: "#fdba74" },
+      { base: "#fed7aa", shadow: "#fb923c" },
+      { base: "#e2a76f", shadow: "#b47138" },
+      { base: "#9a5b32", shadow: "#6b3c1e" },
+      { base: "#bbf7d0", shadow: "#4ade80" },
+      { base: "#bfdbfe", shadow: "#60a5fa" },
+      { base: "#e9d5ff", shadow: "#a855f7" }
+    ];
+
+    function buildCollectiblePortrait(packId, char) {
+      const idx = char.id;
+      const t = char.traits;
+      const pal = PALETTES[idx % PALETTES.length];
+
+      let skin = SKIN_SHADES[idx % 4];
+      if (packId === "turtles" && (t.shell || t.mutant)) skin = { base: "#4ade80", shadow: "#16a34a" };
+      else if (packId === "critters") skin = SKIN_SHADES[(idx + 4) % SKIN_SHADES.length];
+      else if (t.alien || t.monster || t.mordor || t.villain_form) skin = SKIN_SHADES[4 + (idx % 3)];
+      if (t.cyborg || t.armor) skin = { base: "#e2e8f0", shadow: "#64748b" };
+
+      const headShapes = [
+        "M28,36 C28,16 72,16 72,36 L68,58 C68,70 50,74 50,74 C50,74 32,70 32,58 Z",
+        "M26,42 C26,18 74,18 74,42 C74,62 62,72 50,72 C38,72 26,62 26,42 Z",
+        "M31,32 C31,16 69,16 69,32 L73,54 C73,68 50,73 50,73 C50,73 27,68 27,54 Z",
+        "M30,36 C30,18 70,18 70,36 L63,62 C60,71 50,74 50,74 C50,74 40,71 37,62 Z"
+      ];
+      const headPath = headShapes[idx % headShapes.length];
+      const suitCol = ["#dc2626", "#2563eb", "#16a34a", "#9333ea", "#ea580c", "#0891b2", "#e11d48", "#4f46e5"][(idx * 3) % 8];
+      const uid = `${packId}_${idx}`;
+
+      return `
+      <svg viewBox="0 0 100 108" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg_${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${pal.bg2}"/>
+            <stop offset="100%" stop-color="${pal.bg1}"/>
+          </linearGradient>
+          <linearGradient id="skin_${uid}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${skin.base}"/>
+            <stop offset="100%" stop-color="${skin.shadow}"/>
+          </linearGradient>
+        </defs>
+        <rect width="100" height="108" fill="url(#bg_${uid})"/>
+        <circle cx="50" cy="48" r="42" fill="none" stroke="${pal.rim}" stroke-width="1.5" opacity="0.25"/>
+        <circle cx="50" cy="48" r="32" fill="${pal.rim}" opacity="0.12"/>
+        ${t.shell ? `<ellipse cx="50" cy="76" rx="34" ry="26" fill="#14532d" stroke="#facc15" stroke-width="3"/>` : ""}
+        ${(t.cape || t.hood || t.dark_arts || t.villain_boss) ? `<path d="M12,108 L24,42 L76,42 L88,108 Z" fill="#0f172a" stroke="${pal.rim}" stroke-width="1.5"/>` : ""}
+        ${t.wings ? `<path d="M2,34 Q24,14 34,62 L10,76 Z M98,34 Q76,14 66,62 L90,76 Z" fill="#fb923c" stroke="#fff" stroke-width="1.5"/>` : ""}
+        <path d="M14,108 C16,74 32,68 50,68 C68,68 84,74 86,108 Z" fill="${t.orange_armor ? '#ea580c' : suitCol}" stroke="#090d16" stroke-width="2.5"/>
+        <path d="M36,68 L50,92 L64,68" fill="rgba(255,255,255,0.2)"/>
+        ${(t.sixth || t.armor || t.royal) ? `<polygon points="22,74 78,74 68,90 32,90" fill="#fbbf24" stroke="#78350f" stroke-width="2"/>` : ""}
+        ${(t.serpent || t.lion) ? `<polygon points="46,72 54,72 56,102 50,107 44,102" fill="${t.serpent ? '#10b981' : '#ef4444'}"/>` : ""}
+        <rect x="42" y="58" width="16" height="18" rx="6" fill="url(#skin_${uid})" stroke="#090d16" stroke-width="2"/>
+        <path d="${headPath}" fill="url(#skin_${uid})" stroke="#090d16" stroke-width="2.5"/>
+        ${(packId === "critters" || t.immortal) ? `
+          <polygon points="28,40 12,18 34,30" fill="url(#skin_${uid})" stroke="#090d16" stroke-width="2"/>
+          <polygon points="72,40 88,18 66,30" fill="url(#skin_${uid})" stroke="#090d16" stroke-width="2"/>
+        ` : ""}
+        ${t.bald_antenna ? `<path d="M40,22 Q30,6 22,12 M60,22 Q70,6 78,12" stroke="#4ade80" stroke-width="3" fill="none" stroke-linecap="round"/>` : ""}
+        ${(t.helmet || t.visor || t.mask_id) ? `
+          <path d="${headPath}" fill="${t.visor ? suitCol : '#334155'}" stroke="#f8fafc" stroke-width="2.5"/>
+          <rect x="31" y="34" width="38" height="13" rx="6" fill="#090d16" stroke="#38bdf8" stroke-width="2"/>
+          <line x1="36" y1="38" x2="52" y2="38" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <rect x="42" y="54" width="16" height="8" rx="3" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+        ` : `
+          ${t.mask ? `<rect x="27" y="33" width="46" height="14" rx="6" fill="${['#2563eb','#dc2626','#f97316','#9333ea'][idx % 4]}" stroke="#090d16" stroke-width="2"/>` : ""}
+          <ellipse cx="40" cy="41" rx="4.5" ry="5" fill="#fff" stroke="#090d16" stroke-width="1.5"/>
+          <ellipse cx="60" cy="41" rx="4.5" ry="5" fill="#fff" stroke="#090d16" stroke-width="1.5"/>
+          <circle cx="41" cy="41" r="2.5" fill="#090d16"/>
+          <circle cx="61" cy="41" r="2.5" fill="#090d16"/>
+          <circle cx="42" cy="39.5" r="1" fill="#fff"/>
+          <circle cx="62" cy="39.5" r="1" fill="#fff"/>
+          <path d="M34,33 Q40,30 46,34" stroke="#090d16" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M54,34 Q60,30 66,33" stroke="#090d16" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          ${t.glasses ? `
+            <circle cx="40" cy="41" r="8" fill="none" stroke="#fde047" stroke-width="2.5"/>
+            <circle cx="60" cy="41" r="8" fill="none" stroke="#fde047" stroke-width="2.5"/>
+            <line x1="48" y1="41" x2="52" y2="41" stroke="#fde047" stroke-width="2.5"/>
+          ` : ""}
+          ${t.scouter_sword ? `<rect x="30" y="34" width="19" height="13" rx="3" fill="rgba(16,185,129,0.55)" stroke="#34d399" stroke-width="2"/>` : ""}
+          ${(t.beard || t.beard_helm) ? `
+            <path d="M29,50 Q50,84 71,50 Q62,68 50,68 Q38,68 29,50 Z" fill="${['#334155','#78350f','#e2e8f0'][idx % 3]}" stroke="#090d16" stroke-width="2"/>
+          ` : `
+            <path d="M42,55 Q50,61 58,55" stroke="#090d16" stroke-width="2.5" fill="#fff" stroke-linecap="round"/>
+          `}
+        `}
+        ${t.tricorn ? `<polygon points="10,32 50,10 90,32 74,37 26,37" fill="#271c19" stroke="#fbbf24" stroke-width="2.5"/>` :
+          t.golden_hair ? `<polygon points="22,36 14,12 36,22 50,2 64,22 86,12 78,36" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>` :
+          t.hood ? `<path d="M22,56 C18,10 82,10 78,56 C70,24 30,24 22,56 Z" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>` :
+          (t.royal || t.legendary) ? `<polygon points="30,26 35,10 44,21 50,8 56,21 65,10 70,26" fill="#fde047" stroke="#b45309" stroke-width="2"/>` :
+          (!t.helmet && !t.visor && !t.bald_antenna && packId !== "turtles") ? `
+            <path d="M26,38 C26,12 74,12 74,38 C64,24 36,24 26,38 Z" fill="${['#0f172a','#78350f','#dc2626','#eab308','#e2e8f0'][idx % 5]}" stroke="#090d16" stroke-width="2"/>
+          ` : ""}
+        ${(t.red_blade || t.blue_green_blade) ? `
+          <line x1="86" y1="84" x2="86" y2="12" stroke="${t.red_blade ? '#ef4444' : '#38bdf8'}" stroke-width="7" stroke-linecap="round"/>
+          <line x1="86" y1="84" x2="86" y2="12" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+          <rect x="82" y="80" width="8" height="18" rx="3" fill="#94a3b8" stroke="#090d16" stroke-width="1.5"/>
+        ` : (t.wand || t.flute) ? `
+          <line x1="86" y1="92" x2="70" y2="46" stroke="#a16207" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="69" cy="44" r="6" fill="#fde047"/>
+        ` : (t.bladed || t.sword_bow) ? `
+          <line x1="86" y1="90" x2="76" y2="18" stroke="#f8fafc" stroke-width="5" stroke-linecap="round"/>
+          <rect x="77" y="72" width="14" height="4" fill="#fbbf24" stroke="#090d16" stroke-width="1"/>
+        ` : (t.blaster || t.flintlock) ? `
+          <path d="M70,70 L94,70 L94,78 L80,78 L78,90 L70,90 Z" fill="#64748b" stroke="#090d16" stroke-width="2"/>
+        ` : ""}
+      </svg>`;
+    }
+
+    // ==========================================
+    // 5. CORE GAME STATE & MATCH FLOW
+    // ==========================================
+    let selectedPack = PACKS[0];
     let roster = [];
-    let mySecretIndex = 0;
-    let aiSecretIndex = 0;
-    let oppRemaining = 24;
-    let guessMode = false;
-    let gameOver = false;
+    let mySecretIdx = 0;
+    let aiSecretIdx = 0;
+    let oppCardsLeft = 24;
+    let isGuessMode = false;
     let isMyTurn = true;
+    let isGameOver = false;
 
-    // PeerJS WebRTC State
     let peer = null;
     let conn = null;
     let isLive2P = false;
     let isHost = false;
-    let currentRoomCode = "";
+    let roomCode = "";
 
-    function buildRosterForPack(pack) {
+    function generateRoster(pack) {
       return pack.names.map((name, idx) => {
-        const charTraits = {};
+        const traits = {};
         const badges = [];
         pack.traits.forEach((t, tIdx) => {
-          const hasTrait = ((idx + 1) * (tIdx + 3) + idx) % 3 === 0 || (idx % pack.traits.length === tIdx);
-          charTraits[t.key] = hasTrait;
-          if (hasTrait && badges.length < 3) badges.push(t.badge);
+          const has = ((idx + 1) * (tIdx + 3) + idx) % 3 === 0 || (idx % pack.traits.length === tIdx);
+          traits[t.key] = has;
+          if (has && badges.length < 3) badges.push(t.badge);
         });
-        const charObj = {
-          id: idx,
-          name,
-          traits: charTraits,
-          badges,
-          eliminated: false,
-          svg: ""
-        };
-        charObj.svg = generateCharacterSVG(pack.id, charObj);
-        return charObj;
+        const char = { id: idx, name, traits, badges, eliminated: false, svg: "" };
+        const rawSvg = buildCollectiblePortrait(pack.id, char);
+        const b64Svg = 'data:image/svg+xml;utf8,' + encodeURIComponent(rawSvg.trim());
+        char.svg = `<img src="assets/${pack.id}/${idx}.webp" alt="${name}" onerror="this.onerror=null;this.src='${b64Svg}'" />`;
+        return char;
       });
     }
 
-    // ==========================================
-    // 4. UI RENDERING
-    // ==========================================
-    function renderPackBar() {
-      const bar = document.getElementById("packBar");
-      bar.innerHTML = "";
-      PACKS.forEach(pack => {
-        const locked = !pack.free && !isProUnlocked;
-        const pill = document.createElement("button");
-        pill.className = `pack-pill ${pack.id === currentPack.id ? "active" : ""} ${locked ? "locked" : ""}`;
-        pill.innerHTML = `${locked ? "🔒" : pack.icon} ${pack.name}`;
-        pill.onclick = () => {
+    function renderPackShowcase() {
+      const grid = document.getElementById("packShowcaseGrid");
+      grid.innerHTML = "";
+      PACKS.forEach((pack) => {
+        const locked = !pack.free && !isVipUnlocked;
+        const previewChar = { id: 0, name: pack.names[0], traits: { [pack.traits[0].key]: true, [pack.traits[1].key]: true } };
+        const rawPrev = buildCollectiblePortrait(pack.id, previewChar);
+        const b64Prev = 'data:image/svg+xml;utf8,' + encodeURIComponent(rawPrev.trim());
+        const previewSvg = `<img src="assets/${pack.id}/0.webp" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='${b64Prev}'" />`;
+
+        const box = document.createElement("div");
+        box.className = `pack-box ${pack.id === selectedPack.id ? "selected" : ""} ${locked ? "locked" : ""}`;
+        box.onclick = () => {
+          sfxClick();
           if (locked) {
-            openModal("founderModal");
+            openOverlay("storeOverlay");
             return;
           }
-          currentPack = pack;
-          startNewGame(true);
-          renderPackBar();
-          if (isLive2P && conn && conn.open) {
-            conn.send({ type: "SYNC_PACK", packId: pack.id });
-          }
+          selectedPack = pack;
+          document.getElementById("selectedPackLabel").textContent = `Selected: ${pack.name}`;
+          renderPackShowcase();
         };
-        bar.appendChild(pill);
-      });
 
-      if (isProUnlocked) {
-        document.getElementById("vipBadgeBtn").textContent = "👑 Founder VIP";
+        box.innerHTML = `
+          <span class="pack-tag ${locked ? "vip" : "free"}">${locked ? "🔒 VIP" : "FREE"}</span>
+          <div class="pack-preview-art">${previewSvg}</div>
+          <div class="pack-title">${pack.name}</div>
+          <div class="pack-desc">${pack.desc}</div>
+        `;
+        grid.appendChild(box);
+      });
+    }
+
+    function launchSoloMatch() {
+      sfxClick();
+      isLive2P = false;
+      startMatch(true);
+    }
+
+    function startMatch(showCeremony = true) {
+      roster = generateRoster(selectedPack);
+      mySecretIdx = Math.floor(Math.random() * roster.length);
+      aiSecretIdx = Math.floor(Math.random() * roster.length);
+      oppCardsLeft = 24;
+      isGuessMode = false;
+      isGameOver = false;
+      isMyTurn = isLive2P ? isHost : true;
+
+      document.getElementById("lobbyScreen").classList.remove("active");
+      document.getElementById("arenaScreen").classList.add("active");
+
+      updateSecretCardUI();
+      renderTabletopBoard();
+      updateCoachBar();
+
+      if (showCeremony) {
+        openOverlay("revealOverlay");
       }
     }
 
-    function renderQuestions() {
-      const select = document.getElementById("questionSelect");
-      select.innerHTML = "";
-      currentPack.traits.forEach(t => {
-        const opt = document.createElement("option");
-        opt.value = t.key;
-        opt.textContent = `${t.badge} Does your character ${t.label}?`;
-        select.appendChild(opt);
-      });
+    function returnToLobby() {
+      sfxClick();
+      closeOverlay("gameoverOverlay");
+      document.getElementById("arenaScreen").classList.remove("active");
+      document.getElementById("lobbyScreen").classList.add("active");
     }
 
-    function renderBoard() {
-      const grid = document.getElementById("boardGrid");
-      grid.innerHTML = "";
-      let myActiveCount = 0;
+    function redrawSecretCharacter() {
+      sfxClick();
+      mySecretIdx = (mySecretIdx + 1) % roster.length;
+      updateSecretCardUI();
+    }
+
+    function updateSecretCardUI() {
+      const myChar = roster[mySecretIdx];
+      document.getElementById("hudMyThumb").innerHTML = myChar.svg;
+      document.getElementById("hudMyName").textContent = myChar.name;
+      document.getElementById("revealBigArt").innerHTML = myChar.svg;
+      document.getElementById("revealBigName").textContent = myChar.name;
+    }
+
+    function renderTabletopBoard() {
+      const tray = document.getElementById("tabletopGrid");
+      tray.innerHTML = "";
+      let activeLeft = 0;
 
       roster.forEach((char, idx) => {
-        if (!char.eliminated) myActiveCount++;
-        const card = document.createElement("div");
-        card.className = `char-card ${char.eliminated ? "eliminated" : ""} ${guessMode && !char.eliminated ? "guess-mode" : ""}`;
-        card.onclick = () => onCardTap(idx);
+        if (!char.eliminated) activeLeft++;
+        const slot = document.createElement("div");
+        slot.className = "slot-wrap";
+        slot.onclick = () => handleCardTap(idx);
 
-        card.innerHTML = `
-          <div class="trait-dots">
-            <span>${char.badges[0] || "✨"}</span>
-            <span>${char.badges[1] || ""}</span>
-            <span>${char.badges[2] || ""}</span>
+        slot.innerHTML = `
+          <div class="plastic-card ${char.eliminated ? "flipped-down" : ""} ${isGuessMode && !char.eliminated ? "suspect-glow" : ""}" id="card_${idx}">
+            <div class="card-front">
+              <div class="portrait-window">
+                ${char.svg}
+                <div class="card-trait-strip">${char.badges.join("")}</div>
+              </div>
+              <div class="name-plate">${char.name}</div>
+            </div>
           </div>
-          <div class="svg-portrait">${char.svg}</div>
-          <div class="char-name">${char.name}</div>
+          <div class="slot-hinge"></div>
         `;
-        grid.appendChild(card);
+        tray.appendChild(slot);
       });
 
-      const myChar = roster[mySecretIndex];
-      document.getElementById("mySecretSvg").innerHTML = myChar.svg;
-      document.getElementById("mySecretName").textContent = myChar.name;
+      document.getElementById("hudMyLeft").textContent = activeLeft;
+      document.getElementById("hudOppLabel").textContent = isLive2P ? "FRIEND" : "AI";
+      document.getElementById("hudOppLeft").textContent = oppCardsLeft;
 
-      document.getElementById("oppLabel").textContent = isLive2P ? `Friend (${currentRoomCode})` : "AI Opponent";
-      document.getElementById("oppRemainingCount").textContent = `${oppRemaining} / 24 Left`;
-
-      const turnBadge = document.getElementById("turnBadge");
-      const askBtn = document.getElementById("askBtn");
-      if (gameOver) {
-        turnBadge.textContent = "MATCH OVER";
-        turnBadge.className = "turn-badge wait";
-        askBtn.disabled = true;
-      } else if (isMyTurn) {
-        turnBadge.textContent = `YOUR TURN (${myActiveCount})`;
-        turnBadge.className = "turn-badge";
-        askBtn.disabled = false;
-      } else {
-        turnBadge.textContent = "FRIEND'S TURN";
-        turnBadge.className = "turn-badge wait";
-        askBtn.disabled = true;
-      }
+      document.getElementById("btnOpenQuestions").disabled = !isMyTurn || isGameOver;
+      const suspectBtn = document.getElementById("btnToggleSuspect");
+      suspectBtn.disabled = !isMyTurn || isGameOver;
+      suspectBtn.textContent = isGuessMode ? "✖ CANCEL" : "🎯 2. TAKEDOWN!";
     }
 
-    // ==========================================
-    // 5. CORE GAMEPLAY & LIVE 2P LOGIC
-    // ==========================================
-    function startNewGame(preserveTurn = false) {
-      roster = buildRosterForPack(currentPack);
-      mySecretIndex = Math.floor(Math.random() * roster.length);
-      aiSecretIndex = Math.floor(Math.random() * roster.length);
-      oppRemaining = 24;
-      guessMode = false;
-      gameOver = false;
-      if (!isLive2P) {
-        isMyTurn = true;
-      } else if (!preserveTurn) {
-        isMyTurn = isHost;
-      }
-      updateGuessButton();
-      renderQuestions();
-      renderBoard();
-      setLog(isLive2P
-        ? (isMyTurn ? "Live 2P Match started! You go first." : "Live 2P Match started! Waiting for friend's question...")
-        : `New ${currentPack.name} match vs AI! Ask a trait below.`);
-    }
-
-    function requestNewMatch() {
-      startNewGame(false);
-      if (isLive2P && conn && conn.open) {
-        conn.send({ type: "NEW_MATCH", packId: currentPack.id });
-      }
-    }
-
-    function cycleMySecret() {
-      if (gameOver) return;
-      mySecretIndex = (mySecretIndex + 1) % roster.length;
-      renderBoard();
-      setLog(`Secret character set to ${roster[mySecretIndex].name}.`);
-    }
-
-    function onCardTap(idx) {
-      if (gameOver) return;
-      const char = roster[idx];
-
-      if (guessMode) {
-        if (!isMyTurn) {
-          setLog("Wait for your turn to make a Final Guess!");
-          return;
-        }
-        if (isLive2P && conn && conn.open) {
-          isMyTurn = false;
-          guessMode = false;
-          updateGuessButton();
-          setLog(`🎯 Guessing ${char.name}... waiting for friend's verification!`);
-          conn.send({ type: "FINAL_GUESS", guessedIndex: idx, guessedName: char.name });
-          renderBoard();
-          return;
-        }
-
-        // Solo vs AI Final Guess
-        if (idx === aiSecretIndex) {
-          gameOver = true;
-          setLog(`🏆 VICTORY! AI's secret character was ${char.name}!`);
-        } else {
-          char.eliminated = true;
-          guessMode = false;
-          updateGuessButton();
-          setLog(`❌ Wrong! It's not ${char.name}. AI takes a turn...`);
-          setTimeout(runAiTurn, 900);
-        }
-        renderBoard();
+    function updateCoachBar(customText) {
+      const strip = document.getElementById("coachStrip");
+      if (customText) {
+        strip.textContent = customText;
         return;
       }
-
-      // Manual card flip
-      char.eliminated = !char.eliminated;
-      renderBoard();
-      if (isLive2P && conn && conn.open) {
-        const myLeft = roster.filter(c => !c.eliminated).length;
-        conn.send({ type: "COUNT_UPDATE", count: myLeft });
+      if (isGuessMode) {
+        strip.textContent = "🎯 TAP ANY STANDING CHARACTER ON THE BOARD TO LOCK IN YOUR TAKEDOWN!";
+      } else if (isMyTurn) {
+        strip.textContent = "👉 YOUR TURN: Tap '1. ASK A TRAIT' or '2. TAKEDOWN!' below!";
+      } else {
+        strip.textContent = "⏳ OPPONENT'S TURN: Waiting for their trait question...";
       }
     }
 
-    function askSelectedQuestion() {
-      if (gameOver || !isMyTurn) return;
-      const traitKey = document.getElementById("questionSelect").value;
-      const traitObj = currentPack.traits.find(t => t.key === traitKey);
+    // ==========================================
+    // 6. VISUAL QUESTION DRAWER & STAGGERED DOMINO FLIPS
+    // ==========================================
+    function openQuestionDrawer() {
+      if (!isMyTurn || isGameOver) return;
+      sfxClick();
+      const grid = document.getElementById("traitDrawerGrid");
+      grid.innerHTML = "";
+      const activeChars = roster.filter(c => !c.eliminated);
+
+      selectedPack.traits.forEach((trait) => {
+        const matchCount = activeChars.filter(c => c.traits[trait.key]).length;
+        const btn = document.createElement("button");
+        btn.className = "trait-option-btn";
+        btn.onclick = () => submitTraitQuestion(trait.key);
+        btn.innerHTML = `
+          <div class="trait-left">
+            <div class="trait-icon-bubble">${trait.badge}</div>
+            <div>Does the suspect <strong>${trait.label.toLowerCase()}</strong>?</div>
+          </div>
+          <span class="trait-count-pill">${matchCount} of ${activeChars.length} left</span>
+        `;
+        grid.appendChild(btn);
+      });
+
+      openOverlay("questionOverlay");
+    }
+
+    function submitTraitQuestion(traitKey) {
+      closeOverlay("questionOverlay");
+      const traitObj = selectedPack.traits.find(t => t.key === traitKey);
 
       if (isLive2P && conn && conn.open) {
         isMyTurn = false;
-        renderBoard();
-        setLog(`📡 Asking friend: "Does your character ${traitObj.label}?"...`);
+        renderTabletopBoard();
+        updateCoachBar(`📡 Asked friend: "${traitObj.label}?"...`);
         conn.send({ type: "ASK_TRAIT", traitKey });
         return;
       }
 
-      // Solo vs AI Mode
-      const aiSecret = roster[aiSecretIndex];
-      const matches = !!aiSecret.traits[traitKey];
-      applyElimination(traitKey, matches);
-
-      const remaining = roster.filter(c => !c.eliminated);
-      if (remaining.length === 1 && remaining[0].id === aiSecretIndex) {
-        gameOver = true;
-        renderBoard();
-        setLog(`🏆 YOU WIN! Only ${aiSecret.name} remains!`);
-        return;
-      }
-
-      isMyTurn = false;
-      renderBoard();
-      setTimeout(runAiTurn, 1000);
+      const aiChar = roster[aiSecretIdx];
+      const hasTrait = !!aiChar.traits[traitKey];
+      executeAnimatedElimination(traitKey, hasTrait, () => {
+        const remaining = roster.filter(c => !c.eliminated);
+        if (remaining.length === 1 && remaining[0].id === aiSecretIdx) {
+          triggerGameOver(true, aiChar);
+          return;
+        }
+        isMyTurn = false;
+        renderTabletopBoard();
+        updateCoachBar("🤖 AI Opponent is analyzing traits...");
+        setTimeout(runAiTurn, 1200);
+      });
     }
 
-    function applyElimination(traitKey, matches) {
-      let flippedCount = 0;
-      roster.forEach(char => {
+    function executeAnimatedElimination(traitKey, matches, onComplete) {
+      const toFlipIndices = [];
+
+      roster.forEach((char, idx) => {
         if (!char.eliminated) {
-          if (matches && !char.traits[traitKey]) {
-            char.eliminated = true;
-            flippedCount++;
-          } else if (!matches && char.traits[traitKey]) {
-            char.eliminated = true;
-            flippedCount++;
+          if ((matches && !char.traits[traitKey]) || (!matches && char.traits[traitKey])) {
+            toFlipIndices.push(idx);
           }
         }
       });
-      const verdict = matches ? "YES! ✅" : "NO! ❌";
-      setLog(`${verdict} (${flippedCount} cards flipped automatically).`);
-      renderBoard();
+
+      if (matches) sfxYes(); else sfxNo();
+      showCutscene(
+        matches ? "✅" : "❌",
+        matches ? "TRAIT CONFIRMED!" : "TRAIT RULED OUT!",
+        `Eliminating ${toFlipIndices.length} suspects...`
+      );
+
+      toFlipIndices.forEach((cardIdx, step) => {
+        setTimeout(() => {
+          roster[cardIdx].eliminated = true;
+          const el = document.getElementById(`card_${cardIdx}`);
+          if (el) el.classList.add("flipped-down");
+          sfxFlip(0);
+        }, 550 + step * 75);
+      });
+
+      const totalWait = 700 + toFlipIndices.length * 75;
+      setTimeout(() => {
+        renderTabletopBoard();
+        if (onComplete) onComplete();
+      }, totalWait);
     }
 
     function runAiTurn() {
-      if (gameOver) return;
-      const cut = Math.max(1, Math.floor(oppRemaining * (0.25 + Math.random() * 0.25)));
-      oppRemaining = Math.max(1, oppRemaining - cut);
-      isMyTurn = true;
-      renderBoard();
+      if (isGameOver) return;
+      const cut = Math.max(1, Math.floor(oppCardsLeft * (0.25 + Math.random() * 0.25)));
+      oppCardsLeft = Math.max(1, oppCardsLeft - cut);
 
-      if (oppRemaining === 1) {
-        gameOver = true;
-        renderBoard();
-        setLog(`💀 DEFEAT! AI deduced your character (${roster[mySecretIndex].name})!`);
-      } else {
-        const randomTrait = currentPack.traits[Math.floor(Math.random() * currentPack.traits.length)];
-        const myHasIt = roster[mySecretIndex].traits[randomTrait.key] ? "YES" : "NO";
-        setLog(`🤖 AI asked "${randomTrait.badge} ${randomTrait.label}?" (You: ${myHasIt}). Your turn!`);
-      }
-    }
-
-    // ==========================================
-    // 6. WEBRTC LIVE 2-PLAYER (PEERJS)
-    // ==========================================
-    function createHostRoom() {
-      if (peer) peer.destroy();
-      const code = String(Math.floor(1000 + Math.random() * 9000));
-      currentRoomCode = code;
-      document.getElementById("hostCodeDisplay").textContent = code;
-      document.getElementById("mpStatusText").textContent = "Waiting for friend to join code " + code + "...";
-
-      peer = new Peer("whosthat-2026-room-" + code);
-      peer.on("open", () => {
-        isHost = true;
-      });
-      peer.on("connection", (incomingConn) => {
-        conn = incomingConn;
-        setupPeerConnection();
-      });
-      peer.on("error", (err) => {
-        document.getElementById("mpStatusText").textContent = "Connection notice: " + err.type;
-      });
-    }
-
-    function joinFriendRoom() {
-      const code = document.getElementById("joinCodeInput").value.trim();
-      if (code.length < 4) {
-        document.getElementById("mpStatusText").textContent = "Please enter a 4-digit room code.";
+      if (oppCardsLeft === 1) {
+        triggerGameOver(false, roster[mySecretIdx]);
         return;
       }
+
+      const randomTrait = selectedPack.traits[Math.floor(Math.random() * selectedPack.traits.length)];
+      const myHas = roster[mySecretIdx].traits[randomTrait.key] ? "YES" : "NO";
+      sfxClick();
+      isMyTurn = true;
+      renderTabletopBoard();
+      updateCoachBar(`🤖 AI asked "${randomTrait.label}?" (You: ${myHas}). AI has ${oppCardsLeft} left. YOUR TURN!`);
+    }
+
+    // ==========================================
+    // 7. MANUAL CARD TAP & TAKEDOWN MODE
+    // ==========================================
+    function toggleFinalGuessMode() {
+      if (!isMyTurn || isGameOver) return;
+      sfxClick();
+      isGuessMode = !isGuessMode;
+      renderTabletopBoard();
+      updateCoachBar();
+    }
+
+    function handleCardTap(idx) {
+      if (isGameOver) return;
+      const char = roster[idx];
+
+      if (isGuessMode) {
+        if (!isMyTurn) return;
+        isGuessMode = false;
+
+        if (isLive2P && conn && conn.open) {
+          isMyTurn = false;
+          renderTabletopBoard();
+          conn.send({ type: "FINAL_GUESS", guessedIndex: idx, guessedName: char.name });
+          return;
+        }
+
+        if (idx === aiSecretIdx) {
+          triggerGameOver(true, char);
+        } else {
+          sfxNo();
+          char.eliminated = true;
+          renderTabletopBoard();
+          showCutscene("❌", `NOT ${char.name.toUpperCase()}!`, "Missed takedown! AI takes a turn...");
+          isMyTurn = false;
+          setTimeout(runAiTurn, 1300);
+        }
+        return;
+      }
+
+      char.eliminated = !char.eliminated;
+      sfxFlip(0);
+      renderTabletopBoard();
+    }
+
+    function triggerGameOver(didWin, revealChar) {
+      isGameOver = true;
+      if (didWin) sfxWin(); else sfxNo();
+      document.getElementById("goTitle").textContent = didWin ? "🏆 TAKEDOWN COMPLETE!" : "💀 BUSTED!";
+      document.getElementById("goSubtitle").textContent = didWin
+        ? `You locked down their secret identity: ${revealChar.name}!`
+        : `Your opponent tracked down your secret identity: ${revealChar.name}!`;
+      document.getElementById("goRevealArt").innerHTML = revealChar.svg;
+      document.getElementById("goRevealName").textContent = revealChar.name;
+      openOverlay("gameoverOverlay");
+    }
+
+    function rematchNow() {
+      closeOverlay("gameoverOverlay");
+      if (isLive2P && conn && conn.open) {
+        conn.send({ type: "NEW_MATCH", packId: selectedPack.id });
+      }
+      startMatch(true);
+    }
+
+    // ==========================================
+    // 8. LIVE 2-PLAYER WEBRTC (PEERJS)
+    // ==========================================
+    function hostLiveRoom() {
+      sfxClick();
       if (peer) peer.destroy();
-      currentRoomCode = code;
+      roomCode = String(Math.floor(1000 + Math.random() * 9000));
+      document.getElementById("mpHostCode").textContent = roomCode;
+      document.getElementById("mpStatusMsg").textContent = `Waiting for friend to enter ${roomCode}...`;
+
+      peer = new Peer("traittakedown-room-" + roomCode);
+      peer.on("open", () => { isHost = true; });
+      peer.on("connection", (c) => {
+        conn = c;
+        bindPeerEvents();
+      });
+    }
+
+    function joinLiveRoom() {
+      sfxClick();
+      const code = document.getElementById("mpJoinInput").value.trim();
+      if (code.length < 4) return;
+      if (peer) peer.destroy();
+      roomCode = code;
       isHost = false;
-      document.getElementById("mpStatusText").textContent = "Connecting to Room " + code + "...";
+      document.getElementById("mpStatusMsg").textContent = `Connecting to room ${code}...`;
 
       peer = new Peer();
       peer.on("open", () => {
-        conn = peer.connect("whosthat-2026-room-" + code);
-        setupPeerConnection();
-      });
-      peer.on("error", () => {
-        document.getElementById("mpStatusText").textContent = "Could not find Room " + code + ". Check code & try again.";
+        conn = peer.connect("traittakedown-room-" + code);
+        bindPeerEvents();
       });
     }
 
-    function setupPeerConnection() {
+    function bindPeerEvents() {
       conn.on("open", () => {
         isLive2P = true;
-        document.getElementById("mpDot").className = "dot live";
-        document.getElementById("mpBtn").className = "btn-sm online";
-        document.getElementById("mpBtnLabel").textContent = "Room " + currentRoomCode;
-        document.getElementById("mpStatusText").textContent = "✅ Connected Live! Starting match...";
-
-        if (isHost) {
-          conn.send({ type: "SYNC_PACK", packId: currentPack.id });
-        }
-        startNewGame(false);
-        setTimeout(() => closeModal("mpModal"), 900);
+        closeOverlay("mpOverlay");
+        if (isHost) conn.send({ type: "SYNC_PACK", packId: selectedPack.id });
+        startMatch(true);
       });
-
       conn.on("data", (data) => {
-        handlePeerMessage(data);
-      });
-
-      conn.on("close", () => {
-        disconnectMultiplayer();
-        setLog("⚠️ Friend disconnected. Switched back to Solo AI mode.");
-      });
-    }
-
-    function handlePeerMessage(data) {
-      if (data.type === "SYNC_PACK" || data.type === "NEW_MATCH") {
-        const found = PACKS.find(p => p.id === data.packId);
-        if (found) currentPack = found;
-        startNewGame(false);
-        renderPackBar();
-      }
-      else if (data.type === "ASK_TRAIT") {
-        const traitObj = currentPack.traits.find(t => t.key === data.traitKey);
-        const myChar = roster[mySecretIndex];
-        const matches = !!myChar.traits[data.traitKey];
-        isMyTurn = true;
-        renderBoard();
-        setLog(`📡 Friend asked "${traitObj.badge} ${traitObj.label}?" (Auto-replied: ${matches ? "YES" : "NO"}). Your turn!`);
-        conn.send({
-          type: "ANSWER_TRAIT",
-          traitKey: data.traitKey,
-          matches
-        });
-      }
-      else if (data.type === "ANSWER_TRAIT") {
-        applyElimination(data.traitKey, data.matches);
-        const myLeft = roster.filter(c => !c.eliminated).length;
-        conn.send({ type: "COUNT_UPDATE", count: myLeft });
-      }
-      else if (data.type === "COUNT_UPDATE") {
-        oppRemaining = data.count;
-        renderBoard();
-      }
-      else if (data.type === "FINAL_GUESS") {
-        const myChar = roster[mySecretIndex];
-        const correct = data.guessedIndex === mySecretIndex;
-        if (correct) {
-          gameOver = true;
-          renderBoard();
-          setLog(`💀 DEFEAT! Friend correctly guessed your secret character (${myChar.name})!`);
-          conn.send({ type: "GUESS_RESULT", correct: true, secretName: myChar.name, guessedIndex: data.guessedIndex });
-        } else {
+        if (data.type === "SYNC_PACK" || data.type === "NEW_MATCH") {
+          const found = PACKS.find(p => p.id === data.packId);
+          if (found) selectedPack = found;
+          startMatch(true);
+        } else if (data.type === "ASK_TRAIT") {
+          const matches = !!roster[mySecretIdx].traits[data.traitKey];
+          conn.send({ type: "ANSWER_TRAIT", traitKey: data.traitKey, matches });
           isMyTurn = true;
-          renderBoard();
-          setLog(`🛡️ Friend guessed ${data.guessedName} and missed! Your turn!`);
-          conn.send({ type: "GUESS_RESULT", correct: false, guessedName: data.guessedName, guessedIndex: data.guessedIndex });
+          renderTabletopBoard();
+          updateCoachBar("📡 Friend asked a trait question! Now it's YOUR TURN!");
+        } else if (data.type === "ANSWER_TRAIT") {
+          executeAnimatedElimination(data.traitKey, data.matches, () => {
+            const left = roster.filter(c => !c.eliminated).length;
+            conn.send({ type: "COUNT_UPDATE", count: left });
+            updateCoachBar("⏳ Waiting for friend's trait question...");
+          });
+        } else if (data.type === "COUNT_UPDATE") {
+          oppCardsLeft = data.count;
+          renderTabletopBoard();
+        } else if (data.type === "FINAL_GUESS") {
+          const myChar = roster[mySecretIdx];
+          const win = data.guessedIndex === mySecretIdx;
+          conn.send({ type: "GUESS_RESULT", correct: win, secretCharIdx: mySecretIdx, guessedIndex: data.guessedIndex });
+          if (win) triggerGameOver(false, myChar);
+          else {
+            isMyTurn = true;
+            renderTabletopBoard();
+            showCutscene("🛡️", "FRIEND MISSED!", `They guessed ${data.guessedName}! Your turn!`);
+          }
+        } else if (data.type === "GUESS_RESULT") {
+          if (data.correct) triggerGameOver(true, roster[data.secretCharIdx]);
+          else {
+            roster[data.guessedIndex].eliminated = true;
+            renderTabletopBoard();
+            showCutscene("❌", "WRONG SUSPECT!", "Friend's turn now...");
+          }
         }
-      }
-      else if (data.type === "GUESS_RESULT") {
-        if (data.correct) {
-          gameOver = true;
-          renderBoard();
-          setLog(`🏆 VICTORY! Friend's secret character was ${data.secretName}!`);
-        } else {
-          roster[data.guessedIndex].eliminated = true;
-          const myLeft = roster.filter(c => !c.eliminated).length;
-          conn.send({ type: "COUNT_UPDATE", count: myLeft });
-          renderBoard();
-          setLog(`❌ Wrong! Friend is NOT ${data.guessedName}. Waiting for friend's turn...`);
-        }
-      }
-    }
-
-    function disconnectMultiplayer() {
-      if (conn) conn.close();
-      if (peer) peer.destroy();
-      conn = null;
-      peer = null;
-      isLive2P = false;
-      document.getElementById("mpDot").className = "dot";
-      document.getElementById("mpBtn").className = "btn-sm";
-      document.getElementById("mpBtnLabel").textContent = "2P Live";
-      document.getElementById("mpStatusText").textContent = "Switched to Solo AI mode.";
-      startNewGame(false);
+      });
     }
 
     // ==========================================
-    // 7. HELPERS & LICENSE KEYS
+    // 9. UI HELPERS
     // ==========================================
-    function toggleGuessMode() {
-      if (gameOver) return;
-      guessMode = !guessMode;
-      updateGuessButton();
-      renderBoard();
-      setLog(guessMode ? "🎯 TAP ANY CARD TO LOCK IN YOUR FINAL GUESS!" : "Final Guess Mode cancelled.");
+    function showCutscene(emoji, title, sub) {
+      const toast = document.getElementById("cutsceneToast");
+      document.getElementById("csEmoji").textContent = emoji;
+      document.getElementById("csTitle").textContent = title;
+      document.getElementById("csSub").textContent = sub;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1650);
     }
 
-    function updateGuessButton() {
-      const btn = document.getElementById("guessModeBtn");
-      btn.className = `btn-guess ${guessMode ? "active" : ""}`;
-      btn.textContent = guessMode ? "🎯 TAP CARD TO GUESS (Cancel)" : "🎯 Final Guess Mode: OFF";
-    }
+    function openOverlay(id) { document.getElementById(id).classList.add("open"); }
+    function closeOverlay(id) { document.getElementById(id).classList.remove("open"); }
 
-    function setLog(msg) {
-      document.getElementById("logBanner").textContent = msg;
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add("open");
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("open");
-    }
-
-    function verifyLicenseKey() {
-      const raw = document.getElementById("licenseInput").value.trim().toUpperCase();
-      const feedback = document.getElementById("keyFeedback");
-      const isPatternValid = /^VIP-[A-Z0-9]{4}-26$/.test(raw);
-
-      if (VALID_KEYS.includes(raw) || isPatternValid) {
-        isProUnlocked = true;
-        localStorage.setItem("whos_that_vip", "true");
-        feedback.style.color = "#4ade80";
-        feedback.textContent = "✅ Founder Pass Activated! All 5 Premium Packs unlocked!";
-        renderPackBar();
-        setTimeout(() => closeModal("founderModal"), 1000);
-      } else {
-        feedback.style.color = "#f87171";
-        feedback.textContent = "❌ Invalid key. Test with FOUNDER-2026.";
-      }
-    }
-
-    // PWA Manifest Injection
-    (function setupPWA() {
-      const manifest = {
-        name: "Who's That?! Live 2P Parody Deduction",
-        short_name: "Who's That?!",
-        start_url: ".",
-        display: "standalone",
-        background_color: "#090d16",
-        theme_color: "#0f172a"
-      };
-      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-      const link = document.createElement("link");
-      link.rel = "manifest";
-      link.href = URL.createObjectURL(blob);
-      document.head.appendChild(link);
-    })();
-
-    // Boot
-    renderPackBar();
-    startNewGame(false);
+    checkPermanentUnlock(() => {
+      renderPackShowcase();
+    });
   </script>
 </body>
 </html>
