@@ -1,20 +1,12 @@
 {
-  "name": "Trait Takedown: Tabletop Deduction",
+  "name": "Trait Takedown: Tactical Deduction",
   "short_name": "Trait Takedown",
-  "description": "Head-to-head 3D character deduction tabletop game with 9 genre rosters and live multiplayer.",
-  "start_url": "/whos-that-game/index.html",
-  "scope": "/whos-that-game/",
+  "description": "AAA 3D collectible card deduction game with 9 factions, live friend challenges, and global leaderboards.",
+  "start_url": "/TraitTakedown/index.html",
+  "scope": "/TraitTakedown/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#070a14",
-  "theme_color": "#080b18",
-  "categories": ["games", "board", "family"],
-  "icons": [
-    {
-      "src": "assets/galactic/0.webp",
-      "sizes": "512x512",
-      "type": "image/webp",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#060913",
+  "theme_color": "#070a14",
+  "categories": ["games", "board", "strategy"]
 }
