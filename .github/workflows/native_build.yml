@@ -1,0 +1,36 @@
+name: Build Native Apps (Android Vulkan & Desktop Steam)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-android-native:
+    name: Build Standalone Android APK/AAB (Vulkan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+
+      - name: Build Native Android APK via GameCI
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          buildsPath: build
+
+      - name: Upload Native Android Binary Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TraitTakedown-Android-Native-Vulkan
+          path: build/Android
