@@ -34,21 +34,24 @@ jobs:
           unzip -q Godot_v4.3-stable_export_templates.tpz
           mv templates/* "$HOME/.local/share/godot/export_templates/4.3.stable/"
 
-      - name: Generate Signing Keystore & Configure Godot 4.3 Android SDK
+      - name: Import Project & Configure Android SDK and Keystore
         run: |
           mkdir -p "$HOME/.android" "$HOME/.config/godot"
           rm -f "$HOME/.android/debug.keystore"
           keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore "$HOME/.android/debug.keystore" -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
-          SETTINGS_CONTENT=$(printf '[gd_resource type="EditorSettings" format=3]
-[resource]
-export/android/java_sdk_path = "%s"
-export/android/android_sdk_path = "%s"
-export/android/debug_keystore = "%s/.android/debug.keystore"
-export/android/debug_keystore_user = "androiddebugkey"
-export/android/debug_keystore_pass = "android"
-' "$JAVA_HOME" "$ANDROID_HOME" "$HOME")
-          echo "$SETTINGS_CONTENT" > "$HOME/.config/godot/editor_settings-4.tres"
-          echo "$SETTINGS_CONTENT" > "$HOME/.config/godot/editor_settings-4.3.tres"
+          "$ANDROID_HOME/platform-tools/adb" start-server || true
+          "$HOME/godot_bin/Godot_v4.3-stable_linux.x86_64" --headless --import --quit || true
+          for cfg in "$HOME/.config/godot/editor_settings-4.tres" "$HOME/.config/godot/editor_settings-4.3.tres"; do
+            if [ ! -f "$cfg" ]; then
+              echo '[gd_resource type="EditorSettings" format=3]' > "$cfg"
+              echo '[resource]' >> "$cfg"
+            fi
+            echo "export/android/java_sdk_path = \"$JAVA_HOME\"" >> "$cfg"
+            echo "export/android/android_sdk_path = \"$ANDROID_HOME\"" >> "$cfg"
+            echo "export/android/debug_keystore = \"$HOME/.android/debug.keystore\"" >> "$cfg"
+            echo 'export/android/debug_keystore_user = "androiddebugkey"' >> "$cfg"
+            echo 'export/android/debug_keystore_pass = "android"' >> "$cfg"
+          done
 
       - name: Compile Native Android APK & Web Preview
         env:
@@ -60,7 +63,6 @@ export/android/debug_keystore_pass = "android"
           GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: android
         run: |
           mkdir -p build/android build/web
-          "$HOME/godot_bin/Godot_v4.3-stable_linux.x86_64" --headless --import
           "$HOME/godot_bin/Godot_v4.3-stable_linux.x86_64" --headless --export-debug "Android_APK" "$GITHUB_WORKSPACE/build/android/TraitTakedown-Android-Native.apk"
           "$HOME/godot_bin/Godot_v4.3-stable_linux.x86_64" --headless --export-release "Web_Portal_Engine" "$GITHUB_WORKSPACE/build/web/game.html" || true
           cp index.html build/web/index.html || true
@@ -69,7 +71,7 @@ export/android/debug_keystore_pass = "android"
       - name: Publish Native APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v7.1.${{ github.run_number }}
-          name: "Trait Takedown Native Android Release v7.1.${{ github.run_number }}"
+          tag_name: v7.2.${{ github.run_number }}
+          name: "Trait Takedown Native Android Release v7.2.${{ github.run_number }}"
           body: "Standalone Native Godot 4 (Vulkan) Android Build. Tap **TraitTakedown-Android-Native.apk** below to download and install."
           files: build/android/TraitTakedown-Android-Native.apk

@@ -317,9 +317,9 @@ func _build_3d_operative_figurine(unit, world_pos):
         cannon.material_override = dark_mat
         root.add_child(cannon)
 
+    var nl = String.chr(10)
     var label_3d = Label3D.new()
-    label_3d.text = str(unit["name"]) + "
-[" + str(unit["species"]) + " - " + str(unit["element"]) + "]"
+    label_3d.text = str(unit["name"]) + nl + "[" + str(unit["species"]) + " - " + str(unit["element"]) + "]"
     label_3d.font_size = 24
     label_3d.outline_size = 8
     label_3d.position = Vector3(0.0, 1.62, 0.0)
@@ -804,13 +804,9 @@ func _show_modal(kind):
 
     elif kind == "RANKED":
         modal_title.text = "GLOBAL ELO LEADERBOARD & MATCH ARCHIVE"
+        var nl = String.chr(10)
         var top_lbl = Label.new()
-        top_lbl.text = "GLOBAL TOP COMMANDERS:
-#1 Sovereign_Zero (1,680 MMR)
-#2 Valkyrie_IX (1,540 MMR)
-#3 " + str(profile["callsign"]) + " (YOU - " + str(profile["elo"]) + " MMR | " + str(profile["wins"]) + "W - " + str(profile["losses"]) + "L)
-
-RECENT MATCH TELEMETRY:"
+        top_lbl.text = "GLOBAL TOP COMMANDERS:" + nl + "#1 Sovereign_Zero (1,680 MMR)" + nl + "#2 Valkyrie_IX (1,540 MMR)" + nl + "#3 " + str(profile["callsign"]) + " (YOU - " + str(profile["elo"]) + " MMR | " + str(profile["wins"]) + "W - " + str(profile["losses"]) + "L)" + nl + nl + "RECENT MATCH TELEMETRY:"
         modal_body_vbox.add_child(top_lbl)
 
         var count = min(6, profile["history"].size())
