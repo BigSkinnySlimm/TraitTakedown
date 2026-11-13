@@ -1,0 +1,3882 @@
+{
+  "traits": [
+    {
+      "key": "has_blade",
+      "label": "Bladed Sword / Katana",
+      "q": "wield a Bladed Sword or Katana",
+      "color": "#f43f5e"
+    },
+    {
+      "key": "has_ranged",
+      "label": "Blaster / Bow / Wand",
+      "q": "carry a Blaster, Bow, or Wand",
+      "color": "#38bdf8"
+    },
+    {
+      "key": "has_blunt",
+      "label": "Staff / Hammer / Shield",
+      "q": "hold a Staff, Hammer, or Shield",
+      "color": "#f59e0b"
+    },
+    {
+      "key": "has_helmet",
+      "label": "Helmet / Crown / Hat",
+      "q": "wear a Helmet, Crown, or Hat",
+      "color": "#fbbf24"
+    },
+    {
+      "key": "has_hood",
+      "label": "Mystic Hood / Cloak",
+      "q": "wear a Mystic Hood or Cloak",
+      "color": "#818cf8"
+    },
+    {
+      "key": "has_eyewear",
+      "label": "Visor / Glasses / Eyepatch",
+      "q": "wear a Visor, Glasses, or Eyepatch",
+      "color": "#06b6d4"
+    },
+    {
+      "key": "has_beard",
+      "label": "Beard / Whiskers / Tusks",
+      "q": "have a Beard, Whiskers, or Tusks",
+      "color": "#a855f7"
+    },
+    {
+      "key": "has_armor",
+      "label": "Heavy Armor / Shell",
+      "q": "wear Heavy Chest Armor or a Shell",
+      "color": "#94a3b8"
+    },
+    {
+      "key": "is_nonhuman",
+      "label": "Non-Human / Mutant / Mech",
+      "q": "belong to a Non-Human or Mutant species",
+      "color": "#4ade80"
+    },
+    {
+      "key": "has_aura",
+      "label": "Glowing Power Aura",
+      "q": "radiate a Glowing Power Aura",
+      "color": "#fde047"
+    }
+  ],
+  "factions": [
+    {
+      "id": "galactic",
+      "name": "Starlight Outlaws",
+      "desc": "Space Knights & Bounty Hunters",
+      "free": true,
+      "price": 0,
+      "perkName": "Orbital Scan",
+      "perkDesc": "Highlights the mathematically optimal 50/50 trait question",
+      "palette": [
+        "#090d1a",
+        "#1e3a8a",
+        "#38bdf8"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Lord Obsidian",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Lucas Starstrider",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Master Solis",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Princess Vesper",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Captain Dash",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Ursa Fang",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/galactic/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Apex Tracker",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Chrome Nomad",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Elder Moss",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Count Severus",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "General Gearheart",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Templar Violet",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Kira Dune",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Vane Crossguard",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Astra Twinblade",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Emperor Volt",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Baron Velvet",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Grand Marshal Iron",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Admiral Coral",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/galactic/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Crimson Horn",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/galactic/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Master Qorin",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Empress Aura",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/galactic/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Rover-02",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/galactic/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Unit-99 Gold",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/galactic/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "turtles",
+      "name": "Sewer Shinobi",
+      "desc": "Mutant Ninjas & Urban Vigilantes",
+      "free": true,
+      "price": 0,
+      "perkName": "Smoke Snipe",
+      "perkDesc": "Instantly eliminates 2 innocent suspects without using your turn",
+      "palette": [
+        "#041f11",
+        "#15803d",
+        "#4ade80"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Azure Katana",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Crimson Sai",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Amber Nunchuck",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Violet Bo-Staff",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Sensei Whiskers",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Reporter Paige",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Vigilante Puck",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Iron Talon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Tusker Boar",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Granite Horn",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Cerebro Mech",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Viper Lotus",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Doctor Mutator",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Razor Snapper",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Bayou Gator",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Chrome Terrapin",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Jade Gecko",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Sewer Monarch",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Ronin Hare",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Shadow Automaton",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Skater Lizard",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Spiked Tortoise",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/turtles/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Feral Lupin",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/turtles/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Canary Shinobi",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/turtles/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "rangers",
+      "name": "Chroma Squadron",
+      "desc": "Sentai Pilots & Mecha Defenders",
+      "free": true,
+      "price": 0,
+      "perkName": "Mecha Lock",
+      "perkDesc": "Skips your opponent's next turn completely",
+      "palette": [
+        "#2a0606",
+        "#b91c1c",
+        "#facc15"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Red Rex Pilot",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Emerald Wyvern",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Ivory Tiger",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Rose Ptero",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Cobalt Tricera",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Onyx Mammoth",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Solar Saber",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Empress Eclipse",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/rangers/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Lord Chrome",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Winged Sphinx",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/rangers/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Unit Alpha-5",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Sage Beacon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Bruiser Bulk",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Jester Spike",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Mercury Astro",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Aurum Zeo",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Phantom Hound",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Crimson Thunder",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Quantum Rex",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/rangers/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Taurus Defender",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Chaos Red",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Stinger Vixen",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Clay Sculptor",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/rangers/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Shinobi Azure",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/rangers/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "sorcery",
+      "name": "Arcane Academy",
+      "desc": "Wizards, Wands & Mystic Houses",
+      "free": true,
+      "price": 0,
+      "perkName": "Scrying Lens",
+      "perkDesc": "Reveals 1 true trait of your opponent's secret character",
+      "palette": [
+        "#141138",
+        "#4c1d95",
+        "#c084fc"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Gideon Bolt",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Rowan Copper",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Clara Grimoire",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Julian Silver",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Headmaster Aldous",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Master Nightshade",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Lord Hollow",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Morgana Hex",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Bramble Giant",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Padfoot Hound",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Professor Howl",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Pip House-Imp",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Barnaby Root",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Astrid Spectacles",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Finley Champion",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Minerva Lynx",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Mad-Lens Sentry",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Cassius Cane",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Scarlet Striker",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Felix Jester",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Jasper Prank",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Lin Seeker",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Viktor Storm",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/sorcery/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Genevieve Swan",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/sorcery/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "pirates",
+      "name": "High Seas Corsairs",
+      "desc": "Swashbucklers & Cursed Admirals",
+      "free": false,
+      "price": 1500,
+      "perkName": "Broadside Volley",
+      "perkDesc": "Eliminates 3 innocent suspects on the board immediately",
+      "palette": [
+        "#171310",
+        "#78350f",
+        "#fbbf24"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Capt. Sparrowhawk",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Kraken Warden",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Capt. Redbeard",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "William Forge",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Corsair Queen",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/pirates/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Commodore Powder",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Bosun Barrel",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Mystic Calypso",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/pirates/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Barnacle Bill",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "One-Eye Patch",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Timber Pete",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Admiral Blacksmoke",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Sirena Cutlass",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Phantom Galleon",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Governor Sterling",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Silent Mate",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/pirates/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Capuchin Thief",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Shorty Anchor",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Helmswoman Maria",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Sentry Redcoat",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Guard Bayonet",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Dragon Corsair",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/pirates/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Rajah Bengal",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/pirates/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Baron Dubloon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/pirates/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "defenders",
+      "name": "Vanguard Heroes",
+      "desc": "Superheroes & Cosmic Titans",
+      "free": false,
+      "price": 2000,
+      "perkName": "Aegis Pulse",
+      "perkDesc": "Highlights the optimal 50/50 split + grants +15 Bonus Coins",
+      "palette": [
+        "#082f49",
+        "#0284c7",
+        "#38bdf8"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Cobalt Dynamo",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Major Liberty",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Tempest Hammer",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Emerald Goliath",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/defenders/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Shadow Recluse",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/defenders/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Apex Fletcher",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Arachnid Kid",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Onyx Jaguar",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Doctor Arcane",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/defenders/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Crimson Chaos",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Synth Android",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Sky Raptor",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Cyber Soldier",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Star Corsair",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Timber Giant",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Bandit Raccoon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/defenders/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Lord Oblivion",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Trickster Horn",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/defenders/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Chrome Overlord",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Master Polarity",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/defenders/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Adamant Claw",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Crimson Merc",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Daywalker Fang",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/defenders/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Comet Surfer",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/defenders/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "critters",
+      "name": "Elemental Critters",
+      "desc": "Evolution Monsters & Mythic Beasts",
+      "free": false,
+      "price": 2500,
+      "perkName": "Evolution Surge",
+      "perkDesc": "Eliminates 2 innocent suspects + adds +6s in Blitz mode",
+      "palette": [
+        "#2e054e",
+        "#7e22ce",
+        "#f472b6"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Volt-Squeak",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Blaze-Wyrm",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Hydro-Tortoise",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Sprout-Toad",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Phantom-Grin",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Aether-Mew",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Slumber-Bear",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Lullaby-Puff",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Prism-Fox",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Tidal-Serpent",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Gale-Dragon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Aura-Jackal",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Coin-Tabby",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Mystic-Duck",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Titan-Brawler",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Sage-Spoon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Glacier-Shell",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Morph-Slime",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Solar-Hound",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Mantis-Blade",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Granite-Serpent",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Spark-Pip",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Nova-Sprite",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/critters/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Silver-Phoenix",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/critters/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "relic",
+      "name": "Realm of the Ancients",
+      "desc": "Elves, Dwarves & Shadow Kings",
+      "free": false,
+      "price": 3000,
+      "perkName": "Elven Sight",
+      "perkDesc": "Reveals 1 true trait of your opponent's secret character",
+      "palette": [
+        "#0f391e",
+        "#166534",
+        "#fde047"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Perrin Ringbearer",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Bram Skillet",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Aldric Greybeard",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Garrick Ranger",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Sylvan Archer",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Torin Battleaxe",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Valen Shieldhorn",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/relic/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Slink Wretch",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Malcor Whitebeard",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Dread Eye",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Wraith Sovereign",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Lord Starleaf",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Lady Mirror",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Freya Shieldmaiden",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/relic/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Caelen Captain",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Toby Shire",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Milo Underhill",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Bramble Burglar",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Oaken Ent",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/relic/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Krag Uruk",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/relic/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "King Goldmane",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Lyra Evenstar",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/relic/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Cinder Dragon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/relic/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Inferno Balrog",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/relic/23.webp"
+        }
+      ]
+    },
+    {
+      "id": "brawlers",
+      "name": "Apex Martial Artists",
+      "desc": "Super Aura Tournament Fighters",
+      "free": false,
+      "price": 3500,
+      "perkName": "Overdrive Jammer",
+      "perkDesc": "Skips your opponent's next turn completely",
+      "palette": [
+        "#361005",
+        "#c2410c",
+        "#fde047"
+      ],
+      "characters": [
+        {
+          "id": 0,
+          "name": "Kairo Sunstrike",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/0.webp"
+        },
+        {
+          "id": 1,
+          "name": "Prince Vexor",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/1.webp"
+        },
+        {
+          "id": 2,
+          "name": "Sora Scholar",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/2.webp"
+        },
+        {
+          "id": 3,
+          "name": "Kenshin Namek",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/3.webp"
+        },
+        {
+          "id": 4,
+          "name": "Vance Futureblade",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/4.webp"
+        },
+        {
+          "id": 5,
+          "name": "Monk Six-Dot",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/5.webp"
+        },
+        {
+          "id": 6,
+          "name": "Emperor Frost",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/6.webp"
+        },
+        {
+          "id": 7,
+          "name": "Bio-Beetle",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/7.webp"
+        },
+        {
+          "id": 8,
+          "name": "Nebula Djinn",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/8.webp"
+        },
+        {
+          "id": 9,
+          "name": "Titan Berserker",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/9.webp"
+        },
+        {
+          "id": 10,
+          "name": "Capsule Heiress",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/10.webp"
+        },
+        {
+          "id": 11,
+          "name": "Master Shell-Beard",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/11.webp"
+        },
+        {
+          "id": 12,
+          "name": "Cyborg Eighteen",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/12.webp"
+        },
+        {
+          "id": 13,
+          "name": "Cyborg Ranger",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/13.webp"
+        },
+        {
+          "id": 14,
+          "name": "Wolf-Fang Scar",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/14.webp"
+        },
+        {
+          "id": 15,
+          "name": "Master Tri-Eye",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/15.webp"
+        },
+        {
+          "id": 16,
+          "name": "Deity Sphinx",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/16.webp"
+        },
+        {
+          "id": 17,
+          "name": "Attendant Halo",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/17.webp"
+        },
+        {
+          "id": 18,
+          "name": "Rebel Bandana",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/18.webp"
+        },
+        {
+          "id": 19,
+          "name": "Koda Striker",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/19.webp"
+        },
+        {
+          "id": 20,
+          "name": "Brute Bald",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": true,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": false,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/20.webp"
+        },
+        {
+          "id": 21,
+          "name": "Captain Pose",
+          "traits": {
+            "has_blade": false,
+            "has_ranged": false,
+            "has_blunt": true,
+            "has_helmet": false,
+            "has_hood": false,
+            "has_eyewear": false,
+            "has_beard": true,
+            "has_armor": false,
+            "is_nonhuman": false,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/21.webp"
+        },
+        {
+          "id": 22,
+          "name": "Chrome Conqueror",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": true,
+            "has_hood": false,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": true,
+            "is_nonhuman": true,
+            "has_aura": true
+          },
+          "img": "assets/brawlers/22.webp"
+        },
+        {
+          "id": 23,
+          "name": "Eternal Shen-Dragon",
+          "traits": {
+            "has_blade": true,
+            "has_ranged": false,
+            "has_blunt": false,
+            "has_helmet": false,
+            "has_hood": true,
+            "has_eyewear": true,
+            "has_beard": false,
+            "has_armor": false,
+            "is_nonhuman": true,
+            "has_aura": false
+          },
+          "img": "assets/brawlers/23.webp"
+        }
+      ]
+    }
+  ]
+}
