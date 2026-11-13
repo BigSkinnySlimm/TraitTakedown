@@ -1,12 +1,12 @@
 {
-  "name": "Trait Takedown: Tactical Deduction",
+  "name": "Trait Takedown: 3D Tactical Deduction",
   "short_name": "Trait Takedown",
-  "description": "AAA 3D collectible card deduction game with 9 factions, live friend challenges, and global leaderboards.",
+  "description": "AAA 3D WebGL collectible character deduction game with 9 factions, interactive 3D figurines, live friend duels, and global leaderboards.",
   "start_url": "/TraitTakedown/index.html",
   "scope": "/TraitTakedown/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#060913",
-  "theme_color": "#070a14",
+  "background_color": "#05070f",
+  "theme_color": "#05070f",
   "categories": ["games", "board", "strategy"]
 }
