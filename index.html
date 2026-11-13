@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trait Takedown | Official Native Android Download & Play Store Hub</title>
+  <style>
+    :root {
+      --bg: #050914;
+      --card: #0d162b;
+      --cyan: #00e5ff;
+      --gold: #ffbe3d;
+      --text: #eef5ff;
+      --muted: #8ea4c8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body {
+      background: radial-gradient(circle at 50% 0%, #162a4f 0%, var(--bg) 75%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 980px; width: 100%; }
+    .hero-card {
+      background: var(--card);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(0, 229, 255, 0.14);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      margin-bottom: 0.85rem;
+      letter-spacing: 0.1em;
+    }
+    h1 { font-size: 2.2rem; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+    p.sub { color: var(--muted); max-width: 660px; margin: 0 auto 1.6rem; line-height: 1.5; }
+    .cta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .btn {
+      text-decoration: none;
+      padding: 0.9rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      letter-spacing: 0.05em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-apk {
+      background: linear-gradient(135deg, #00e5ff, #0066ff);
+      color: #030812;
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.4);
+    }
+    .btn-aab {
+      background: rgba(255, 190, 61, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .btn-web {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: var(--text);
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .spec-box {
+      background: rgba(13, 22, 43, 0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.1rem;
+    }
+    .spec-box h3 { color: var(--cyan); font-size: 0.9rem; margin-bottom: 0.4rem; }
+    .spec-box p { color: var(--muted); font-size: 0.82rem; line-height: 1.4; }
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      gap: 1rem;
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero-card">
+      <span class="badge">GODOT 4 NATIVE VULKAN ENGINE // v7.0</span>
+      <h1>TRAIT TAKEDOWN</h1>
+      <p class="sub">
+        Standalone Native 3D Tactical Deduction Game. Built on the Godot 4 Vulkan Mobile Engine with 3D PBR Operatives,
+        48kHz Symphonic DSP Audio, Public Auto-Matchmaking, Friends Challenges, Faction Ultimates, and Ranked Elo.
+      </p>
+      <div class="cta-grid">
+        <a class="btn btn-apk" href="https://github.com/BigSkinnySlimm/TraitTakedown/releases/latest/download/TraitTakedown-Android-Native.apk">
+          📲 DOWNLOAD NATIVE ANDROID (.APK)
+        </a>
+        <a class="btn btn-aab" href="https://github.com/BigSkinnySlimm/TraitTakedown/releases/latest/download/TraitTakedown-PlayStore-Release.aab">
+          📦 PLAY STORE BUNDLE (.AAB)
+        </a>
+        <a class="btn btn-web" href="game.html">
+          🎮 LAUNCH ENGINE PREVIEW
+        </a>
+        <a class="btn btn-web" href="https://github.com/BigSkinnySlimm/TraitTakedown/releases">
+          📂 VIEW ALL GITHUB RELEASES
+        </a>
+      </div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-box">
+        <h3>⚡ Native Vulkan 3D Engine</h3>
+        <p>Direct mobile GPU hardware rendering with 3D articulated figurines, metallic/roughness shaders, and spring physics.</p>
+      </div>
+      <div class="spec-box">
+        <h3>🌐 Auto-Matchmaking & Friends</h3>
+        <p>Zero room codes. Automatic MMR queue pairing plus a persistent Friends list with instant direct challenges.</p>
+      </div>
+      <div class="spec-box">
+        <h3>🎼 48kHz Symphonic DSP</h3>
+        <p>Real-time C++ audio thread synthesis with multi-voice orchestral pads, cathedral reverb, and mechanical foley.</p>
+      </div>
+      <div class="spec-box">
+        <h3>🏆 Ranked Elo & Faction Ultimates</h3>
+        <p>K=32 Elo MMR rating ladder, match telemetry archive, and 4 faction-specific active tactical abilities.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Trait Takedown Studio</span>
+    <span>•</span>
+    <a href="privacy.html">Privacy Policy</a>
+    <span>•</span>
+    <a href="terms.html">Terms of Service</a>
+  </footer>
+</body>
+</html>

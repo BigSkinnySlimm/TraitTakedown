@@ -1,0 +1,90 @@
+name: Build Native Android APK, Play Store AAB & Download Portal
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-native-engine:
+    name: Compile Godot 4 Native APK, Play Store AAB & Portal
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17 & Android SDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Godot 4.3 Engine & Export Templates (100% Free / Zero License Needed)
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          unzip -q Godot_v4.3-stable_linux.x86_64.zip
+          mv Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
+          chmod +x /usr/local/bin/godot
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+          unzip -q Godot_v4.3-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
+
+      - name: Generate Android Debug/Release Keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore ~/.android/debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
+
+      - name: Configure Godot Android SDK & Keystore Paths
+        run: |
+          mkdir -p ~/.config/godot
+          cat << 'EOF' > ~/.config/godot/editor_settings-4.tres
+          [gd_resource type="EditorSettings" format=3]
+          [resource]
+          export/android/java_sdk_path = "/usr/lib/jvm/temurin-17-jdk-amd64"
+          export/android/android_sdk_path = "/usr/local/lib/android/sdk"
+          export/android/debug_keystore = "/home/runner/.android/debug.keystore"
+          export/android/debug_keystore_user = "androiddebugkey"
+          export/android/debug_keystore_pass = "android"
+          EOF
+
+      - name: Compile Standalone Native Android APK & Web Engine Binary
+        run: |
+          mkdir -p build/android build/web
+          godot --headless --export-debug "Android_APK" build/android/TraitTakedown-Android-Native.apk
+          godot --headless --export-release "Android_PlayStore_AAB" build/android/TraitTakedown-PlayStore-Release.aab || true
+          godot --headless --export-release "Web_Portal_Engine" build/web/game.html
+          cp index.html build/web/index.html
+          for f in *privacy* *terms* *tos* *legal* *policy*; do
+            [ -f "$f" ] && cp "$f" build/web/ || true
+          done
+
+      - name: Publish Native APK & Play Store AAB to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v7.0.${{ github.run_number }}
+          name: "Trait Takedown Native Engine Release v7.0.${{ github.run_number }}"
+          body: |
+            ### Trait Takedown — Standalone Native Engine Build
+            - **Direct Sideload / GitHub Download:** `TraitTakedown-Android-Native.apk`
+            - **Google Play Console Upload Bundle:** `TraitTakedown-PlayStore-Release.aab`
+          files: |
+            build/android/TraitTakedown-Android-Native.apk
+            build/android/TraitTakedown-PlayStore-Release.aab
+
+      - name: Upload Native APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TraitTakedown-Android-Native-Binaries
+          path: build/android/
+
+      - name: Deploy Download Portal & Engine Preview to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
