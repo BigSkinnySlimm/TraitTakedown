@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.traittakedown.studio"
-    android:versionCode="80"
-    android:versionName="8.0.0">
+    android:versionCode="90"
+    android:versionName="9.0.0">
 
     <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="34" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +16,6 @@
         <activity
             android:name="com.traittakedown.studio.MainActivity"
             android:exported="true"
-            android:screenOrientation="sensorLandscape"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

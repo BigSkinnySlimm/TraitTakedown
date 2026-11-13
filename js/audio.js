@@ -1,6 +1,9 @@
 class SymphonicAudioEngine {
   constructor() {
-    this.ctx = null; this.muted = false; this.running = false; this.idx = 0;
+    this.ctx = null;
+    this.muted = false;
+    this.running = false;
+    this.step = 0;
     this.chords = [
       [146.83, 220.00, 261.63, 329.63],
       [116.54, 220.00, 293.66, 392.00],
@@ -8,6 +11,7 @@ class SymphonicAudioEngine {
       [110.00, 164.81, 220.00, 329.63]
     ];
   }
+
   ensure() {
     if (!this.ctx) {
       const C = window.AudioContext || window.webkitAudioContext;
@@ -16,41 +20,71 @@ class SymphonicAudioEngine {
     if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
     if (this.ctx && !this.running) {
       this.running = true;
-      setInterval(() => { if (!this.muted) this.playPad(); }, 4600);
+      setInterval(() => { if (!this.muted) this.playPad(); }, 4400);
     }
   }
+
   playPad() {
     if (!this.ctx || this.muted) return;
     const now = this.ctx.currentTime;
-    const notes = this.chords[this.idx++ % this.chords.length];
-    notes.forEach((f) => {
+    const notes = this.chords[this.step++ % this.chords.length];
+    notes.forEach((f, i) => {
       const o = this.ctx.createOscillator();
       const g = this.ctx.createGain();
-      o.type = "triangle"; o.frequency.setValueAtTime(f, now);
+      o.type = i === 0 ? "triangle" : "sine";
+      o.frequency.setValueAtTime(f, now);
       g.gain.setValueAtTime(0.0001, now);
-      g.gain.linearRampToValueAtTime(0.025, now + 1.2);
-      g.gain.exponentialRampToValueAtTime(0.0001, now + 4.4);
-      o.connect(g); g.connect(this.ctx.destination);
-      o.start(now); o.stop(now + 4.5);
+      g.gain.linearRampToValueAtTime(0.025, now + 1.1);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
+      o.connect(g);
+      g.connect(this.ctx.destination);
+      o.start(now);
+      o.stop(now + 4.3);
     });
   }
-  sfx(freq, dur) {
+
+  tone(freq, dur, type = "triangle", vol = 0.12) {
     this.ensure();
     if (!this.ctx || this.muted) return;
     const now = this.ctx.currentTime;
     const o = this.ctx.createOscillator();
     const g = this.ctx.createGain();
-    o.type = "sine"; o.frequency.setValueAtTime(freq, now);
-    g.gain.setValueAtTime(0.12, now);
-    g.gain.exponentialRampToValueAtTime(0.001, now + dur);
-    o.connect(g); g.connect(this.ctx.destination);
-    o.start(now); o.stop(now + dur);
+    o.type = type;
+    o.frequency.setValueAtTime(freq, now);
+    g.gain.setValueAtTime(vol, now);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+    o.connect(g);
+    g.connect(this.ctx.destination);
+    o.start(now);
+    o.stop(now + dur);
   }
-  toggleMute() { this.muted = !this.muted; return this.muted; }
-  playFlip() { this.sfx(180, 0.1); }
-  playScan() { this.sfx(520, 0.22); }
-  playAbilityUltimate() { this.sfx(130, 0.45); }
-  playVictory() { this.sfx(587.33, 0.5); }
-  playDefeat() { this.sfx(146.83, 0.45); }
+
+  toggleMute() {
+    this.muted = !this.muted;
+    return this.muted;
+  }
+
+  playClick() { this.tone(620, 0.06, "sine", 0.08); }
+  playFlip() { this.tone(240, 0.11, "triangle", 0.14); }
+  playScan() {
+    this.tone(440, 0.15, "sawtooth", 0.09);
+    setTimeout(() => this.tone(880, 0.25, "triangle", 0.12), 80);
+  }
+  playUltimate() {
+    [110, 220, 440, 659.25].forEach((f, i) => {
+      setTimeout(() => this.tone(f, 0.45, "sawtooth", 0.12), i * 55);
+    });
+  }
+  playVictory() {
+    [293.66, 369.99, 440, 587.33].forEach((f, i) => {
+      setTimeout(() => this.tone(f, 0.55, "triangle", 0.14), i * 110);
+    });
+  }
+  playDefeat() {
+    [220, 196, 146.83].forEach((f, i) => {
+      setTimeout(() => this.tone(f, 0.5, "sawtooth", 0.11), i * 140);
+    });
+  }
 }
+
 window.StudioAudio = new SymphonicAudioEngine();

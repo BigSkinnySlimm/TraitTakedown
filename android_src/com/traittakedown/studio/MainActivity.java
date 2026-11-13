@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         );
 
         engineView = new WebView(this);
-        engineView.setBackgroundColor(Color.parseColor("#050811"));
+        engineView.setBackgroundColor(Color.parseColor("#040711"));
         WebSettings s = engineView.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
         engineView.setWebViewClient(new WebViewClient());
         engineView.setWebChromeClient(new WebChromeClient());
         setContentView(engineView);
-
         engineView.loadUrl("file:///android_asset/www/index.html");
     }
 

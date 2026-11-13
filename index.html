@@ -2,261 +2,312 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Trait Takedown | 3D Tactical Deduction & Ranked Arena</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Trait Takedown | Tactical Card Arena</title>
   <link rel="stylesheet" href="css/studio.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body>
-  <div id="app-shell">
-    <header class="studio-header">
-      <div class="brand-cluster">
-        <div class="brand-emblem">TT</div>
-        <div>
-          <div class="title-row">
-            <h1 class="brand-title">TRAIT TAKEDOWN</h1>
-            <span class="version-pill">3D ENGINE v8.0</span>
+  <!-- Fullscreen Interactive VFX & Particle Shader Canvas -->
+  <canvas id="vfx-canvas"></canvas>
+
+  <!-- Ultimate Cut-In Cinematic Overlay -->
+  <div id="ultimate-cutin" class="ultimate-cutin hidden">
+    <div class="cutin-slash">
+      <img id="cutin-img" src="" alt="Ultimate Operative" />
+      <div class="cutin-text">
+        <span id="cutin-faction">SOLARIS ULTIMATE</span>
+        <h2 id="cutin-title">HELIOS ORBITAL SWEEP</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Incoming Friend Challenge Toast -->
+  <div id="challenge-toast" class="challenge-toast hidden">
+    <div>
+      <strong>⚔️ LIVE DUEL CHALLENGE</strong>
+      <p id="challenge-toast-text">Challenger wants a Ranked Duel!</p>
+    </div>
+    <div class="toast-btns">
+      <button id="btn-accept-challenge" class="btn-neon cyan">ACCEPT</button>
+      <button id="btn-decline-challenge" class="btn-neon red">DECLINE</button>
+    </div>
+  </div>
+
+  <div id="app-viewport">
+    <!-- TOP PERSISTENT PLAYER TELEMETRY BAR -->
+    <header class="top-hud">
+      <div class="player-badge" id="btn-open-profile">
+        <div class="avatar-ring">TT</div>
+        <div class="player-meta">
+          <div class="callsign-row">
+            <strong id="ui-callsign">Commander</strong>
+            <span class="online-dot" id="net-dot"></span>
           </div>
-          <div class="net-badge">
-            <span class="pulse-dot online" id="net-dot"></span>
-            <span id="net-status-text">GLOBAL BROKER ONLINE</span>
-            <span>•</span>
-            <span id="ui-callsign-display" class="callsign-tag">Commander</span>
+          <div class="rank-sub">
+            <span id="ui-rank-badge" class="tier-pill">GOLD I</span>
+            <span id="ui-elo">1,200 MMR</span>
           </div>
         </div>
       </div>
 
-      <div class="nav-center">
-        <button class="studio-btn primary-cta" id="btn-quick-queue">⚡ FIND RANKED MATCH</button>
-        <button class="studio-btn nav-btn" id="btn-open-friends">👥 FRIENDS <span id="friend-online-count" class="mini-counter">2</span></button>
-        <button class="studio-btn nav-btn" id="btn-open-ranked">🏆 ELO & HISTORY</button>
-        <button class="studio-btn nav-btn" id="btn-open-pass">🎖️ SEASON PASS</button>
-        <button class="studio-btn nav-btn" id="btn-open-store">💎 ARMORY</button>
-        <a class="studio-btn accent-cta" href="https://github.com/BigSkinnySlimm/TraitTakedown/releases/latest/download/TraitTakedown-Android-Native.apk" style="text-decoration:none;">📲 DOWNLOAD .APK</a>
-      </div>
-
-      <div class="player-economy">
-        <div class="rank-pill">
-          <span id="ui-rank-tier">GOLD I</span>
-          <strong id="ui-elo-rating">1,200 MMR</strong>
+      <div class="economy-cluster">
+        <div class="res-pill">
+          <span class="res-icon cyan">◈</span>
+          <strong id="ui-credits">1,500</strong>
         </div>
-        <div class="currency-pill"><span>◈</span><span id="ui-credits">1,500</span></div>
-        <div class="currency-pill premium"><span>❖</span><span id="ui-gems">200</span></div>
-        <button class="studio-btn icon-btn" id="btn-toggle-audio">🔊</button>
+        <div class="res-pill gold">
+          <span class="res-icon">❖</span>
+          <strong id="ui-gems">200</strong>
+        </div>
+        <a class="apk-pill" href="https://github.com/BigSkinnySlimm/TraitTakedown/releases/latest/download/TraitTakedown-Android-Native.apk" title="Download Native Android APK">📲 APK</a>
+        <button class="icon-circle" id="btn-audio-toggle" title="Toggle Studio Audio">🔊</button>
       </div>
     </header>
 
-    <main class="studio-stage">
-      <aside class="tactical-sidebar">
-        <section class="panel-card">
-          <div class="panel-header">
-            <span>ASSIGNED 3D OPERATIVE</span>
-            <span class="badge-tag" id="match-mode-tag">STANDBY</span>
-          </div>
-          <div class="hero-3d-wrapper">
-            <canvas id="hero-3d-canvas"></canvas>
-            <div class="hero-overlay">
-              <div class="hero-unit-title" id="hero-unit-name">AWAITING DEPLOYMENT</div>
-              <div class="hero-unit-traits" id="hero-unit-traits">Tap Find Ranked Match or Challenge a Friend</div>
-            </div>
-          </div>
-        </section>
+    <!-- ================================================================== -->
+    <!-- VIEW 1: STUDIO HOME LOBBY / SHOWCASE STAGE                         -->
+    <!-- ================================================================== -->
+    <section id="view-lobby" class="screen-view active">
+      <div class="lobby-center-stage">
+        <div class="lobby-pedestal-glow"></div>
 
-        <section class="panel-card">
-          <div class="panel-header">
-            <span>FACTION ACTIVE ABILITY</span>
-            <span class="badge-tag" id="ability-charges-tag">READY</span>
-          </div>
-          <div class="ability-box">
-            <div class="ability-info">
-              <strong id="ability-title">SELECT MATCH TO ARM</strong>
-              <p id="ability-desc">Each operative faction unlocks a tactical interrogation ultimate.</p>
-            </div>
-            <button id="btn-use-ability" class="studio-btn accent-cta" disabled>⚡ ACTIVATE ULTIMATE</button>
-          </div>
-        </section>
-
-        <section class="panel-card">
-          <div class="panel-header">
-            <span>LIVE MATCH TELEMETRY</span>
-            <span id="turn-timer">00:30</span>
-          </div>
-          <div class="turn-banner" id="turn-banner">GLOBAL MATCHMAKING READY</div>
-          <div class="score-row">
-            <div class="score-box"><small>YOUR SUSPECTS</small><strong id="you-remaining">24</strong></div>
-            <div class="score-box"><small>ENEMY SUSPECTS</small><strong id="opp-remaining">24</strong></div>
-          </div>
-          <div id="combat-log" class="combat-log">
-            <div class="log-entry system">3D PBR Engine & 48kHz Symphonic DSP Audio online.</div>
-          </div>
-        </section>
-
-        <section class="panel-card">
-          <div class="panel-header">
-            <span>TRAIT INTERROGATION SCANNER</span>
-            <span class="badge-tag">1 SCAN / TURN</span>
-          </div>
-          <div class="scanner-controls">
-            <div class="scanner-select-row">
-              <select id="trait-category-select" class="studio-select">
-                <option value="faction">Faction</option>
-                <option value="species">Species</option>
-                <option value="armor">Armor</option>
-                <option value="weapon">Weapon</option>
-                <option value="element">Element</option>
-              </select>
-              <select id="trait-value-select" class="studio-select"></select>
-            </div>
-            <button id="btn-scan-trait" class="studio-btn primary-cta" disabled>📡 TRANSMIT TRAIT SCAN</button>
-            <button id="btn-accuse-mode" class="studio-btn danger-cta" disabled>🎯 LOCK FINAL ACCUSATION</button>
-          </div>
-        </section>
-      </aside>
-
-      <section class="board-container">
-        <div class="board-toolbar">
-          <div>
-            <span class="toolbar-title">3D TACTICAL OPERATIVE MATRIX (24 UNITS)</span>
-            <span class="toolbar-hint">Hover/touch to tilt 3D figurines • Tap card to toggle elimination</span>
-          </div>
-          <span id="opponent-badge" class="opp-badge">OPPONENT: NONE</span>
-        </div>
-        <div id="unit-grid" class="unit-grid"></div>
-      </section>
-    </main>
-
-    <footer class="studio-footer">
-      <span>TRAIT TAKEDOWN // NATIVE ANDROID & 3D ENGINE BUILD v8.0</span>
-      <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <span>•</span>
-        <a href="terms.html">Terms of Service</a>
-      </div>
-    </footer>
-  </div>
-
-  <!-- Auto-Matchmaking Queue Modal -->
-  <div id="modal-queue" class="modal-backdrop">
-    <div class="modal-window queue-window">
-      <div class="modal-header">
-        <h2>GLOBAL RANKED AUTO-MATCHMAKING</h2>
-        <button class="modal-close" data-close="modal-queue">✕</button>
-      </div>
-      <div class="modal-body queue-body">
-        <div class="radar-spinner"><div class="radar-sweep"></div></div>
-        <h3>SEARCHING FOR LIVE OPPONENT...</h3>
-        <p>Scanning Cloud Matchmaking Broker (MMR ±100)</p>
-        <div>ELAPSED: <strong id="queue-timer">00:00</strong></div>
-        <button id="btn-abort-queue" class="studio-btn danger-cta">CANCEL QUEUE</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Friends & Direct Challenge Modal -->
-  <div id="modal-friends" class="modal-backdrop">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h2>SOCIAL COMMAND & DIRECT CHALLENGES</h2>
-        <button class="modal-close" data-close="modal-friends">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="social-top-bar">
-          <div>
-            <label>YOUR CALLSIGN</label>
-            <div class="input-inline">
-              <input type="text" id="input-my-callsign" class="studio-input" maxlength="16" />
-              <button id="btn-save-callsign" class="studio-btn primary-cta">SAVE</button>
-            </div>
-          </div>
-          <div>
-            <label>ADD FRIEND BY CALLSIGN</label>
-            <div class="input-inline">
-              <input type="text" id="input-friend-callsign" class="studio-input" placeholder="Enter Callsign..." />
-              <button id="btn-add-friend" class="studio-btn accent-cta">+ ADD</button>
+        <!-- Featured Interactive 3D Holo Operative Showcase Card -->
+        <div class="showcase-wrapper">
+          <div class="showcase-tag">FEATURED OPERATIVE // TAP TO CYCLE</div>
+          <div id="lobby-showcase-card" class="holo-card showcase-size">
+            <div class="holo-card-inner">
+              <img id="showcase-art" src="" alt="Featured Operative" />
+              <div class="holo-glare"></div>
+              <div class="card-top-badges">
+                <span id="showcase-faction" class="c-badge faction">IRONCLAD</span>
+                <span id="showcase-element" class="c-badge element">TERRA</span>
+              </div>
+              <div class="card-bottom-plate">
+                <h2 id="showcase-name">Spiked Tortoise</h2>
+                <div id="showcase-traits" class="card-trait-line">Reptilian • Spiked Shell • Plasma Cannon</div>
+              </div>
             </div>
           </div>
         </div>
-        <div id="friends-list-container" class="friends-list"></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Ranked Elo & History Modal -->
-  <div id="modal-ranked" class="modal-backdrop">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h2>GLOBAL ELO LEADERBOARD & MATCH ARCHIVE</h2>
-        <button class="modal-close" data-close="modal-ranked">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="ranked-overview-banner">
-          <h3 id="ranked-modal-standing">GOLD I — 1,200 MMR</h3>
-          <div id="ranked-modal-stats">0W - 0L</div>
-        </div>
-        <div class="dual-tables-grid">
-          <div class="table-panel">
-            <h4>🌍 TOP GLOBAL COMMANDERS</h4>
-            <table class="studio-table">
-              <thead><tr><th>#</th><th>CALLSIGN</th><th>TIER</th><th>MMR</th></tr></thead>
-              <tbody id="leaderboard-tbody"></tbody>
-            </table>
-          </div>
-          <div class="table-panel">
-            <h4>📜 RECENT MATCH TELEMETRY</h4>
-            <table class="studio-table">
-              <thead><tr><th>RESULT</th><th>OPPONENT</th><th>FACTION</th><th>MMR Δ</th></tr></thead>
-              <tbody id="history-tbody"></tbody>
-            </table>
+        <!-- Primary Play CTA & Live Queue Status -->
+        <div class="lobby-cta-stack">
+          <button id="btn-play-ranked" class="btn-mega-play">
+            <span class="play-main">⚡ PLAY RANKED ARENA</span>
+            <span class="play-sub" id="net-status-label">GLOBAL AUTO-MATCHMAKING • ZERO ROOM CODES</span>
+          </button>
+          <div class="quick-modes-row">
+            <button id="btn-quick-friend" class="btn-glass">⚔️ CHALLENGE FRIEND</button>
+            <button id="btn-quick-inspect" class="btn-glass">🔍 INSPECT 24 ROSTER</button>
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 2: FULLSCREEN TACTICAL BATTLE ARENA (ZERO PAGE SCROLL)        -->
+    <!-- ================================================================== -->
+    <section id="view-battle" class="screen-view">
+      <!-- Compact Match Telemetry Subheader -->
+      <div class="battle-topbar">
+        <div class="vs-pill">
+          <span class="vs-label">VS</span>
+          <strong id="battle-opp-name">Valkyrie_IX</strong>
+          <span id="battle-opp-elo" class="opp-mmr">(1,240)</span>
+        </div>
+
+        <div id="turn-pill" class="turn-indicator your-turn">YOUR TURN</div>
+
+        <div class="suspect-counters">
+          <span class="s-count cyan" title="Your Remaining Suspects">YOU: <b id="you-rem">24</b></span>
+          <span class="s-count gold" title="Enemy Remaining Suspects">FOE: <b id="opp-rem">24</b></span>
+          <span class="timer-pill" id="battle-timer">30s</span>
+          <button id="btn-leave-match" class="btn-mini-exit" title="Forfeit / Return to Lobby">✕</button>
+        </div>
+      </div>
+
+      <!-- Live Combat Ticker -->
+      <div class="combat-ticker" id="combat-ticker">
+        <span>📡 Tactical link established. Select a trait below to interrogate the enemy matrix.</span>
+      </div>
+
+      <!-- 24-Unit High-Density Interactive Holo Grid -->
+      <div class="arena-grid-wrapper">
+        <div id="battle-grid" class="battle-grid"></div>
+      </div>
+
+      <!-- Tactile Bottom Command & Trait Chip Dock (No <select> Dropdowns!) -->
+      <div class="battle-command-dock">
+        <!-- Left: Your Classified Secret Operative + Ultimate Button -->
+        <div class="secret-dock-box">
+          <div id="my-secret-mini" class="secret-mini-card" title="Tap to inspect your Operative">
+            <img id="my-secret-img" src="" alt="Secret Unit" />
+            <div class="secret-mini-meta">
+              <small>YOUR OPERATIVE</small>
+              <strong id="my-secret-name">Spiked Tortoise</strong>
+              <span id="my-secret-traits">Ironclad • Terra</span>
+            </div>
+          </div>
+          <button id="btn-fire-ultimate" class="btn-ultimate" disabled>
+            <span>⚡ ULTIMATE</span>
+            <small id="ult-name-label">READY</small>
+          </button>
+        </div>
+
+        <!-- Right: Interactive Category Pills + Trait Value Chips + Fire Scan -->
+        <div class="scanner-dock-box">
+          <div class="cat-tabs" id="scanner-cat-tabs">
+            <button class="cat-tab active" data-cat="faction">FACTION</button>
+            <button class="cat-tab" data-cat="species">SPECIES</button>
+            <button class="cat-tab" data-cat="armor">ARMOR</button>
+            <button class="cat-tab" data-cat="weapon">WEAPON</button>
+            <button class="cat-tab" data-cat="element">ELEMENT</button>
+          </div>
+
+          <div class="val-chips-row" id="scanner-val-chips"></div>
+
+          <div class="action-buttons-row">
+            <button id="btn-fire-scan" class="btn-action-scan" disabled>
+              📡 SCAN TRAIT: <span id="selected-trait-preview">Ironclad</span>
+            </button>
+            <button id="btn-toggle-accuse" class="btn-action-accuse" disabled>
+              🎯 ACCUSE
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 3: 24-OPERATIVE HOLO COLLECTION GALLERY                       -->
+    <!-- ================================================================== -->
+    <section id="view-collection" class="screen-view">
+      <div class="subview-header">
+        <h2>24 OPERATIVE CODEX & 3D HOLO GALLERY</h2>
+        <p>Tap any operative to inspect full-resolution artwork, lore, and faction active ultimate.</p>
+      </div>
+      <div id="collection-grid" class="collection-grid"></div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 4: FRIENDS NETWORK & RANKED ELO LEADERBOARD                   -->
+    <!-- ================================================================== -->
+    <section id="view-social" class="screen-view">
+      <div class="social-split">
+        <div class="glass-panel">
+          <h3>👥 FRIENDS & DIRECT DUEL CHALLENGES</h3>
+          <div class="form-row">
+            <input type="text" id="input-callsign" class="neon-input" placeholder="Your Callsign..." maxlength="16" />
+            <button id="btn-save-callsign" class="btn-neon cyan">SAVE ID</button>
+          </div>
+          <div class="form-row">
+            <input type="text" id="input-friend" class="neon-input" placeholder="Add Friend Callsign..." maxlength="16" />
+            <button id="btn-add-friend" class="btn-neon gold">+ ADD FRIEND</button>
+          </div>
+          <div id="friends-list" class="scroll-list"></div>
+        </div>
+
+        <div class="glass-panel">
+          <h3>🏆 GLOBAL RANKED ELO LADDER & HISTORY</h3>
+          <div id="ranked-summary-bar" class="ranked-bar">GOLD I — 1,200 MMR (0W - 0L)</div>
+          <div id="leaderboard-list" class="scroll-list compact"></div>
+          <h4 class="sub-h4">RECENT MATCH TELEMETRY</h4>
+          <div id="history-list" class="scroll-list compact"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 5: SEASON PASS & COSMETIC ARMORY                              -->
+    <!-- ================================================================== -->
+    <section id="view-shop" class="screen-view">
+      <div class="social-split">
+        <div class="glass-panel">
+          <div class="pass-header-row">
+            <div>
+              <h3>🎖️ SEASON 01: SOVEREIGN HORIZON PASS</h3>
+              <p>SEASON XP: <strong id="ui-pass-xp">400</strong> / 1,200</p>
+            </div>
+            <button id="btn-buy-pass" class="btn-neon gold">ELITE PASS (150 ❖)</button>
+          </div>
+          <div id="pass-tiers-container" class="scroll-list"></div>
+        </div>
+
+        <div class="glass-panel">
+          <h3>💎 HOLOGRAPHIC ARMORY STORE</h3>
+          <div id="armory-items-container" class="scroll-list"></div>
+          <div class="legal-footer-links">
+            <a href="privacy.html" target="_blank">Privacy Policy</a> •
+            <a href="terms.html" target="_blank">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM STUDIO NAVIGATION DOCK -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="nav-tab active" data-view="view-lobby">
+        <span class="nav-ico">🏠</span><small>HOME</small>
+      </button>
+      <button class="nav-tab" data-view="view-battle">
+        <span class="nav-ico">⚔️</span><small>ARENA</small>
+      </button>
+      <button class="nav-tab" data-view="view-collection">
+        <span class="nav-ico">🃏</span><small>ROSTER (24)</small>
+      </button>
+      <button class="nav-tab" data-view="view-social">
+        <span class="nav-ico">🏆</span><small>RANKED & FRIENDS</small>
+      </button>
+      <button class="nav-tab" data-view="view-shop">
+        <span class="nav-ico">💎</span><small>PASS & SHOP</small>
+      </button>
+    </nav>
+  </div>
+
+  <!-- MODAL: Matchmaking Radar Queue -->
+  <div id="modal-queue" class="modal-overlay hidden">
+    <div class="modal-card queue-card">
+      <div class="radar-circle"><div class="radar-beam"></div></div>
+      <h3>SEARCHING GLOBAL ARENA...</h3>
+      <p>Pairing via Cloud Broker (MMR ±100)</p>
+      <div class="queue-clock" id="queue-clock">00:00</div>
+      <button id="btn-cancel-queue" class="btn-neon red">CANCEL SEARCH</button>
     </div>
   </div>
 
-  <!-- Season Pass Modal -->
-  <div id="modal-pass" class="modal-backdrop">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h2>SEASON 01 // OBSIDIAN HORIZON PASS</h2>
-        <button class="modal-close" data-close="modal-pass">✕</button>
+  <!-- MODAL: Full-Res 3D Card Inspector -->
+  <div id="modal-inspect" class="modal-overlay hidden">
+    <div class="modal-card inspect-card">
+      <div id="inspect-card-mount" class="holo-card showcase-size"></div>
+      <div class="inspect-ability-box">
+        <strong id="inspect-ult-title">FACTION ULTIMATE</strong>
+        <p id="inspect-ult-desc"></p>
       </div>
-      <div class="modal-body">
-        <p style="margin-bottom:1rem;">SEASON XP: <strong id="pass-xp-val">400</strong> / 1,200</p>
-        <div id="pass-tiers-list" class="pass-tiers-grid"></div>
-      </div>
+      <button id="btn-close-inspect" class="btn-neon cyan">CLOSE INSPECTOR</button>
     </div>
   </div>
 
-  <!-- Armory Modal -->
-  <div id="modal-store" class="modal-backdrop">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h2>3D ARMORY & SHADER COSMETICS</h2>
-        <button class="modal-close" data-close="modal-store">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="store-items-grid" class="store-grid"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Match Result Modal -->
-  <div id="modal-result" class="modal-backdrop">
-    <div class="modal-window queue-window">
-      <div class="modal-header"><h2 id="result-title">OPERATION CONCLUDED</h2></div>
-      <div class="modal-body queue-body">
-        <p id="result-subtitle"></p>
-        <div id="result-elo-box" class="elo-delta-badge">+20 MMR</div>
-        <button id="btn-rematch" class="studio-btn primary-cta">⚡ QUEUE NEXT RANKED MATCH</button>
-        <button id="btn-close-result" class="studio-btn">CLOSE</button>
+  <!-- MODAL: Match Result Victory / Defeat Screen -->
+  <div id="modal-result" class="modal-overlay hidden">
+    <div class="modal-card result-card">
+      <div class="result-badge" id="result-badge">VICTORY</div>
+      <h2 id="result-heading">TARGET NEUTRALIZED</h2>
+      <p id="result-details"></p>
+      <div class="result-elo-pill" id="result-elo-pill">+24 MMR (1,224 ELO)</div>
+      <div class="result-rewards">+200 ◈ CREDITS  •  +150 SEASON XP</div>
+      <div class="result-btns">
+        <button id="btn-play-again" class="btn-neon cyan">⚡ PLAY AGAIN</button>
+        <button id="btn-result-lobby" class="btn-glass">HOME LOBBY</button>
       </div>
     </div>
   </div>
 
   <script src="js/roster.js"></script>
-  <script src="js/renderer3d.js"></script>
+  <script src="js/artEngine.js"></script>
+  <script src="js/vfxEngine.js"></script>
   <script src="js/audio.js"></script>
+  <script src="js/network.js"></script>
   <script src="js/gameController.js"></script>
 </body>
 </html>
