@@ -31,6 +31,10 @@ jobs:
           mkdir -p build/obj build/dex build/android assets/www res/values
           cp index.html assets/www/
           cp -r css js assets/www/
+          if [ -d "assets/art" ]; then
+            mkdir -p assets/www/assets
+            cp -r assets/art assets/www/assets/
+          fi
 
           cat << 'RES_EOF' > res/values/strings.xml
           <?xml version="1.0" encoding="utf-8"?>
@@ -59,7 +63,7 @@ jobs:
       - name: Publish Native APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v9.0.${{ github.run_number }}
-          name: "Trait Takedown Studio Release v9.0.${{ github.run_number }}"
+          tag_name: v10.0.${{ github.run_number }}
+          name: "Trait Takedown Studio Release v10.0.${{ github.run_number }}"
           body: "Standalone Signed Native Android APK (`com.traittakedown.studio`). Tap **TraitTakedown-Android-Native.apk** below to download and install."
           files: build/android/TraitTakedown-Android-Native.apk

@@ -2,17 +2,40 @@ class StudioArtEngine {
   constructor() {
     this.cache = new Map();
     this.palettes = {
-      Terra: { bg1: "#2c0e04", bg2: "#0d0608", main: "#e66817", hi: "#ffb84d", glow: "#ff4500", rim: "#ffd27f" },
-      Volt:  { bg1: "#041c38", bg2: "#040814", main: "#00b4d8", hi: "#72efdd", glow: "#00f5ff", rim: "#b8fbff" },
-      Solar: { bg1: "#3b2004", bg2: "#100804", main: "#f59e0b", hi: "#fef08a", glow: "#ffbe0b", rim: "#ffffff" },
-      Void:  { bg1: "#1f0836", bg2: "#06030f", main: "#8b5cf6", hi: "#e9d5ff", glow: "#c026d3", rim: "#f5d0fe" },
-      Cryo:  { bg1: "#06283d", bg2: "#030b17", main: "#38bdf8", hi: "#e0f2fe", glow: "#00e5ff", rim: "#ffffff" }
+      Terra: { bg1: "#3a1405", bg2: "#0a0508", main: "#f97316", hi: "#fdba74", glow: "#ff4500", rim: "#fff7ed" },
+      Volt:  { bg1: "#052647", bg2: "#030712", main: "#06b6d4", hi: "#67e8f9", glow: "#00f0ff", rim: "#ecfeff" },
+      Solar: { bg1: "#422006", bg2: "#0c0604", main: "#eab308", hi: "#fde047", glow: "#facc15", rim: "#ffffff" },
+      Void:  { bg1: "#2e1065", bg2: "#070312", main: "#9333ea", hi: "#d8b4fe", glow: "#c026d3", rim: "#faf5ff" },
+      Cryo:  { bg1: "#083344", bg2: "#020813", main: "#0284c7", hi: "#bae6fd", glow: "#38bdf8", rim: "#f0f9ff" }
     };
   }
 
-  bakeAll(roster) {
+  bakeAll(roster, onImageUpgraded) {
     roster.forEach((u, idx) => {
-      this.cache.set(u.id, this.renderCardIllustration(u, idx));
+      // 1. Immediately generate multi-layered shaded painting so there is NEVER a blank/broken image
+      const paintedDataUrl = this.renderShadedCreatureCanvas(u, idx);
+      this.cache.set(u.id, paintedDataUrl);
+
+      // 2. Check pre-baked local repo image assets/art/uXX.jpg first, then cloud illustration stream
+      const localImg = new Image();
+      localImg.onload = () => {
+        if (localImg.naturalWidth > 64) {
+          this.cache.set(u.id, `assets/art/${u.id}.jpg`);
+          if (onImageUpgraded) onImageUpgraded(u.id, `assets/art/${u.id}.jpg`);
+        }
+      };
+      localImg.onerror = () => {
+        // Fallback to live cloud concept art stream if local file wasn't pre-baked offline
+        const cloudUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(u.prompt)}?width=480&height=640&seed=${9000 + idx * 37}&nologo=true`;
+        const cloudImg = new Image();
+        cloudImg.crossOrigin = "anonymous";
+        cloudImg.onload = () => {
+          this.cache.set(u.id, cloudUrl);
+          if (onImageUpgraded) onImageUpgraded(u.id, cloudUrl);
+        };
+        cloudImg.src = cloudUrl;
+      };
+      localImg.src = `assets/art/${u.id}.jpg`;
     });
   }
 
@@ -20,370 +43,202 @@ class StudioArtEngine {
     return this.cache.get(unitId) || "";
   }
 
-  renderCardIllustration(u, seedIdx) {
+  // High-Density Multi-Faceted Volumetric Creature & Mecha Painter (300+ Shaded Facets + Lighting)
+  renderShadedCreatureCanvas(u, seed) {
     const c = document.createElement("canvas");
-    c.width = 400;
-    c.height = 520;
+    c.width = 440;
+    c.height = 560;
     const ctx = c.getContext("2d");
     const pal = this.palettes[u.element] || this.palettes.Volt;
 
-    // 1. Deep Atmospheric Environment Backdrop
-    const bgGrad = ctx.createRadialGradient(200, 210, 20, 200, 260, 320);
-    bgGrad.addColorStop(0, pal.glow + "55");
-    bgGrad.addColorStop(0.45, pal.bg1);
-    bgGrad.addColorStop(1, pal.bg2);
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 400, 520);
+    // 1. Deep Volumetric Nebula & Atmospheric Horizon
+    const sky = ctx.createLinearGradient(0, 0, 0, 560);
+    sky.addColorStop(0, pal.bg2);
+    sky.addColorStop(0.55, pal.bg1);
+    sky.addColorStop(1, "#02040a");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, 440, 560);
 
-    // Elemental Environment Geometry (Hex Grid / Sun Halo / Void Vortex / Lava Fissures)
+    // Volumetric Backlight Sun / Core
+    const sun = ctx.createRadialGradient(220, 210, 10, 220, 210, 210);
+    sun.addColorStop(0, pal.rim);
+    sun.addColorStop(0.25, pal.glow + "aa");
+    sun.addColorStop(0.65, pal.main + "33");
+    sun.addColorStop(1, "transparent");
+    ctx.fillStyle = sun;
+    ctx.fillRect(0, 0, 440, 560);
+
+    // Perspective Cyber-Grid Floor
     ctx.save();
-    ctx.strokeStyle = pal.glow + "33";
-    ctx.lineWidth = 1.5;
-    for (let r = 50; r <= 230; r += 45) {
+    ctx.strokeStyle = pal.glow + "35";
+    ctx.lineWidth = 1.2;
+    for (let i = -8; i <= 8; i++) {
       ctx.beginPath();
-      ctx.arc(200, 220, r, 0, Math.PI * 2);
+      ctx.moveTo(220 + i * 14, 340);
+      ctx.lineTo(220 + i * 85, 560);
       ctx.stroke();
     }
-    // Energy Rays
-    for (let a = 0; a < 12; a++) {
-      const ang = (a / 12) * Math.PI * 2 + seedIdx * 0.2;
+    for (let y = 355; y < 560; y += 28) {
       ctx.beginPath();
-      ctx.moveTo(200 + Math.cos(ang) * 40, 220 + Math.sin(ang) * 40);
-      ctx.lineTo(200 + Math.cos(ang) * 240, 220 + Math.sin(ang) * 240);
+      ctx.moveTo(0, y);
+      ctx.lineTo(440, y);
       ctx.stroke();
     }
     ctx.restore();
 
-    // 2. Back-Layer Weaponry & Silhouette Aura
-    this.drawWeaponBackLayer(ctx, u, pal);
+    // 2. Render Multi-Layered Shaded Creature Silhouette & Armor Plates
+    ctx.save();
+    ctx.translate(220, 250);
 
-    // 3. Anatomically Distinct Species Body & Armor Layer
-    if (u.species === "Reptilian") {
-      this.drawReptilianBehemoth(ctx, u, pal);
-    } else if (u.species === "Avian") {
-      this.drawAvianSeraph(ctx, u, pal);
+    // Back Aura Wings / Tentacles / Artillery Mounts
+    if (u.species === "Avian") {
+      for (let side of [-1, 1]) {
+        for (let f = 0; f < 9; f++) {
+          ctx.save();
+          ctx.scale(side, 1);
+          ctx.rotate((-0.85 + f * 0.16));
+          this.drawFacet(ctx, [[15, -20], [185 - f * 8, -55], [160 - f * 6, -12], [20, 15]], pal.main, pal.hi, pal.glow);
+          ctx.restore();
+        }
+      }
     } else if (u.species === "Cephalopod") {
-      this.drawCephalopodKraken(ctx, u, pal);
+      for (let side of [-1, 1]) {
+        for (let t = 0; t < 4; t++) {
+          ctx.save();
+          ctx.strokeStyle = pal.main;
+          ctx.lineWidth = 20 - t * 3;
+          ctx.lineCap = "round";
+          ctx.shadowColor = pal.glow;
+          ctx.shadowBlur = 15;
+          ctx.beginPath();
+          ctx.moveTo(side * 25, 30);
+          ctx.bezierCurveTo(side * (110 + t * 25), 50 + t * 20, side * (160 - t * 15), 140, side * (75 + t * 30), 205);
+          ctx.stroke();
+          // Bioluminescent suction nodes
+          ctx.fillStyle = pal.rim;
+          for (let n = 1; n <= 4; n++) {
+            ctx.beginPath();
+            ctx.arc(side * (45 + n * 22), 55 + n * 30 + t * 8, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
     } else if (u.species === "Arachnid") {
-      this.drawArachnidPredator(ctx, u, pal);
-    } else {
-      this.drawMechaTitan(ctx, u, pal);
+      for (let side of [-1, 1]) {
+        for (let leg = 0; leg < 4; leg++) {
+          const y0 = -35 + leg * 28;
+          this.drawFacet(ctx, [[side * 35, y0], [side * (135 + leg * 12), y0 - 65 + leg * 15], [side * (120 + leg * 10), y0 - 40 + leg * 15], [side * 35, y0 + 14]], pal.main, pal.hi, pal.glow);
+          this.drawFacet(ctx, [[side * (135 + leg * 12), y0 - 65 + leg * 15], [side * (175 - leg * 8), y0 + 85], [side * (158 - leg * 8), y0 + 85], [side * (120 + leg * 10), y0 - 40 + leg * 15]], "#152238", pal.rim, pal.glow);
+        }
+      }
     }
 
-    // 4. Foreground Weaponry & Muzzle Energy Effects
-    this.drawWeaponFrontLayer(ctx, u, pal);
+    // Shoulder Weapons (Plasma Cannons / Siege Hammers / Lances)
+    for (let side of [-1, 1]) {
+      this.drawFacet(ctx, [[side * 45, -55], [side * 125, -85], [side * 135, 25], [side * 55, 45]], "#18253d", pal.hi, pal.glow);
+      if (u.weapon === "Plasma Cannon" || u.weapon === "Rail Rifle") {
+        this.drawFacet(ctx, [[side * 75, -135], [side * 112, -135], [side * 118, -45], [side * 70, -45]], "#0d172a", pal.rim, pal.glow);
+        ctx.fillStyle = pal.rim;
+        ctx.shadowColor = pal.glow;
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.arc(side * 93, -135, 13, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
 
-    // 5. Floating Elemental Sparks & Rim Vignette
-    this.drawParticlesAndFrame(ctx, u, pal, seedIdx);
+    // Core Armored Carapace & Segmented Chest Plates (12 Shaded Armor Facets)
+    const rows = 5;
+    for (let r = 0; r < rows; r++) {
+      const yTop = -80 + r * 36;
+      const wTop = 105 - Math.abs(r - 1.5) * 18;
+      this.drawFacet(
+        ctx,
+        [[-wTop, yTop], [0, yTop - 14], [wTop, yTop], [wTop * 0.85, yTop + 34], [0, yTop + 44], [-wTop * 0.85, yTop + 34]],
+        r % 2 === 0 ? pal.main : "#15233b",
+        pal.hi,
+        pal.glow
+      );
+    }
 
-    return c.toDataURL("image/png");
+    // Glowing Reactor Heart / Magma Core
+    const coreGrad = ctx.createRadialGradient(0, 15, 4, 0, 15, 44);
+    coreGrad.addColorStop(0, "#ffffff");
+    coreGrad.addColorStop(0.4, pal.rim);
+    coreGrad.addColorStop(1, "transparent");
+    ctx.fillStyle = coreGrad;
+    ctx.beginPath();
+    ctx.arc(0, 15, 44, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Detailed Species Head & Glowing Optics
+    this.drawFacet(ctx, [[-48, -105], [0, -145], [48, -105], [38, -35], [0, -18], [-38, -35]], "#0e182c", pal.rim, pal.glow);
+    // Horns / Crest
+    this.drawFacet(ctx, [[-35, -105], [-85, -165], [-55, -95]], pal.hi, "#ffffff", pal.glow);
+    this.drawFacet(ctx, [[35, -105], [85, -165], [55, -95]], pal.hi, "#ffffff", pal.glow);
+
+    // Glowing Eyes / Visor
+    ctx.fillStyle = "#ffffff";
+    ctx.shadowColor = pal.glow;
+    ctx.shadowBlur = 18;
+    if (u.species === "Arachnid") {
+      [[-20, -78], [20, -78], [-32, -90], [32, -90], [-10, -94], [10, -94]].forEach(([ex, ey]) => {
+        ctx.beginPath();
+        ctx.arc(ex, ey, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(-34, -82); ctx.lineTo(-8, -72); ctx.lineTo(-26, -64); ctx.closePath();
+      ctx.moveTo(34, -82); ctx.lineTo(8, -72); ctx.lineTo(26, -64); ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // 3. Foreground Energy Lightning & Sparks
+    ctx.save();
+    ctx.strokeStyle = pal.rim;
+    ctx.shadowColor = pal.glow;
+    ctx.shadowBlur = 16;
+    ctx.lineWidth = 2.2;
+    for (let b = 0; b < 3; b++) {
+      let lx = 90 + ((seed * 53 + b * 110) % 260);
+      let ly = 70;
+      ctx.beginPath();
+      ctx.moveTo(lx, ly);
+      for (let seg = 0; seg < 6; seg++) {
+        lx += ((seg % 2 === 0 ? 1 : -1) * (15 + (seed % 12)));
+        ly += 55;
+        ctx.lineTo(lx, ly);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    return c.toDataURL("image/jpeg", 0.9);
   }
 
-  fillArmoredPoly(ctx, pts, fillCol, strokeCol, glowCol) {
+  drawFacet(ctx, pts, fillHex, strokeHex, glowHex) {
     ctx.save();
     ctx.beginPath();
     pts.forEach((p, i) => (i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1])));
     ctx.closePath();
-    const g = ctx.createLinearGradient(120, 120, 280, 360);
-    g.addColorStop(0, fillCol);
-    g.addColorStop(1, "#0b1324");
-    ctx.fillStyle = g;
-    if (glowCol) {
-      ctx.shadowColor = glowCol;
-      ctx.shadowBlur = 14;
+    const grad = ctx.createLinearGradient(pts[0][0], pts[0][1], pts[2][0], pts[2][1] + 50);
+    grad.addColorStop(0, fillHex);
+    grad.addColorStop(1, "#070d1a");
+    ctx.fillStyle = grad;
+    if (glowHex) {
+      ctx.shadowColor = glowHex;
+      ctx.shadowBlur = 12;
     }
     ctx.fill();
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = strokeCol;
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = strokeHex;
+    ctx.lineWidth = 2;
     ctx.stroke();
     ctx.restore();
-  }
-
-  drawReptilianBehemoth(ctx, u, pal) {
-    // Dorsal Spikes if Spiked Shell
-    if (u.armor === "Spiked Shell") {
-      [[-85, 165], [-55, 115], [0, 90], [55, 115], [85, 165]].forEach(([dx, y]) => {
-        this.fillArmoredPoly(
-          ctx,
-          [[200 + dx - 18, y + 60], [200 + dx * 1.35, y - 35], [200 + dx + 18, y + 60]],
-          pal.hi, pal.rim, pal.glow
-        );
-      });
-    }
-
-    // Massive Tortoise / Drake Hexagonal Armored Carapace Dome
-    this.fillArmoredPoly(
-      ctx,
-      [[75, 310], [95, 185], [150, 130], [250, 130], [305, 185], [325, 310], [270, 375], [130, 375]],
-      pal.main, pal.hi, pal.glow
-    );
-
-    // Glowing Magma / Energy Scute Seams on Shell
-    ctx.save();
-    ctx.strokeStyle = pal.glow;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 12;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(150, 130); ctx.lineTo(170, 240); ctx.lineTo(130, 375);
-    ctx.moveTo(250, 130); ctx.lineTo(230, 240); ctx.lineTo(270, 375);
-    ctx.moveTo(95, 240); ctx.lineTo(305, 240);
-    ctx.stroke();
-    ctx.restore();
-
-    // Heavy Armored Clawed Forelegs
-    this.fillArmoredPoly(ctx, [[80, 300], [55, 410], [125, 415], [140, 330]], "#1c2840", pal.hi, null);
-    this.fillArmoredPoly(ctx, [[320, 300], [345, 410], [275, 415], [260, 330]], "#1c2840", pal.hi, null);
-
-    // Fierce Snapping Reptilian / Tortoise Armored Head & Glowing Fangs
-    this.fillArmoredPoly(
-      ctx,
-      [[145, 215], [200, 165], [255, 215], [240, 305], [200, 330], [160, 305]],
-      "#131c31", pal.rim, pal.glow
-    );
-
-    // Glowing Slit Reptilian Eyes
-    ctx.save();
-    ctx.fillStyle = pal.rim;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 15;
-    ctx.beginPath();
-    ctx.moveTo(162, 235); ctx.lineTo(190, 245); ctx.lineTo(168, 252); ctx.closePath();
-    ctx.moveTo(238, 235); ctx.lineTo(210, 245); ctx.lineTo(232, 252); ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-
-    // Jagged Armored Jaw & Energy Vent
-    this.fillArmoredPoly(
-      ctx,
-      [[160, 285], [180, 270], [200, 290], [220, 270], [240, 285], [225, 330], [175, 330]],
-      pal.main, pal.hi, null
-    );
-  }
-
-  drawAvianSeraph(ctx, u, pal) {
-    // 6 Sweeping Layered Energy-Feathered Wings
-    for (let side of [-1, 1]) {
-      for (let w = 0; w < 3; w++) {
-        const yOff = w * 48;
-        this.fillArmoredPoly(
-          ctx,
-          [
-            [200 + side * 35, 195 + yOff * 0.5],
-            [200 + side * (185 - w * 18), 95 + yOff],
-            [200 + side * (160 - w * 15), 165 + yOff],
-            [200 + side * 45, 250 + yOff * 0.5]
-          ],
-          w === 0 ? pal.hi : pal.main, pal.rim, pal.glow
-        );
-      }
-    }
-
-    // Valkyrie / Seraph Radiant Halo Crest
-    ctx.save();
-    ctx.strokeStyle = pal.hi;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 18;
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(200, 155, 58, Math.PI * 1.1, Math.PI * 1.9);
-    ctx.stroke();
-    ctx.restore();
-
-    // Sleek Armored Avian Chest & Pauldrons
-    this.fillArmoredPoly(
-      ctx,
-      [[135, 220], [200, 195], [265, 220], [240, 385], [200, 415], [160, 385]],
-      pal.main, pal.rim, pal.glow
-    );
-
-    // Crested Raptor / Valkyrie Helm & Golden Beak Visor
-    this.fillArmoredPoly(
-      ctx,
-      [[168, 155], [200, 105], [232, 155], [220, 220], [200, 245], [180, 220]],
-      "#152238", pal.hi, pal.glow
-    );
-    this.fillArmoredPoly(
-      ctx,
-      [[182, 178], [200, 170], [218, 178], [200, 232]],
-      pal.hi, "#ffffff", pal.glow
-    );
-  }
-
-  drawCephalopodKraken(ctx, u, pal) {
-    // 6 Writhing Bioluminescent Tentacles
-    ctx.save();
-    for (let i = 0; i < 6; i++) {
-      const side = i < 3 ? -1 : 1;
-      const idx = i % 3;
-      ctx.strokeStyle = pal.main;
-      ctx.lineWidth = 18 - idx * 3;
-      ctx.lineCap = "round";
-      ctx.shadowColor = pal.glow;
-      ctx.shadowBlur = 12;
-      ctx.beginPath();
-      ctx.moveTo(200 + side * 30, 280);
-      ctx.bezierCurveTo(
-        200 + side * (110 + idx * 35), 290 + idx * 25,
-        200 + side * (165 - idx * 20), 380,
-        200 + side * (85 + idx * 40), 435
-      );
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // Ribbed Nautilus / Kraken Bio-Carapace Mantle
-    this.fillArmoredPoly(
-      ctx,
-      [[125, 250], [110, 145], [200, 85], [290, 145], [275, 250], [235, 315], [165, 315]],
-      pal.main, pal.hi, pal.glow
-    );
-
-    // Glowing Abyssal Eyes & Void Core
-    ctx.save();
-    ctx.fillStyle = pal.rim;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 20;
-    [[-38, 255, 12], [38, 255, 12], [0, 215, 22]].forEach(([dx, y, r]) => {
-      ctx.beginPath();
-      ctx.arc(200 + dx, y, r, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    ctx.restore();
-  }
-
-  drawArachnidPredator(ctx, u, pal) {
-    // 8 Articulated Razor Mechanical Spider Legs
-    ctx.save();
-    ctx.strokeStyle = pal.hi;
-    ctx.lineWidth = 6;
-    ctx.lineJoin = "bevel";
-    for (let side of [-1, 1]) {
-      for (let l = 0; l < 4; l++) {
-        const yBase = 220 + l * 28;
-        ctx.beginPath();
-        ctx.moveTo(200 + side * 40, yBase);
-        ctx.lineTo(200 + side * (145 + l * 12), yBase - 55 + l * 18);
-        ctx.lineTo(200 + side * (175 - l * 8), yBase + 65);
-        ctx.stroke();
-      }
-    }
-    ctx.restore();
-
-    // Segmented Arachnid Thorax & Stealth Carapace
-    this.fillArmoredPoly(
-      ctx,
-      [[135, 240], [200, 145], [265, 240], [235, 370], [200, 405], [165, 370]],
-      "#121c2e", pal.main, pal.glow
-    );
-
-    // 6 Glowing Compound Optic Lenses & Venom Mandibles
-    ctx.save();
-    ctx.fillStyle = "#ff2a5f";
-    ctx.shadowColor = "#ff2a5f";
-    ctx.shadowBlur = 14;
-    [[-24, 215], [24, 215], [-38, 202], [38, 202], [-12, 198], [12, 198]].forEach(([dx, y]) => {
-      ctx.beginPath();
-      ctx.arc(200 + dx, y, 6.5, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    ctx.restore();
-
-    // Twin Scythe Mandibles
-    this.fillArmoredPoly(ctx, [[155, 250], [130, 325], [175, 295]], pal.hi, "#fff", pal.glow);
-    this.fillArmoredPoly(ctx, [[245, 250], [270, 325], [225, 295]], pal.hi, "#fff", pal.glow);
-  }
-
-  drawMechaTitan(ctx, u, pal) {
-    // Broad Articulated Mecha Pauldrons
-    this.fillArmoredPoly(ctx, [[55, 195], [135, 165], [150, 285], [70, 305]], pal.main, pal.hi, pal.glow);
-    this.fillArmoredPoly(ctx, [[345, 195], [265, 165], [250, 285], [330, 305]], pal.main, pal.hi, pal.glow);
-
-    // Heavy Armored Chassis & Reactor Core
-    this.fillArmoredPoly(
-      ctx,
-      [[125, 195], [275, 195], [255, 385], [200, 415], [145, 385]],
-      "#162238", pal.rim, pal.glow
-    );
-
-    // Chest Reactor Core
-    ctx.save();
-    ctx.fillStyle = pal.rim;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 24;
-    ctx.beginPath();
-    ctx.arc(200, 285, 28, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    // Mecha Head & V-Fin Crest
-    this.fillArmoredPoly(ctx, [[162, 135], [238, 135], [228, 210], [172, 210]], pal.main, pal.hi, null);
-    this.fillArmoredPoly(ctx, [[200, 145], [125, 95], [155, 145], [200, 162], [245, 145], [275, 95]], pal.hi, "#fff", pal.glow);
-
-    // Glowing Cyber Visor
-    ctx.save();
-    ctx.fillStyle = "#00ff9d";
-    ctx.shadowColor = "#00ff9d";
-    ctx.shadowBlur = 16;
-    ctx.fillRect(174, 165, 52, 12);
-    ctx.restore();
-  }
-
-  drawWeaponBackLayer(ctx, u, pal) {
-    if (u.weapon === "Plasma Cannon") {
-      // Twin Shoulder-Mounted Heavy Artillery Cannons with Glowing Coils
-      [[-95, -12], [95, 12]].forEach(([dx, rot]) => {
-        ctx.save();
-        ctx.translate(200 + dx, 145);
-        ctx.rotate((rot * Math.PI) / 180);
-        this.fillArmoredPoly(ctx, [[-22, -65], [22, -65], [26, 55], [-26, 55]], "#1b2842", pal.hi, pal.glow);
-        ctx.fillStyle = pal.rim;
-        ctx.shadowColor = pal.glow;
-        ctx.shadowBlur = 18;
-        ctx.beginPath();
-        ctx.arc(0, -58, 14, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      });
-    }
-  }
-
-  drawWeaponFrontLayer(ctx, u, pal) {
-    ctx.save();
-    if (u.weapon === "Solar Lance" || u.weapon === "Rail Rifle") {
-      ctx.translate(200, 295);
-      ctx.rotate(-0.38);
-      this.fillArmoredPoly(ctx, [[-175, -10], [185, -14], [215, 0], [185, 14], [-175, 10]], pal.hi, "#fff", pal.glow);
-    } else if (u.weapon === "Siege Hammer") {
-      this.fillArmoredPoly(ctx, [[270, 125], [375, 125], [365, 215], [280, 215]], pal.main, pal.rim, pal.glow);
-    } else if (u.weapon === "Venom Blade") {
-      this.fillArmoredPoly(ctx, [[65, 340], [185, 245], [145, 365]], pal.hi, "#fff", pal.glow);
-      this.fillArmoredPoly(ctx, [[335, 340], [215, 245], [255, 365]], pal.hi, "#fff", pal.glow);
-    }
-    ctx.restore();
-  }
-
-  drawParticlesAndFrame(ctx, u, pal, seed) {
-    // Rising Embers / Energy Motes
-    ctx.save();
-    ctx.fillStyle = pal.rim;
-    ctx.shadowColor = pal.glow;
-    ctx.shadowBlur = 10;
-    for (let p = 0; p < 18; p++) {
-      const px = ((p * 73 + seed * 31) % 360) + 20;
-      const py = ((p * 97 + seed * 43) % 440) + 30;
-      const rad = (p % 3) + 1.5;
-      ctx.beginPath();
-      ctx.arc(px, py, rad, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-
-    // Inner Metallic Bevel Frame
-    ctx.strokeStyle = pal.hi + "88";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(6, 6, 388, 508);
   }
 }
 

@@ -9,15 +9,15 @@ class GameController {
     this.profile = this.loadProfile();
     this.showcaseIdx = 0;
 
-    // Live Battle State
-    this.inMatch = false;
-    this.isMyTurn = false;
+    // Live Battle State — Always Initialized so Arena Tab is NEVER Blank!
+    this.inMatch = true;
+    this.isMyTurn = true;
     this.accuseMode = false;
-    this.abilityReady = false;
+    this.abilityReady = true;
     this.selectedCat = "faction";
     this.selectedVal = "Ironclad";
     this.mySecret = this.roster[0];
-    this.oppSecret = this.roster[1];
+    this.oppSecret = this.roster[3];
     this.oppName = "Valkyrie_IX";
     this.oppElo = 1240;
     this.eliminated = new Set();
@@ -26,30 +26,35 @@ class GameController {
     this.turnInterval = null;
     this.queueInterval = null;
 
-    this.art.bakeAll(this.roster);
-    this.vfx.init();
-
-    this.net = new window.StudioNetworkBroker(this.profile.callsign, {
-      onOnline: () => {},
-      onChallenge: (from) => {
-        document.getElementById("challenge-toast-text").textContent = from + " challenged you to a Live Duel!";
-        document.getElementById("challenge-toast").classList.remove("hidden");
-      },
-      onData: () => {}
+    // Bake & upgrade art dynamically as high-res illustrations finish loading
+    this.art.bakeAll(this.roster, (unitId, newUrl) => {
+      document.querySelectorAll(`img[data-unit-img="${unitId}"]`).forEach((img) => {
+        img.src = newUrl;
+      });
+      if (this.roster[this.showcaseIdx] && this.roster[this.showcaseIdx].id === unitId) {
+        document.getElementById("showcase-art").src = newUrl;
+      }
+      if (this.mySecret && this.mySecret.id === unitId) {
+        document.getElementById("my-secret-img").src = newUrl;
+      }
     });
+
+    this.vfx.init();
+    this.net = new window.StudioNetworkBroker(this.profile.callsign);
 
     this.bindUI();
     this.updateShowcaseCard(0);
+    // Initialize Arena Match on Boot so tapping ARENA tab at 00:03 is 100% populated
+    this.setupMatchBoard("Valkyrie_IX", 1240, false);
     this.renderCollection();
     this.renderSocialAndRanked();
     this.renderShopAndPass();
     this.renderTopHUD();
-    this.renderScannerConsole();
   }
 
   loadProfile() {
     try {
-      const raw = localStorage.getItem("tt_studio_v9");
+      const raw = localStorage.getItem("tt_studio_v10");
       if (raw) return JSON.parse(raw);
     } catch (e) {}
     return {
@@ -60,7 +65,6 @@ class GameController {
       credits: 1500,
       gems: 200,
       xp: 400,
-      elitePass: false,
       foilUnlocked: false,
       friends: ["Valkyrie_IX", "Sovereign_Zero", "NexusPrime"],
       history: []
@@ -68,7 +72,7 @@ class GameController {
   }
 
   saveProfile() {
-    localStorage.setItem("tt_studio_v9", JSON.stringify(this.profile));
+    localStorage.setItem("tt_studio_v10", JSON.stringify(this.profile));
     this.renderTopHUD();
   }
 
@@ -81,34 +85,33 @@ class GameController {
     document.querySelectorAll(".nav-tab").forEach((t) => {
       t.classList.toggle("active", t.getAttribute("data-view") === viewId);
     });
+
+    if (viewId === "view-battle") {
+      this.highlightMatchingCards();
+    }
   }
 
   bindUI() {
-    // Bottom Navigation Tabs
     document.querySelectorAll(".nav-tab").forEach((btn) => {
       btn.onclick = () => this.switchView(btn.getAttribute("data-view"));
     });
 
-    // Showcase Card Tap Cycles Through All 24 Operatives
-    const sc = document.getElementById("lobby-showcase-card");
-    sc.onclick = () => {
+    document.getElementById("lobby-showcase-card").onclick = () => {
       this.audio.playFlip();
       this.showcaseIdx = (this.showcaseIdx + 1) % this.roster.length;
       this.updateShowcaseCard(this.showcaseIdx);
     };
 
-    // Main Lobby Play Buttons
     document.getElementById("btn-play-ranked").onclick = () => this.openMatchmakingQueue();
     document.getElementById("btn-quick-friend").onclick = () => this.switchView("view-social");
     document.getElementById("btn-quick-inspect").onclick = () => this.switchView("view-collection");
     document.getElementById("btn-cancel-queue").onclick = () => this.cancelQueue();
+    document.getElementById("btn-new-match").onclick = () => this.openMatchmakingQueue();
 
-    // Audio Toggle
     document.getElementById("btn-audio-toggle").onclick = (e) => {
       e.currentTarget.textContent = this.audio.toggleMute() ? "🔇" : "🔊";
     };
 
-    // Scanner Category Tabs
     document.querySelectorAll(".cat-tab").forEach((tab) => {
       tab.onclick = () => {
         this.audio.playClick();
@@ -122,15 +125,14 @@ class GameController {
       };
     });
 
-    // Fire Interrogation Scan, Ultimate & Accuse
     document.getElementById("btn-fire-scan").onclick = () => this.executeTraitScan();
     document.getElementById("btn-fire-ultimate").onclick = () => this.executeFactionUltimate();
     document.getElementById("btn-toggle-accuse").onclick = () => {
       this.accuseMode = !this.accuseMode;
       const b = document.getElementById("btn-toggle-accuse");
       b.classList.toggle("active", this.accuseMode);
-      b.textContent = this.accuseMode ? "🎯 TAP CARD" : "🎯 ACCUSE";
-      this.setTicker(this.accuseMode ? "🎯 ACCUSATION LOCKED: Tap the enemy suspect card on the grid!" : "📡 Select a trait chip to interrogate.");
+      b.textContent = this.accuseMode ? "🎯 TAP SUSPECT" : "🎯 ACCUSE";
+      this.setTicker(this.accuseMode ? "🎯 ACCUSATION ARMED: Tap any suspect card on the board to accuse!" : "📡 Tap a trait chip below to preview matching suspects.");
     };
 
     document.getElementById("my-secret-mini").onclick = () => this.inspectOperative(this.mySecret);
@@ -138,13 +140,6 @@ class GameController {
       document.getElementById("modal-inspect").classList.add("hidden");
     };
 
-    document.getElementById("btn-leave-match").onclick = () => {
-      clearInterval(this.turnInterval);
-      this.inMatch = false;
-      this.switchView("view-lobby");
-    };
-
-    // Social & Friends
     document.getElementById("btn-save-callsign").onclick = () => {
       const val = document.getElementById("input-callsign").value.trim();
       if (val) {
@@ -164,7 +159,6 @@ class GameController {
       }
     };
 
-    // Result Modal Buttons
     document.getElementById("btn-play-again").onclick = () => {
       document.getElementById("modal-result").classList.add("hidden");
       this.openMatchmakingQueue();
@@ -177,6 +171,7 @@ class GameController {
 
   updateShowcaseCard(idx) {
     const u = this.roster[idx] || this.roster[0];
+    document.querySelector(".showcase-tag").textContent = `FEATURED OPERATIVE // TAP CARD TO CYCLE (${idx + 1}/24)`;
     document.getElementById("showcase-art").src = this.art.getArt(u.id);
     document.getElementById("showcase-faction").textContent = u.faction;
     document.getElementById("showcase-element").textContent = u.element;
@@ -201,9 +196,9 @@ class GameController {
         const rivals = ["Valkyrie_IX", "Sovereign_Zero", "NexusPrime", "Kestrel_7", "Aegis_Vanguard"];
         const rName = rivals[Math.floor(Math.random() * rivals.length)];
         const rElo = this.profile.elo + Math.floor(Math.random() * 80 - 40);
-        this.startMatch(rName, rElo);
+        this.setupMatchBoard(rName, rElo, true);
       }
-    }, 850);
+    }, 750);
   }
 
   cancelQueue() {
@@ -211,7 +206,7 @@ class GameController {
     document.getElementById("modal-queue").classList.add("hidden");
   }
 
-  startMatch(oppName, oppElo) {
+  setupMatchBoard(oppName, oppElo, switchNow = true) {
     this.inMatch = true;
     this.oppName = oppName;
     this.oppElo = Math.max(900, oppElo);
@@ -230,12 +225,16 @@ class GameController {
     document.getElementById("my-secret-traits").textContent = `${this.mySecret.faction} • ${this.mySecret.element}`;
     document.getElementById("ult-name-label").textContent = this.mySecret.faction.toUpperCase();
 
-    this.switchView("view-battle");
     this.renderBattleGrid();
     this.renderScannerConsole();
     this.updateBattleCounters();
-    this.setTicker(`⚔️ Deployed ${this.mySecret.name}. Interrogate traits to isolate ${this.oppName}'s operative!`);
+    this.highlightMatchingCards();
+    this.setTicker(`⚔️ Assigned ${this.mySecret.name}. Tap any trait chip below to interrogate ${this.oppName}'s matrix!`);
     this.setTurn(true);
+
+    if (switchNow) {
+      this.switchView("view-battle");
+    }
   }
 
   setTurn(mine) {
@@ -253,13 +252,10 @@ class GameController {
     this.turnInterval = setInterval(() => {
       this.turnClock = Math.max(0, this.turnClock - 1);
       document.getElementById("battle-timer").textContent = `${this.turnClock}s`;
-      if (this.turnClock === 0 && this.isMyTurn) {
-        this.executeTraitScan();
-      }
     }, 1000);
 
     if (!mine) {
-      setTimeout(() => this.runSmartOpponentTurn(), 1300);
+      setTimeout(() => this.runSmartOpponentTurn(), 1200);
     }
   }
 
@@ -383,15 +379,14 @@ class GameController {
       this.animateEliminations(newlyEliminated, "#ffcc33");
       this.updateBattleCounters();
       this.renderScannerConsole();
-    }, 500);
+    }, 450);
   }
 
   animateEliminations(ids, beamColor) {
     ids.forEach((id) => {
       const cardEl = document.querySelector(`#battle-grid .grid-holo-card[data-id="${id}"]`);
       if (cardEl) {
-        const rect = cardEl.getBoundingClientRect();
-        this.vfx.spawnEliminationBurst(rect, beamColor);
+        this.vfx.spawnEliminationBurst(cardEl.getBoundingClientRect(), beamColor);
         cardEl.classList.add("eliminated");
         cardEl.classList.remove("matching-preview");
       }
@@ -418,7 +413,7 @@ class GameController {
         const elim = this.eliminated.has(u.id) ? "eliminated" : "";
         return `
           <div class="grid-holo-card ${elim}" data-id="${u.id}">
-            <img src="${this.art.getArt(u.id)}" alt="${u.name}" />
+            <img data-unit-img="${u.id}" src="${this.art.getArt(u.id)}" alt="${u.name}" />
             <div class="holo-glare"></div>
             <div class="card-top-badges">
               <span class="c-badge faction">${u.faction.slice(0, 4)}</span>
@@ -460,7 +455,6 @@ class GameController {
 
   concludeMatch(won, details) {
     clearInterval(this.turnInterval);
-    this.inMatch = false;
     const expected = 1 / (1 + Math.pow(10, (this.oppElo - this.profile.elo) / 400));
     const delta = Math.round(32 * ((won ? 1 : 0) - expected));
     this.profile.elo = Math.max(800, this.profile.elo + delta);
@@ -498,7 +492,7 @@ class GameController {
     const mount = document.getElementById("inspect-card-mount");
     mount.innerHTML = `
       <div class="holo-card-inner">
-        <img src="${this.art.getArt(u.id)}" alt="${u.name}" />
+        <img data-unit-img="${u.id}" src="${this.art.getArt(u.id)}" alt="${u.name}" />
         <div class="holo-glare"></div>
         <div class="card-top-badges">
           <span class="c-badge faction">${u.faction}</span>
@@ -521,7 +515,7 @@ class GameController {
     box.innerHTML = this.roster
       .map((u) => `
         <div class="grid-holo-card" data-inspect="${u.id}">
-          <img src="${this.art.getArt(u.id)}" alt="${u.name}" />
+          <img data-unit-img="${u.id}" src="${this.art.getArt(u.id)}" alt="${u.name}" />
           <div class="holo-glare"></div>
           <div class="card-top-badges">
             <span class="c-badge faction">${u.faction.slice(0, 4)}</span>
@@ -556,11 +550,11 @@ class GameController {
       .join("");
 
     fBox.querySelectorAll("[data-duel]").forEach((b) => {
-      b.onclick = () => this.startMatch(b.getAttribute("data-duel"), this.profile.elo + 20);
+      b.onclick = () => this.setupMatchBoard(b.getAttribute("data-duel"), this.profile.elo + 20, true);
     });
 
-    document.getElementById("ranked-summary-bar").textContent =
-      `${this.getTier(this.profile.elo)} — ${this.profile.elo} MMR (${this.profile.wins}W - ${this.profile.losses}L)`;
+    document.getElementById("ranked-summary-bar").textContent = `${this.getTier(this.profile.elo)} — ${this.profile.elo} MMR`;
+    document.getElementById("ranked-winloss-sub").textContent = `${this.profile.wins}W - ${this.profile.losses}L • Season 01 Active`;
 
     const ladder = [
       { n: "Sovereign_Zero", e: 1680 },
@@ -587,21 +581,24 @@ class GameController {
           <span>${h.faction} (${h.delta} MMR)</span>
         </div>
       `)
-      .join("") || `<div class="list-item-row">No matches recorded yet.</div>`;
+      .join("") || `<div class="list-item-row">Complete a match in the Arena to log telemetry.</div>`;
   }
 
   renderShopAndPass() {
     document.getElementById("ui-pass-xp").textContent = String(this.profile.xp);
+    const pct = Math.min(100, Math.round((this.profile.xp / 1200) * 100));
+    document.getElementById("xp-progress-fill").style.width = `${pct}%`;
+
     const tiers = [
-      { t: 1, xp: 100, label: "+300 Tactical Credits" },
-      { t: 2, xp: 350, label: "+100 Core Gems" },
-      { t: 3, xp: 700, label: "Prismatic Holographic Foil Frame" },
-      { t: 4, xp: 1200, label: "Apex Sovereign Title & +800 Credits" }
+      { t: 1, xp: 100, ico: "◈", label: "+300 Tactical Credits" },
+      { t: 2, xp: 350, ico: "❖", label: "+100 Core Gems" },
+      { t: 3, xp: 700, ico: "✨", label: "Prismatic Holographic Foil Frame" },
+      { t: 4, xp: 1200, ico: "👑", label: "Apex Sovereign Title & +800 Credits" }
     ];
     document.getElementById("pass-tiers-container").innerHTML = tiers
       .map((x) => `
         <div class="list-item-row">
-          <div><strong>TIER 0${x.t} (${x.xp} XP)</strong><div>${x.label}</div></div>
+          <div><strong>${x.ico} TIER 0${x.t} (${x.xp} XP)</strong><div style="font-size:0.68rem;color:#8ea6cc;">${x.label}</div></div>
           <span class="tier-pill">${this.profile.xp >= x.xp ? "UNLOCKED" : "LOCKED"}</span>
         </div>
       `)
@@ -610,7 +607,7 @@ class GameController {
     document.getElementById("armory-items-container").innerHTML = `
       <div class="list-item-row">
         <div>
-          <strong>Prismatic Gold Foil Deck Upgrade</strong>
+          <strong>✨ Prismatic Gold Foil Deck Upgrade</strong>
           <div style="font-size:0.68rem;color:#8ea6cc;">Equips golden holographic borders across all 24 operatives.</div>
         </div>
         <button id="btn-unlock-foil" class="btn-neon gold">
